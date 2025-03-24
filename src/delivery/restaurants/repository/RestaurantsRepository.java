@@ -42,7 +42,7 @@ public class RestaurantsRepository{
     }
 
     // 음식점 찾기
-    public List<Restaurants> searchRestaurant(Condition condition, String keyword) throws Exception {
+    public List<Restaurants> searchRestaurantByCustomer(Condition condition, String keyword) throws Exception {
         List<Restaurants> searchList = new ArrayList<>();
 
         String sql = "SELECT * FROM restaurants WHERE active = 'Y'";
@@ -68,14 +68,37 @@ public class RestaurantsRepository{
                 Restaurants resta = createStoreFromResultSet(rs);
                 searchList.add(resta);
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-
         return searchList;
     }
+
+    public List<Restaurants> searchRestaurantByOwner(int userNum) throws Exception {
+        List<Restaurants> searchList = new ArrayList<>();
+
+        String sql = "SELECT * FROM restaurants WHERE active = 'Y' AND user_num = ?";
+
+        sql += " ORDER BY restaurant_num";
+
+        try(Connection conn = DBConnectionManager.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(   1,userNum);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Restaurants resta = createStoreFromResultSet(rs);
+                searchList.add(resta);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return searchList;
+    }
+
+
      // String store_name, String open_hours, String call_number, String delivery_area, String detail_info
     // ResultSet에서 추출한 결과를 Restaurant 객체로 포장해주는 헬터 메서드
     private static Restaurants createStoreFromResultSet(ResultSet rs) throws SQLException {
