@@ -1,6 +1,8 @@
 package delivery.order.service;
 
 import delivery.order.domain.Order;
+import delivery.order.repository.OrderRepository;
+import delivery.review.repository.ReviewRepository;
 
 import java.awt.*;
 import java.util.*;
@@ -133,17 +135,21 @@ public class OrderService {
         Order order = orderList.get(0); // 주문 번호는 고유하므로 첫 번째 요소 사용
 
         // 주문 취소 가능 여부 확인 (예: 주문 상태, 배송 상태 등) 만들지는 모름
-
-        // 주문 취소 처리
-        boolean isCancelled = orderRepository.deleteOrder(orderNumber);
-
-        // 주문 취소 결과 안내
-        if (isCancelled) {
-            System.out.println("### 주문이 취소되었습니다.");
-        } else {
-            System.out.println("### 주문 취소에 실패했습니다.");
+        if (!isOrderCancelable(order)) {
+            System.out.println("### 해당 주문은 취소할 수 없습니다.");
+            return;
         }
+        // 주문 취소 처리
+        orderRepository.deleteOrder(orderNumber);
 
+            System.out.println("### 주문이 취소되었습니다.");
+
+    }
+    // 주문 취소 가능 여부 확인 (가상의 메서드)
+    private boolean isOrderCancelable(Order order) {
+        // 주문 상태, 배송 상태 등을 확인하여 주문 취소 가능 여부를 반환
+        // 실제 구현에서는 데이터베이스에서 주문 상태, 배송 상태 등을 조회하여 확인해야 함
+        return true; // 예시: 항상 true 반환
     }
 }
 
