@@ -11,5 +11,4 @@ public class AppUi {
         return sc.nextLine();
     }
 
-
 }
