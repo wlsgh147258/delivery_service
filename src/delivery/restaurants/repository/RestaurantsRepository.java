@@ -79,11 +79,13 @@ public class RestaurantsRepository{
      // String store_name, String open_hours, String call_number, String delivery_area, String detail_info
     // ResultSet에서 추출한 결과를 Restaurant 객체로 포장해주는 헬터 메서드
     private static Restaurants createStoreFromResultSet(ResultSet rs) throws SQLException {
-        Restaurants resta = new Restaurants(rs.getString("restaurant_name"),
-                                            rs.getString("opening_hours"),
-                                            rs.getString("phone_number"),
-                                            rs.getString("delivery_area"),
-                                            rs.getString("detailed_info"));
+        Restaurants resta = new Restaurants(rs.getInt("user_num"),
+                rs.getString("restaurant_name"),
+                rs.getString("category"),
+                rs.getString("opening_hours"),
+                rs.getString("phone_number"),
+                rs.getString("delivery_area"),
+                rs.getString("detailed_info"));
 
         resta.setActive_flag(rs.getString("active"));
         resta.setStore_num(rs.getInt("restaurant_num"));
