@@ -5,8 +5,18 @@ public class Order {
     private int orderNum;
     private int userNum; // 아직 User class 존재 x
     private int restaurantNum; // 아직 restaurant class 존재 x
+    private int menuNum;
     private String rideYN;
     private String paymentInfo;
+
+    public Order(int orderNum, int userNum, int restaurantNum, int menuNum, String rideYN, String paymentInfo) {
+        this.orderNum = orderNum;
+        this.userNum = userNum;
+        this.restaurantNum = restaurantNum;
+        this.menuNum = menuNum;
+        this.rideYN = rideYN;
+        this.paymentInfo = paymentInfo;
+    }
 
     public int getOrderNum() {return orderNum;}
 
@@ -14,6 +24,17 @@ public class Order {
 
     public String getRideYN() {return rideYN;}
 
+    public int getUserNum() {
+        return userNum;
+    }
+
+    public int getRestaurantNum() {
+        return restaurantNum;
+    }
+
+    public int getMenuNum() {
+        return menuNum;
+    }
     public void setRideYN(String rideYN) {this.rideYN = rideYN;}
 
     public String getPaymentInfo() {return paymentInfo;}
