@@ -1,42 +1,56 @@
 package delivery.restaurants.repository;
 
+import delivery.common.Condition;
+import delivery.jdbc.DBConnectionManager;
+import delivery.restaurants.domain.Restaurants;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+
+
 import static delivery.common.Condition.*;
 
 public class RestaurantsRepository{
 
     // 음식점 추가하기
-    public void insertRestaurant(Restaurant resta) {
+    public void insertRestaurant(Restaurants resta) {
         String sql = """
                 INSERT INTO restaurants
                       VALUES(store_info_seq.NEXTVAL, ?,?,?,?,?,?)""";
 
-        try (Connection conn = DBConnectionManager.getConnection();
+        try (Connection conn = delivery.jdbc.DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, resta.getStore_num());
+            pstmt.setInt(1, resta.getStore_num());
             pstmt.setString(2, resta.getCall_number());
             pstmt.setString(3, resta.getOpen_hours());
             pstmt.setString(4, resta.getDetail_info());
             pstmt.setString(5, resta.getDelivery_area());
-            pstmt.setInt(6, resta.getActive_flag());
+            pstmt.setString(6, resta.getActive_flag());
 
             pstmt.executeUpdate();
 
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // 음식점 찾기
-    public List<Restaurant> searchRestaurant(Condition condition, String keyword) throws Exception {
-        List<Restaurant> searchList = new ArrayList<>();
+    public List<Restaurants> searchRestaurant(Condition condition, String keyword) throws Exception {
+        List<Restaurants> searchList = new ArrayList<>();
 
         String sql = "SELECT * FROM restaurants WHERE active = 'Y'";
         if (condition == AREA) {
             sql += " AND delivery_area LIKE ?";
-        } //else if (condition == NATION) {
-//            sql += " AND nation LIKE ?";
-//        } else if (condition == TITLE) {
+        } else if (condition == CATEGORY) {
+            sql += " AND category LIKE ?";
+        }  //else if (condition == TITLE) {
 //            sql += " AND movies_name LIKE ?";
 //        }
         sql += " ORDER BY restaurant_num";
@@ -51,7 +65,7 @@ public class RestaurantsRepository{
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Restaurant resta = createStoreFromResultSet(rs);
+                Restaurants resta = createStoreFromResultSet(rs);
                 searchList.add(resta);
             }
 
@@ -64,20 +78,20 @@ public class RestaurantsRepository{
     }
      // String store_name, String open_hours, String call_number, String delivery_area, String detail_info
     // ResultSet에서 추출한 결과를 Restaurant 객체로 포장해주는 헬터 메서드
-    private static Restaurant createStoreFromResultSet(ResultSet rs) throws SQLException {
-        Restaurant resta = new Restaurant(rs.getString("restaurant_name"),
+    private static Restaurants createStoreFromResultSet(ResultSet rs) throws SQLException {
+        Restaurants resta = new Restaurants(rs.getString("restaurant_name"),
                                             rs.getString("opening_hours"),
                                             rs.getString("phone_number"),
                                             rs.getString("delivery_area"),
                                             rs.getString("detailed_info"));
 
-        resta.setActive(rs.getString("active"));
-        resta.setSerialNumber(rs.getInt("restaurant_num"));
+        resta.setActive_flag(rs.getString("active"));
+        resta.setStore_num(rs.getInt("restaurant_num"));
         return resta;
     }
 
 
-    public Restaurant deleteRestaurant(int delRestaNum) {
+    public void deleteRestaurant(int delRestaNum) {
         String sql = "UPDATE restaurants SET active = 'N' WHERE restaurant_num = ?";
 
         Connection conn = null;
