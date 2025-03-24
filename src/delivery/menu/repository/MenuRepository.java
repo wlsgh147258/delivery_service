@@ -1,7 +1,6 @@
 
-package delivery.restaurants.repository;
+package delivery.menu.repository;
 
-import delivery.common.Condition;
 import delivery.jdbc.DBConnectionManager;
 import delivery.menu.domain.Menu;
 import delivery.restaurants.domain.Restaurants;
@@ -12,11 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
-
-
-import static delivery.common.Condition.*;
 
 public class MenuRepository{
 
