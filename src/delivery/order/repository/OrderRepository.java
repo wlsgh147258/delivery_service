@@ -74,14 +74,7 @@ public class OrderRepository {
     // 주문 번호를 통해
     public List<Order> findOrderByNumber(int orderNum) {
         List<Order> orderList = new ArrayList<>();
-        String sql = "SELECT o.*, u.user_name, u.phone_number, u.user_grade, " +
-                "r.restaurant_name, r.phone_number AS restaurant_phone, " +
-                "m.menu_name, m.price " +
-                "FROM order_info o " +
-                "JOIN users_info u ON o.user_num = u.user_num " +
-                "JOIN restaurants r ON o.restaurant_num = r.restaurant_num " +
-                "JOIN menu_info m ON o.menu_num = m.menu_num " +
-                "WHERE o.order_num = ?";
+        String sql = "SELECT * FROM order_info WHERE order_num = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
