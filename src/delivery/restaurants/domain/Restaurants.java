@@ -9,19 +9,34 @@ public class Restaurants {
     private String delivery_area; // 배송지역
     private String detail_info; // 세부정보
     private String active_flag; // 활성화 여부
-
-    private String menu_num; // 메뉴코드
-    private String menu_name; // 메뉴명
-    private String category; // 카테고리
-    private int price; // 가격
+    private int user_num; // 사용자(점주)코드
+    private String category; // 겁색을 위한 카테고리
 
 
-    public Restaurants(String store_name, String open_hours, String call_number, String delivery_area, String detail_info) {
+    public Restaurants(int user_num, String store_name, String category, String open_hours, String call_number, String delivery_area, String detail_info) {
+        this.user_num = user_num;
         this.store_name = store_name;
+        this.category = category;
         this.open_hours = open_hours;
         this.call_number = call_number;
         this.delivery_area = delivery_area;
         this.detail_info = detail_info;
+    }
+
+    public int getUser_num() {
+        return user_num;
+    }
+
+    public void setUser_num(int user_num) {
+        this.user_num = user_num;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public int getStore_num() {
@@ -80,40 +95,8 @@ public class Restaurants {
         this.active_flag = active_flag;
     }
 
-    public String getMenu_num() {
-        return menu_num;
-    }
-
-    public void setMenu_num(String menu_num) {
-        this.menu_num = menu_num;
-    }
-
-    public String getMenu_name() {
-        return menu_name;
-    }
-
-    public void setMenu_name(String menu_name) {
-        this.menu_name = menu_name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
+    @Override
+    public String toString() {
         return "Restaurants{" +
                 "store_num=" + store_num +
                 ", store_name='" + store_name + '\'' +
@@ -122,6 +105,8 @@ public class Restaurants {
                 ", delivery_area='" + delivery_area + '\'' +
                 ", detail_info='" + detail_info + '\'' +
                 ", active_flag='" + active_flag + '\'' +
+                ", user_num=" + user_num +
+                ", category='" + category + '\'' +
                 '}';
     }
 }
