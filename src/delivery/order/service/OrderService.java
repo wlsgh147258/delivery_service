@@ -93,7 +93,7 @@ public class OrderService implements DeliveryService {
             List<Integer> menuNum = new ArrayList<>();
             if (count > 0) {
                 for (Menu menu : menuList) {
-                    System.out.println(menu.getMenu_name() + " | " + menu.getCategory() + " - " + menu.getPrice());
+                    System.out.println(menu.getMenu_num()+ " " + menu.getMenu_name() + " | " + menu.getCategory() + " - " + menu.getPrice());
                     menuNum.add(menu.getMenu_num());
                 }
                 System.out.println("==========================================================================================");

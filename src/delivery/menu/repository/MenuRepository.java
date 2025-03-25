@@ -45,15 +45,20 @@ public class MenuRepository{
 
         String sql = "SELECT * FROM menu_info WHERE active = 'Y'";
 
+        if (condition == MENU_NAME) {
+            sql += " AND menu_name LIKE ? ORDER BY restaurant_num, menu_num";
+
+        } else if (condition == CATEGORY) {
+            sql += " AND category LIKE ? ORDER BY restaurant_num, menu_num";
+        }
+
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
         if (condition == MENU_NAME) {
-            sql += " AND menu_name LIKE ? ORDER BY restaurant_num, menu_num";
-            pstmt.setString(1,"%"+keyword+"%");
+             pstmt.setString(1,"%"+keyword+"%");
         } else if (condition == CATEGORY) {
-            sql += " AND category LIKE ? ORDER BY restaurant_num, menu_num";
-            pstmt.setString(1,"%"+keyword+"%");
+                 pstmt.setString(1,"%"+keyword+"%");
         }
 
             ResultSet rs = pstmt.executeQuery();
@@ -64,7 +69,7 @@ public class MenuRepository{
             }
 
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             e.printStackTrace();
         }
 
