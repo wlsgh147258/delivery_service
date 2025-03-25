@@ -28,15 +28,14 @@ public class AppUi {
     }
 
     public static int inputInteger(String message) {
-
         System.out.print(message);
         int num = 0;
         try {
-            num = Integer.parseInt(sc.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("# 올바른 입력값이 아닙니다.");
+            num = sc.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("# 올바른 정수 입력값이 아닙니다!");
         } finally {
-            sc.nextLine();
+            sc.nextLine(); // try에서도(엔터 입력값), catch에서도(쓰레기 문자열 수거) nextLine()이 동작해야 함.
         }
         return num;
     }
