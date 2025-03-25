@@ -97,17 +97,15 @@ public class Restaurants {
 
     @Override
     public String toString() {
-        return "Restaurants{" +
-                "store_num=" + store_num +
-                ", store_name='" + store_name + '\'' +
-                ", open_hours='" + open_hours + '\'' +
-                ", call_number='" + call_number + '\'' +
-                ", delivery_area='" + delivery_area + '\'' +
-                ", detail_info='" + detail_info + '\'' +
-                ", active_flag='" + active_flag + '\'' +
-                ", user_num=" + user_num +
-                ", category='" + category + '\'' +
-                '}';
+        return "## Restaurant 번호: " + store_num +
+                ", 식당명: " + store_name + '\'' +
+                ", 영업 시간: " + open_hours + '\'' +
+                ", 전화 번호: " + call_number + '\'' +
+                ", 식당 주소: " + delivery_area + '\'' +
+                ", 상세 정보: " + detail_info + '\'' +
+                ", 영업 활성화: " + active_flag + '\'' +
+                ", 점주: " + user_num +
+                ", 카테고리: " + category ;
     }
 }
 //////
