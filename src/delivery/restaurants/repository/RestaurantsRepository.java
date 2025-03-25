@@ -27,7 +27,7 @@ public class RestaurantsRepository{
         try (Connection conn = delivery.jdbc.DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, resta.getStore_num());
+            pstmt.setString(1, resta.getStore_name());
             pstmt.setString(2, resta.getCall_number());
             pstmt.setString(3, resta.getOpen_hours());
             pstmt.setString(4, resta.getDetail_info());

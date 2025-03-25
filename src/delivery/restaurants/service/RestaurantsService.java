@@ -229,7 +229,7 @@ public class RestaurantsService implements DeliveryService {
 //            List<Integer> restaurantNums = new ArrayList<>();
 
             if (count > 0) {
-                System.out.println("\n===================검색 결과 (총 %d건)=====================\n");
+                System.out.printf("\n===================검색 결과 (총 %d건)=====================\n", restaurantsList.size());
                 for (Restaurants restaurants : restaurantsList) {
                     System.out.println(restaurants);
 //                    restaurantNums.add(restaurants.getStore_num());
