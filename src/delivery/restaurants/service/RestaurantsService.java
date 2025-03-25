@@ -196,9 +196,6 @@ public class RestaurantsService implements DeliveryService {
 
     // DB에서 특정 컬럼을 업데이트하는 메서드
     private void updateRestaurantInfo(int storeNum, String column, String newValue) {
-        System.out.println("storeNum = " + storeNum);
-        System.out.println("column = " + column);
-        System.out.println("newValue = " + newValue);
 
         String sql = "UPDATE restaurants SET " + column + " = ? WHERE restaurant_num = ?";
 
