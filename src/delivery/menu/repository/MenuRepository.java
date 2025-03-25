@@ -107,7 +107,7 @@ public class MenuRepository{
                 rs.getString("category"),
                 rs.getInt("price"));
 
-        menu.setMenu_num(rs.getString("menu_num"));
+        menu.setMenu_num(rs.getInt("menu_num"));
         menu.setActive(rs.getString("active"));
         return menu;
     }

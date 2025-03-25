@@ -2,7 +2,7 @@ package delivery.menu.domain;
 
 public class Menu {
 
-    private String menu_num; // 메뉴코드
+    private int menu_num; // 메뉴코드
     private String menu_name; // 메뉴명
     private String category; // 카테고리
     private int price; // 가격
@@ -12,7 +12,7 @@ public class Menu {
         return menu_num;
     }
 
-    public void setMenu_num(String menu_num) {
+    public void setMenu_num(int menu_num) {
         this.menu_num = menu_num;
     }
 
