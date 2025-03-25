@@ -18,7 +18,7 @@ public class UserRepository {
     private static final Map<Integer, User> userDatabase = new HashMap<>();
 
     public void addUser(User user){
-        String sql = "INSERT INTO users VALUES(user_seq.NEXTVAL,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO users VALUES(user_seq.NEXTVAL,?,?,?,?,?,?,?,?)";
 
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -27,9 +27,10 @@ public class UserRepository {
             pstmt.setString(2,user.getUserId());
             pstmt.setString(3,user.getUserPassword());
             pstmt.setString(4,user.getAddress());
-            pstmt.setString(5,user.getUserType());
-            pstmt.setString(6,user.getUserGrade().toString());
-            pstmt.setString(7,user.getActive());
+            pstmt.setString(5,user.getPhoneNumber());
+            pstmt.setString(6,user.getUserType());
+            pstmt.setString(7,user.getUserGrade().toString());
+            pstmt.setString(8,user.getActive());
 
             pstmt.executeUpdate();
 
@@ -41,21 +42,19 @@ public class UserRepository {
     public List<User> findUsers(int condition, String keyword) {
         List<User> foundUsers = new ArrayList<>();
         String sql = "SELECT * FROM users_info";
-        if (condition == 1){ // 회원 번호
-            sql += "WHERE user_num = ?";
-        }
-        else if (condition == 2) { // 이름
-            sql += "WHERE user_name = ?";
-        }
-        else if (condition == 3) { // 아이디
-            sql += "WHERE user_id = ?";
-        }
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            if(condition != 4){
-                pstmt.setInt(1,Integer.parseInt(keyword));
+            if (condition == 1) { // 회원 번호
+                sql += " WHERE user_num = ?";
+                pstmt.setInt(1, Integer.parseInt(keyword));
+            } else if (condition == 2) { // 이름
+                sql += " WHERE user_name = ?";
+                pstmt.setString(1, keyword);
+            } else if (condition == 3) { // 아이디
+                sql += " WHERE user_id = ?";
+                pstmt.setString(1, keyword);
             }
 
             ResultSet rs = pstmt.executeQuery();
