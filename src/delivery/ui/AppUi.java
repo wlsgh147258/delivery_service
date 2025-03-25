@@ -1,7 +1,19 @@
 package delivery.ui;
 
+import delivery.jdbc.DBConnectionManager;
+import delivery.menu.domain.Menu;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+
+import static delivery.common.Condition.CATEGORY;
+import static delivery.common.Condition.MENU_NAME;
+import static delivery.menu.repository.MenuRepository.createMenuFromResultSet;
 
 public class AppUi {
 
@@ -42,19 +54,68 @@ public class AppUi {
         System.out.println("### 3. 식당 영업 시간 수정");
         System.out.println("### 4. 식당 전화 번호 수정");
         System.out.println("### 5. 식당 주소 수정");
-        System.out.println("### 6. 식당 상세 정보 수정");
+        System.out.println("### 6. 식당 정보 수정");
         System.out.println("### 7. 식당 메뉴 수정");
         System.out.println("### 8. 식당 정보 삭제");
         System.out.println();
     }
 
     public static void MenuManagementScreen(){
-        System.out.println("\n========= 식당 메뉴 관리 시스템 =========");
-        System.out.println("### 1. 신규 메뉴 추가");
-        System.out.println("### 2. 식당 메뉴 검색");
-        System.out.println("### 3. 식당 메뉴 삭제");
+        System.out.println("\n========= 식당 관리 시스템 =========");
+        System.out.println("### 1. 메뉴 추가");
+        System.out.println("### 2. 메뉴 정보 검색");
+        System.out.println("### 3. 메뉴 정보 수정/삭제");
         System.out.println("### 4. 첫 화면으로 가기");
         System.out.println();
+    }
+
+
+        public static void startScreen(String id, String pw){
+        System.out.println("\n========= 음식 배달 시스템 =========");
+        System.out.println("### 로그인 ###");
+        System.out.println("### 아이디 : ");
+        System.out.println("### 3. 메뉴 정보 수정/삭제");
+        System.out.println("### 4. 첫 화면으로 가기");
+        System.out.println();
+    }
+
+    public static String find_userType(String id, String pw) {
+        String userType = "";
+        List<Users> searchList = new ArrayList<>();
+        String sql = "SELECT * FROM users_info WHERE user_id = ?, user_password = ?";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, id);
+            pstmt.setString(2, pw);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Users user = new Users(rs.getInt("user_num"),
+                        rs.getString("user_name"),
+                        rs.getString("user_id"),
+                        rs.getString("user_password"),
+                        rs.getString("address"),
+                        rs.getString("phone_number"),
+                        rs.getString("user_type"),
+                        rs.getString("active"));
+
+                searchList.add(user);
+            }
+
+
+            if (!searchList.isEmpty()) {
+                for (Users users : searchList) {
+                    userType = users.getUserType();
+                }
+            }
+            return userType;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
