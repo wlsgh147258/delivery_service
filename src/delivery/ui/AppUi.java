@@ -18,6 +18,7 @@ import static delivery.common.Condition.CATEGORY;
 import static delivery.common.Condition.MENU_NAME;
 import static delivery.menu.repository.MenuRepository.*;
 
+
 public class AppUi {
 
     private static Scanner sc = new Scanner(System.in);
