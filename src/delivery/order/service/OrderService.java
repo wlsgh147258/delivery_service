@@ -1,6 +1,7 @@
 package delivery.order.service;
 
 import delivery.common.Condition;
+import delivery.common.DeliveryService;
 import delivery.menu.repository.MenuRepository;
 import delivery.order.domain.Order;
 import delivery.menu.domain.Menu;
@@ -15,7 +16,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class OrderService {
+public class OrderService  implements DeliveryService {
     private final UserRepository userRepository = new UserRepository();
     private final OrderRepository orderRepository = new OrderRepository();
     private final RestaurantsRepository restaurantRepository = new RestaurantsRepository();
@@ -86,7 +87,12 @@ public class OrderService {
 
     // 카테고리 안의 음식 보여주는 메서드
     public void showFoodList(String category) {
-        List<Menu> menuList = menuRepository.searchMenuList(Condition.CATEGORY, category);
+        List<Menu> menuList = null;
+        try {
+            menuList = menuRepository.searchMenuList(Condition.CATEGORY, category);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         int count = menuList.size();
 
         List<Integer> menuNum = new ArrayList<>();

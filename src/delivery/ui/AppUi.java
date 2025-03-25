@@ -2,6 +2,7 @@ package delivery.ui;
 
 import delivery.jdbc.DBConnectionManager;
 import delivery.menu.domain.Menu;
+import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 
 import java.sql.Connection;
@@ -79,6 +80,23 @@ public class AppUi {
         System.out.println();
     }
 
+    public static void reviewManagementScreen(){
+        System.out.println("\n========= 리뷰 관리 시스템 =========");
+        System.out.println("### 1. 리뷰 추가");
+        System.out.println("### 2. 리뷰 정보 검색");
+        System.out.println("### 3. 리뷰 정보 수정/삭제");
+        System.out.println("### 4. 첫 화면으로 가기");
+        System.out.println();
+    }
+
+    public static void orderManagementScreen(){
+        System.out.println("\n========= 주문 시스템 =========");
+        System.out.println("### 1. 주문하기");
+        System.out.println("### 2. 주문 되돌리기");
+        System.out.println("### 3. 첫 화면으로 가기");
+        System.out.println();
+    }
+
 
         public static void startScreen(String id, String pw){
         System.out.println("\n========= 음식 배달 시스템 =========");
@@ -92,7 +110,7 @@ public class AppUi {
     public static String find_userType(String id, String pw) {
         String userType = "";
         List<User> searchList = new ArrayList<>();
-        String sql = "SELECT * FROM users_info WHERE user_id = ?, user_password = ?";
+        String sql = "SELECT * FROM users_info WHERE user_id = ? AND user_password = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -110,6 +128,7 @@ public class AppUi {
                         rs.getString("address"),
                         rs.getString("phone_number"),
                         rs.getString("user_type"),
+                        Grade.valueOf(rs.getString("user_grade")),
                         rs.getString("active"));
 
                 searchList.add(user);
@@ -124,9 +143,13 @@ public class AppUi {
             return userType;
 
         } catch (Exception e) {
+            System.out.println("아이디/비밀번호가 틀렸습니다.");
             e.printStackTrace();
         }
+        return userType;
     }
+
+
 
 
 
