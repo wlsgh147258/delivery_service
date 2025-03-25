@@ -97,8 +97,9 @@ public class Restaurants {
 
     @Override
     public String toString() {
-        return "## 업장코드:" + store_num +
-                ", 업장명:'" + store_name + '\'' +
+        return "## 업장코드: " + store_num +
+                ' ' + '{' +
+                " 업장명:'" + store_name + '\'' +
                 ", 오픈시간:'" + open_hours + '\'' +
                 ", 전화번호:'" + call_number + '\'' +
                 ", 배달지역:'" + delivery_area + '\'' +

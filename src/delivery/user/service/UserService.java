@@ -45,13 +45,13 @@ public class UserService implements DeliveryService {
         System.out.println("1. 고객");
         System.out.println("2. 라이더");
         System.out.println("3. 점주");
-        while(true) {
+        while (true) {
             int userTypeNum = inputInteger(">>> ");
-            if(userTypeNum == 1) {
+            if (userTypeNum == 1) {
                 return "고객";
-            } else if(userTypeNum == 2) {
+            } else if (userTypeNum == 2) {
                 return "라이더";
-            } else if(userTypeNum == 3) {
+            } else if (userTypeNum == 3) {
                 return "점주";
             } else {
                 System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
@@ -128,9 +128,9 @@ public class UserService implements DeliveryService {
     private void showFoundUserData() {
         List<User> users = findUserData();
         int count = users.size();
-        if(count > 0) {
-            System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
-            for(User user: users) {
+        if (count > 0) {
+            System.out.printf("\n========== 검색 결과 %d개 ==========", count);
+            for (User user : users) {
                 System.out.println(user);
             }
         } else {
@@ -142,11 +142,11 @@ public class UserService implements DeliveryService {
         System.out.println("탈퇴를 위한 유저 검색을 시작합니다.");
         List<User> users = findUserData();
 
-        if(users.size() > 0) {
+        if (users.size() > 0) {
             System.out.println("탈퇴할 유저 번호를 입력하세요.");
             int delUserNum = inputInteger(">>> ");
 
-            if(users.stream().anyMatch(user -> user.getUserNum() == delUserNum)) {
+            if (users.stream().anyMatch(user -> user.getUserNum() == delUserNum)) {
                 userRepository.deleteUser(delUserNum);
                 System.out.println("유저번호 " + delUserNum + "번 회원탈퇴 완료.");
             } else {
