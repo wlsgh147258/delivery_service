@@ -27,4 +27,4 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-src/delivery/jdbc/DBConnectionManager.java/
+src/delivery/jdbc/DBConnectionManager.java
