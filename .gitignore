@@ -30,4 +30,4 @@ bin/
 
 
 src/delivery/jdbc/DBConnectionManager.java
-.idea
+.idea/
