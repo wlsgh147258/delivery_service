@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ReviewRepository {
     public void addReview(Review review) {
-        String sql = "INSERT INTO reviews VALUES(reviews_seq, ?, ?, ?)";
+        String sql = "INSERT INTO reviews VALUES(reviews_seq.NEXT_VAL, ?, ?, ?)";
 
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -64,4 +64,33 @@ public class ReviewRepository {
         }
     }
 
+    public List<Review> findReviews(int condition, String keyword) {
+        List<Review> foundReviews = new ArrayList<>();
+        String sql = "SELECT * FROM reviews ";
+        if (condition == 1) {
+            sql += "WHERE order_num = ?";
+        } else if (condition == 2) {
+            sql = "SELECT * FROM reviews r INNER JOIN (SELECT o.order_num FROM order_info o INNER JOIN users_info u ON o.user_num = u.user_num" +
+                    " WHERE o.user_num = ?) orn ON r.order_num = orn.order_num";
+        }
+        try(Connection conn = DBConnectionManager.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            if(condition != 3) {
+                pstmt.setInt(1, Integer.parseInt(keyword));
+            }
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next()) {
+                foundReviews.add(new Review(
+                        rs.getInt("review_num"),
+                        rs.getInt("order_num"),
+                        rs.getInt("rating"),
+                        rs.getString("content")
+                ));
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return foundReviews;
+    }
 }

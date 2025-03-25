@@ -6,6 +6,11 @@ public class Review {
     private int rating;
     private String content;
 
+    public Review(int orderNum, int rating, String content) {
+        this.orderNum = orderNum;
+        this.rating = rating;
+        this.content = content;
+    }
     public Review(int reviewNum, int orderNum, int rating, String content) {
         this.reviewNum = reviewNum;
         this.orderNum = orderNum;
