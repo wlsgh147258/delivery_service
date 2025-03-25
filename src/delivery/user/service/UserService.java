@@ -89,35 +89,39 @@ public class UserService implements DeliveryService {
     private List<User> findUserData() {
         System.out.println("유저를 검색합니다.");
         System.out.println("[1. 회원 번호로 검색 | 2. 회원 이름으로 검색 | 3. 아이디로 검색 | 4. 전체검색]");
+
         int selection = inputInteger(">>> ");
         int condition = FIND_ALL;
+        String keyword = "";
 
         switch (selection) {
-            case 1: // 회원 번호
-                condition = FIND_BY_ID;
+            case 1:
+                condition = FIND_BY_NUM;
                 System.out.println("회원 번호로 검색합니다.");
+                keyword = inputString("검색어: ");
                 break;
-            case 2: // 이름
+            case 2:
                 condition = FIND_BY_NAME;
                 System.out.println("이름으로 검색합니다.");
+                keyword = inputString("검색어: ");
                 break;
-            case 3: // 아이디
+            case 3:
                 condition = FIND_BY_ID;
                 System.out.println("아이디로 검색합니다.");
+                keyword = inputString("검색어: ");
                 break;
-            case 4: // 전체
+            case 4:
                 System.out.println("전체 유저를 검색합니다.");
+                break;
             default:
-                System.out.println("잘못된 입력입니다.");
-                return null;
         }
 
-        String keyword = "";
-        if(condition != FIND_ALL) {
-            keyword = inputString("검색어: ");
+        try {
+            return userRepository.findUsers(condition, keyword);
+        } catch (Exception e) {
+            System.out.println("검색 중 오류가 발생했습니다: " + e.getMessage());
+            return List.of(); // 빈 리스트 반환 또는 예외 처리
         }
-
-        return userRepository.findUsers(condition, keyword);
     }
 
     private void showFoundUserData() {
