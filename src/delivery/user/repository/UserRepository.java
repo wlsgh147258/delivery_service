@@ -31,27 +31,38 @@ public class UserRepository {
             pstmt.setString(6,user.getUserGrade().toString());
             pstmt.setString(7,user.getActive());
 
-            pstmt.executeQuery();
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<User> findUserByName(String userName) {
-        List<User> userList = new ArrayList<>();
-        String sql = "SELECT * FROM users_info WHERE user_name = ? AND active = ?";
+    public List<User> findUsers(int condition, String keyword) {
+        List<User> foundUsers = new ArrayList<>();
+        String sql = "SELECT * FROM users_info";
+        if (condition == 1){ // 회원 번호
+            sql += "WHERE user_num = ?";
+        }
+        else if (condition == 2) { // 이름
+            sql += "WHERE user_name = ?";
+        }
+        else if (condition == 3) { // 아이디
+            sql += "WHERE user_id = ?";
+        }
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, userName);
-            pstmt.setString(2, "Y");
+
+            if(condition != 4){
+                pstmt.setInt(1,Integer.parseInt(keyword));
+            }
 
             ResultSet rs = pstmt.executeQuery();
 
 
             while (rs.next()) {
-                User user = new User(
+                foundUsers.add(new User(
                         rs.getInt("user_num"),
                         rs.getString("user_name"),
                         rs.getString("user_id"),
@@ -61,14 +72,12 @@ public class UserRepository {
                         rs.getString("user_type"),
                         Grade.valueOf(rs.getString("grade")),
                         rs.getString("active")
-                );
-                user.setUserNum(rs.getInt("user_number"));
-                userList.add(user);
+                ));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return userList;
+        return foundUsers;
     }
 
 
@@ -88,8 +97,4 @@ public class UserRepository {
                 e.printStackTrace();;
             }
         }
-
-    public User findUserByNumber(int userNumber){
-        return userDatabase.get(userNumber);
-    }
 }
