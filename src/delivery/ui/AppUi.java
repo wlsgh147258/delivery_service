@@ -2,6 +2,7 @@ package delivery.ui;
 
 import delivery.jdbc.DBConnectionManager;
 import delivery.menu.domain.Menu;
+import delivery.user.domain.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 
 import static delivery.common.Condition.CATEGORY;
 import static delivery.common.Condition.MENU_NAME;
-import static delivery.menu.repository.MenuRepository.createMenuFromResultSet;
+import static delivery.menu.repository.MenuRepository.*;
 
 public class AppUi {
 
@@ -69,6 +70,15 @@ public class AppUi {
         System.out.println();
     }
 
+    public static void userManagementScreen(){
+        System.out.println("\n========= 사용자 관리 시스템 =========");
+        System.out.println("### 1. 사용자 추가");
+        System.out.println("### 2. 사용자 정보 검색");
+        System.out.println("### 3. 사용자 정보 수정/삭제");
+        System.out.println("### 4. 첫 화면으로 가기");
+        System.out.println();
+    }
+
 
         public static void startScreen(String id, String pw){
         System.out.println("\n========= 음식 배달 시스템 =========");
@@ -81,7 +91,7 @@ public class AppUi {
 
     public static String find_userType(String id, String pw) {
         String userType = "";
-        List<Users> searchList = new ArrayList<>();
+        List<User> searchList = new ArrayList<>();
         String sql = "SELECT * FROM users_info WHERE user_id = ?, user_password = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
@@ -93,7 +103,7 @@ public class AppUi {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Users user = new Users(rs.getInt("user_num"),
+                User user = new User(rs.getInt("user_num"),
                         rs.getString("user_name"),
                         rs.getString("user_id"),
                         rs.getString("user_password"),
@@ -107,7 +117,7 @@ public class AppUi {
 
 
             if (!searchList.isEmpty()) {
-                for (Users users : searchList) {
+                for (User users : searchList) {
                     userType = users.getUserType();
                 }
             }

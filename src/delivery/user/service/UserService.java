@@ -2,13 +2,14 @@ package delivery.user.service;
 
 import static delivery.ui.AppUi.*;
 
+import delivery.common.DeliveryService;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
 
 import java.util.List;
 
-public class UserService {
+public class UserService implements DeliveryService {
     private final UserRepository userRepository = new UserRepository();
 
     private final int FIND_BY_NUM = 1;
