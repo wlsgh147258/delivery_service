@@ -2,6 +2,7 @@ package delivery.order.service;
 
 import delivery.common.Condition;
 import delivery.common.DeliveryService;
+import delivery.main.Main;
 import delivery.menu.repository.MenuRepository;
 import delivery.order.domain.Order;
 import delivery.menu.domain.Menu;
@@ -131,6 +132,18 @@ public class OrderService implements DeliveryService {
 
     private void processOrder(Menu menu) {
         System.out.println(menu.getMenu_name() + "을(를) 주문합니다.");
+        Order order = new Order(
+                menu.getMenu_num(),
+                Main.user.getUserNum(),
+                menu.getRestaurantNum(),
+                menu.getMenu_num(),
+                "N",
+                "credit_card"
+
+        );
+
+        orderRepository.addOrder(order);
+        System.out.println("주문이 완료되었습니다.");
     }
 
     private void processReturnMenu() {

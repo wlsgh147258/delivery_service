@@ -132,20 +132,18 @@ public class UserRepository {
     }
 
 
-    public static String findUserType(String id, String pw) {
-        String userType = "";
-        List<User> searchList = new ArrayList<>();
+    public static User findUserOne(String id, String pw) {
         String sql = "SELECT * FROM users_info WHERE user_id = ? AND user_password = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, id);
-            pstmt.setString(2, pw);
+                pstmt.setString(1, id);
+                pstmt.setString(2, pw);
 
-            ResultSet rs = pstmt.executeQuery();
+                ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+                rs.next();
                 User user = new User(rs.getInt("user_num"),
                         rs.getString("user_name"),
                         rs.getString("user_id"),
@@ -155,22 +153,11 @@ public class UserRepository {
                         rs.getString("user_type"),
                         Grade.valueOf(rs.getString("user_grade")),
                         rs.getString("active"));
-
-                searchList.add(user);
-            }
-
-
-            if (!searchList.isEmpty()) {
-                for (User users : searchList) {
-                    userType = users.getUserType();
-                }
-            }
-            return userType;
-
-        } catch (Exception e) {
+                return user;
+            } catch (Exception e) {
             e.printStackTrace();
         }
-        return searchList.toString();
+        return null;
     }
 
 
