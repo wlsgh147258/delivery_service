@@ -23,13 +23,13 @@ public class UserRepository {
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
 
-            pstmt.setInt(1,user.getUserNum());
-            pstmt.setString(2,user.getUserName());
-            pstmt.setString(3,user.getUserId());
-            pstmt.setString(4,user.getUserPassword());
-            pstmt.setString(5,user.getAddress());
-            pstmt.setString(6,user.getUserType());
-            pstmt.setString(7,user.getUserGrade().toString());
+            pstmt.setString(1,user.getUserName());
+            pstmt.setString(2,user.getUserId());
+            pstmt.setString(3,user.getUserPassword());
+            pstmt.setString(4,user.getAddress());
+            pstmt.setString(5,user.getUserType());
+            pstmt.setString(6,user.getUserGrade().toString());
+            pstmt.setString(7,user.getActive());
 
             pstmt.executeQuery();
 
@@ -38,7 +38,7 @@ public class UserRepository {
         }
     }
 
-    public List<User> findUserByName(String userName){
+    public List<User> findUserByName(String userName) {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM users_info WHERE user_name = ? AND active = ?";
 
@@ -49,21 +49,45 @@ public class UserRepository {
 
             ResultSet rs = pstmt.executeQuery();
 
-            return userList;
+
             while (rs.next()) {
                 User user = new User(
-
+                        rs.getInt("user_num"),
+                        rs.getString("user_name"),
+                        rs.getString("user_id"),
+                        rs.getString("user_passward"),
+                        rs.getString("address"),
+                        rs.getString("phone_number"),
+                        rs.getString("user_type"),
+                        Grade.valueOf(rs.getString("grade")),
+                        rs.getString("active")
                 );
-                user.setUserNumber(rs.getInt("user_number"));
+                user.setUserNum(rs.getInt("user_number"));
                 userList.add(user);
             }
-
-
-    } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+        return userList;
+    }
 
-        public void deleteUser(int delUserNum){}
+
+        public void deleteUser(int delUserNum){
+            String sql = "UPDATE users_info SET active = ? WHERE user_num = ? ";
+
+            try(Connection conn = DBConnectionManager.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1,"N");
+                pstmt.setInt(2,delUserNum);
+                pstmt.executeUpdate();
+
+                System.out.println("회원 탈퇴가 완료 되었습니다.");
+
+            } catch (SQLException e) {
+                e.printStackTrace();;
+            }
+        }
 
     public User findUserByNumber(int userNumber){
         return userDatabase.get(userNumber);

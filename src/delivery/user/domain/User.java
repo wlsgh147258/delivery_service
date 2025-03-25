@@ -8,7 +8,7 @@ public class User {
 
     public static final int SILVER_PRICE = 5000;
     public static final int GOLD_PRICE = 7000;
-    public static final int PLATINUM_PRICE = 10000;
+    public static final int PLATINUM_PRICE = 10000; //나중에 상의해서 고치기
 
 
     private static int sequence;
