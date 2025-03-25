@@ -51,7 +51,7 @@ public class RiderService implements DeliveryService {
 
 
     private List<Order> findOrderData() {
-        System.out.println("대기중인 주문 검색");
+        System.out.println("\n대기중인 주문 검색");
 
         try {
             return userRepository.findOrders();
@@ -125,7 +125,7 @@ public class RiderService implements DeliveryService {
         }
 
         try {
-            return userRepository.findUsers(condition, keyword);
+            return userRepository.findRiderUsers(condition, keyword);
         } catch (Exception e) {
             System.out.println("검색 중 오류가 발생했습니다: " + e.getMessage());
             return List.of(); // 빈 리스트 반환 또는 예외 처리

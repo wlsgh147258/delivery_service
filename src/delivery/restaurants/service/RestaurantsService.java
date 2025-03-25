@@ -2,6 +2,7 @@ package delivery.restaurants.service;
 
 import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
+import delivery.main.Main;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
 
@@ -23,7 +24,7 @@ public class RestaurantsService implements DeliveryService {
         while (true) {
 
             //로그인 로직 추가하기
-            int userNum = 10;
+            int userNum = Main.user.getUserNum();
 
             restaurantManagementScreen();
             int num = inputInteger(">>> ");
