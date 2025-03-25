@@ -18,19 +18,22 @@ public class UserRepository {
     private static final Map<Integer, User> userDatabase = new HashMap<>();
 
     public void addUser(User user){
-        String sql = "INSERT INTO users_info VALUES(users_info_seq.NEXTVAL,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO users_info" +
+                "(user_num, user_name, user_id, user_password, address, phone_number, user_type, user_grade, active) " +
+                "VALUES (users_info_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)"; // 열 이름 명시
 
-        try(Connection conn = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)){
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1,user.getUserName());
-            pstmt.setString(2,user.getUserId());
-            pstmt.setString(3,user.getUserPassword());
-            pstmt.setString(4,user.getAddress());
-            pstmt.setString(5,user.getPhoneNumber());
-            pstmt.setString(6,user.getUserType());
-            pstmt.setString(7,user.getUserGrade().toString());
-            pstmt.setString(8,user.getActive());
+
+            pstmt.setString(1, user.getUserName());
+            pstmt.setString(2, user.getUserId());
+            pstmt.setString(3, user.getUserPassword());
+            pstmt.setString(4, user.getAddress());
+            pstmt.setString(5, user.getPhoneNumber());
+            pstmt.setString(6, user.getUserType());
+            pstmt.setString(7, user.getUserGrade().toString()); // Grade enum을 문자열로 변환
+            pstmt.setString(8, user.getActive()); // 열 이름으로 설정
 
             pstmt.executeUpdate();
 
@@ -39,65 +42,60 @@ public class UserRepository {
         }
     }
 
+
     public List<User> findUsers(int condition, String keyword) {
         List<User> foundUsers = new ArrayList<>();
-        Connection conn = null;
+        String sql = "SELECT * FROM users_info ";
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
 
-        try {
-            conn = DBConnectionManager.getConnection();
-            String sql = "SELECT * FROM users_info";
+        if (condition == 1) { // 회원 번호
+            sql += " WHERE user_num = ? AND active ='Y' ";
+        } else if (condition == 2) { // 이름
+            sql += " WHERE user_name = ? AND active ='Y' ";
+        } else if (condition == 3) { // 아이디
+            sql += " WHERE user_id = ? AND active ='Y' ";
+        }
+
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            pstmt = conn.prepareStatement(sql); // try 블록 안에서 PreparedStatement 생성
 
             if (condition == 1) { // 회원 번호
-                sql += " WHERE user_num = ?";
-                pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, Integer.parseInt(keyword));
             } else if (condition == 2) { // 이름
-                sql += " WHERE user_name = ?";
-                pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, keyword);
             } else if (condition == 3) { // 아이디
-                sql += " WHERE user_id = ?";
-                pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, keyword);
-            } else {
-                pstmt = conn.prepareStatement(sql); // 조건이 없을 경우 모든 사용자 검색
             }
 
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                try {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
                     foundUsers.add(new User(
                             rs.getInt("user_num"),
                             rs.getString("user_name"),
                             rs.getString("user_id"),
-                            rs.getString("user_password"), // 오타 수정
+                            rs.getString("user_password"),
                             rs.getString("address"),
                             rs.getString("phone_number"),
                             rs.getString("user_type"),
-                            Grade.valueOf(rs.getString("grade")),
+                            Grade.valueOf(rs.getString("user_grade")),
                             rs.getString("active")
                     ));
-                } catch (IllegalArgumentException e) {
-                    System.err.println("Grade 열 값 오류: " + e.getMessage());
-                    // 또는 로그에 기록하거나, 다른 예외 처리 수행
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return foundUsers;
     }
+
 
     public static String findUserType(String id, String pw) {
         String userType = "";

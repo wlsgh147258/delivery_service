@@ -17,7 +17,6 @@ public class RestaurantsService implements DeliveryService {
 
     private final RestaurantsRepository restaurantsRepository = new RestaurantsRepository();
 
-    @Override
     public void start() {
 
         while (true) {
@@ -75,7 +74,6 @@ public class RestaurantsService implements DeliveryService {
             List<Restaurants> restaurantsList = restaurantsRepository.searchRestaurantByOwner(userNum);
 
             if (restaurantsList.size() > 0) {
-                System.out.printf("\n===================회원 번호 %d번 님의 restaurant 검색 결과 (총 %d건)=====================\n", userNum, restaurantsList.size());
                 List<Integer> storeNums = new ArrayList<>();
                 for (Restaurants restaurant : restaurantsList) {
                     System.out.println(restaurant);
@@ -150,32 +148,32 @@ public class RestaurantsService implements DeliveryService {
             switch (updateSelection) {
                 case 1:
                     column = "restaurant_name";
-                    System.out.printf("기존 식당 이름: %s >> 새로운 식당 이름: ", restaurant.getStore_name());
-                    newValue = inputString(" ");
+                    System.out.print("새로운 식당 이름 입력: ");
+                    newValue = inputString(">> ");
                     break;
                 case 2:
                     column = "category";
-                    System.out.printf("기존 카테고리: %s >> 새로운 카테고리: ", restaurant.getCategory());
-                    newValue = inputString(" ");
+                    System.out.print("새로운 카테고리 입력: ");
+                    newValue = inputString(">> ");
                     break;
                 case 3:
                     column = "opening_hours";
-                    System.out.printf("기존 영업 시간: %s >> 새로운 영업 시간: ", restaurant.getOpen_hours());
-                    newValue = inputString(" ");
+                    System.out.print("새로운 영업 시간 입력: ");
+                    newValue = inputString(">> ");
                     break;
                 case 4:
                     column = "phone_number";
-                    System.out.printf("기존 식당 전화번호: %s >> 새로운 전화번호: ", restaurant.getCall_number());
-                    newValue = inputString(" ");
+                    System.out.print("새로운 전화번호 입력: ");
+                    newValue = inputString(">> ");
                     break;
                 case 5:
                     column = "delivery_area";
-                    System.out.printf("기존 주소: %s >> 새로운 주소: ", restaurant.getDelivery_area());
-                    newValue = inputString(" ");
+                    System.out.print("새로운 주소 입력: ");
+                    newValue = inputString(">> ");
                     break;
                 case 6:
                     column = "detailed_info";
-                    System.out.printf("기존 식당 상세 정보: %s >> 새로운 식당 상세 정보: ", restaurant.getDetail_info());
+                    System.out.print("새로운 식당 정보 입력: ");
                     newValue = inputString(">> ");
                     break;
                 default:
