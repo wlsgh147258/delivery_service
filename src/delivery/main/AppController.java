@@ -2,6 +2,8 @@ package delivery.main;
 
 import delivery.common.DeliveryService;
 import delivery.restaurants.service.RestaurantsService;
+import delivery.user.domain.User;
+import delivery.user.service.UserService;
 
 public class AppController {
     private DeliveryService service;

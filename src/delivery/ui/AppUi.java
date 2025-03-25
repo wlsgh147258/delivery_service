@@ -2,6 +2,7 @@ package delivery.ui;
 
 import delivery.jdbc.DBConnectionManager;
 import delivery.menu.domain.Menu;
+import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 
 import java.sql.Connection;
@@ -61,6 +62,7 @@ public class AppUi {
         System.out.println();
     }
 
+
     public static void MenuManagementScreen(){
         System.out.println("\n========= 식당 관리 시스템 =========");
         System.out.println("### 1. 메뉴 추가");
@@ -79,7 +81,6 @@ public class AppUi {
         System.out.println();
     }
 
-
         public static void startScreen(String id, String pw){
         System.out.println("\n========= 음식 배달 시스템 =========");
         System.out.println("### 로그인 ###");
@@ -88,6 +89,21 @@ public class AppUi {
         System.out.println("### 4. 첫 화면으로 가기");
         System.out.println();
     }
+    public static void reviewManagementScreen() {
+        System.out.println("\n========= 리뷰 시스템 =========");
+        System.out.println("### 1. 리뷰 입력");
+        System.out.println("### 2. 리뷰 검색");
+        System.out.println("### 3. 리뷰 삭제");
+        System.out.println("### 4. 이전 화면으로 돌아가기");
+    }
+
+    public static void orderManagementScreen() {
+        System.out.println("\n========= 주문 관리 시스템 =========");
+        System.out.println("### 1. 주문 하기");
+        System.out.println("### 2. 주문 취소");
+        System.out.println("### 3. 이전 화면으로 돌아가기");
+    }
+
 
     public static String find_userType(String id, String pw) {
         String userType = "";
@@ -110,6 +126,7 @@ public class AppUi {
                         rs.getString("address"),
                         rs.getString("phone_number"),
                         rs.getString("user_type"),
+                        Grade.valueOf(rs.getString("grade")),
                         rs.getString("active"));
 
                 searchList.add(user);
@@ -126,6 +143,7 @@ public class AppUi {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return searchList.toString();
     }
 
 
