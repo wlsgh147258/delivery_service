@@ -1,6 +1,7 @@
 
 package delivery.menu.repository;
 
+import delivery.common.Condition;
 import delivery.jdbc.DBConnectionManager;
 import delivery.menu.domain.Menu;
 import delivery.restaurants.domain.Restaurants;
@@ -12,10 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
 
+import static delivery.common.Condition.*;
+
+
 public class MenuRepository{
 
     // 음식점 추가하기
-    public void insertMenu(Restaurants store, Menu menu) {
+    public void insertMenu(int store_num, Menu menu) {
         String sql = """
                 INSERT INTO menu_info
                       VALUES(menu_info_seq.NEXTVAL,?,?,?,?,?)""";
@@ -23,7 +27,7 @@ public class MenuRepository{
         try (Connection conn = delivery.jdbc.DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, store.getStore_num());
+            pstmt.setInt(1, store_num);
             pstmt.setString(2, menu.getMenu_name());
             pstmt.setString(3, menu.getCategory());
             pstmt.setInt(4, menu.getPrice());
@@ -37,16 +41,22 @@ public class MenuRepository{
     }
 
     // 음식점 찾기
-    public List<Menu> searchMenu(String keyword) throws Exception {
+    public List<Menu> searchMenuList(Condition condition, String keyword) throws Exception {
         List<Menu> searchList = new ArrayList<>();
 
-        String sql = "SELECT * FROM menu_info WHERE active = 'Y' AND menu_name LIKE ?";
-        sql += " ORDER BY restaurant_num";
+        String sql = "SELECT * FROM menu_info WHERE active = 'Y'";
 
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            // ? 열에 %를 쓰는게 아니라, ?를 채울 때 특정 단어에 %를 미리 세팅해서 채워야 함
+
+        if (condition == MENU_NAME) {
+            sql += " AND menu_name LIKE ? ORDER BY restaurant_num, menu_num";
             pstmt.setString(1,"%"+keyword+"%");
+        } else if (condition == CATEGORY) {
+            sql += " AND category LIKE ? ORDER BY restaurant_num, menu_num";
+            pstmt.setString(1,"%"+keyword+"%");
+        }
+
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -61,6 +71,36 @@ public class MenuRepository{
 
         return searchList;
     }
+
+    public List<Menu> searchMenuList(Condition condition, int keyword) throws Exception {
+        List<Menu> searchList = new ArrayList<>();
+
+        String sql = "SELECT * FROM menu_info WHERE active = 'Y'";
+
+        try(Connection conn = DBConnectionManager.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            if  (condition == PRICE) {
+                sql += " AND price < ? ORDER BY restaurant_num, menu_num";
+                pstmt.setInt(1,keyword);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Menu menu = createMenuFromResultSet(rs);
+                searchList.add(menu);
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return searchList;
+    }
+
+
     // String store_name, String open_hours, String call_number, String delivery_area, String detail_info
     // ResultSet에서 추출한 결과를 Restaurant 객체로 포장해주는 헬터 메서드
     private static Menu createMenuFromResultSet(ResultSet rs) throws SQLException {

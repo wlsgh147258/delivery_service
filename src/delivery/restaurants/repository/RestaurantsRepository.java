@@ -22,7 +22,7 @@ public class RestaurantsRepository{
     public void insertRestaurant(Restaurants resta) {
         String sql = """
                 INSERT INTO restaurants
-                      VALUES(store_info_seq.NEXTVAL, ?,?,?,?,?,?)""";
+                      VALUES(store_info_seq.NEXTVAL, ?,?,?,?,?,?,?,?)""";
 
         try (Connection conn = delivery.jdbc.DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -32,7 +32,9 @@ public class RestaurantsRepository{
             pstmt.setString(3, resta.getOpen_hours());
             pstmt.setString(4, resta.getDetail_info());
             pstmt.setString(5, resta.getDelivery_area());
-            pstmt.setString(6, resta.getActive_flag());
+            pstmt.setString(6, "Y");
+            pstmt.setInt(7, resta.getUser_num());
+            pstmt.setString(8, resta.getCategory());
 
             pstmt.executeUpdate();
 

@@ -1,5 +1,5 @@
 package delivery.common;
 
 public enum Condition {
-    AREA, CATEGORY, ALL
+    AREA, CATEGORY, MENU_NAME, PRICE, ALL
 }

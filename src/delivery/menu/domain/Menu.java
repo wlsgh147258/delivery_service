@@ -8,7 +8,7 @@ public class Menu {
     private int price; // 가격
     private String active; // 메뉴 활성화 여부
 
-    public String getMenu_num() {
+    public Integer getMenu_num() {
         return menu_num;
     }
 
