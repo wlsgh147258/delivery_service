@@ -12,11 +12,10 @@ import delivery.user.repository.UserRepository;
 
 import static delivery.ui.AppUi.*;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class OrderService  implements DeliveryService {
+public class OrderService implements DeliveryService {
     private final UserRepository userRepository = new UserRepository();
     private final OrderRepository orderRepository = new OrderRepository();
     private final RestaurantsRepository restaurantRepository = new RestaurantsRepository();
@@ -87,36 +86,37 @@ public class OrderService  implements DeliveryService {
 
     // 카테고리 안의 음식 보여주는 메서드
     public void showFoodList(String category) {
-        List<Menu> menuList = null;
         try {
-            menuList = menuRepository.searchMenuList(Condition.CATEGORY, category);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        int count = menuList.size();
+            List<Menu> menuList = menuRepository.searchMenuList(Condition.CATEGORY, category);
+            int count = menuList.size();
 
-        List<Integer> menuNum = new ArrayList<>();
-        if (count > 0) {
-            for (Menu menu : menuList) {
-                System.out.println(menu.getMenu_name() + " | " + menu.getCategory() + " - " + menu.getPrice());
-                menuNum.add(menu.getMenu_num());
-            }
-            System.out.println("==========================================================================================");
-            System.out.println("### 주문할 음식의 번호를 입력하세요.");
-            int foodNumber = inputInteger(">>> "); // 주문할 음식의 번호라 foodNumber로 지정
+            List<Integer> menuNum = new ArrayList<>();
+            if (count > 0) {
+                for (Menu menu : menuList) {
+                    System.out.println(menu.getMenu_name() + " | " + menu.getCategory() + " - " + menu.getPrice());
+                    menuNum.add(menu.getMenu_num());
+                }
+                System.out.println("==========================================================================================");
+                System.out.println("### 주문할 음식의 번호를 입력하세요.");
+                int foodNumber = inputInteger(">>> "); // 주문할 음식의 번호라 foodNumber로 지정
 
-            if (menuNum.contains(foodNumber)) {
-                Menu selectedMenu = findMenuByNumber(menuList, foodNumber);
-                if (selectedMenu != null) {
-                    processOrder(selectedMenu);
+                if (menuNum.contains(foodNumber)) {
+                    Menu selectedMenu = findMenuByNumber(menuList, foodNumber);
+                    if (selectedMenu != null) {
+                        processOrder(selectedMenu);
+                    } else {
+                        System.out.println("### 잘못된 음식 번호입니다.");
+                    }
                 } else {
                     System.out.println("### 잘못된 음식 번호입니다.");
                 }
             } else {
-                System.out.println("### 잘못된 음식 번호입니다.");
+                System.out.println("### 해당 카테고리에 음식이 없습니다.");
             }
-        } else {
-            System.out.println("### 해당 카테고리에 음식이 없습니다.");
+        }
+        catch (Exception e){
+            System.out.println("### 음식 목록을 가져오는 중 오류가 발생했습니다: ");
+            e.printStackTrace();
         }
     }
 
@@ -155,7 +155,7 @@ public class OrderService  implements DeliveryService {
         // 주문 취소 처리
         orderRepository.deleteOrder(orderNumber);
 
-            System.out.println("### 주문이 취소되었습니다.");
+        System.out.println("### 주문이 취소되었습니다.");
 
     }
     // 주문 취소 가능 여부 확인 (가상의 메서드)
@@ -165,5 +165,4 @@ public class OrderService  implements DeliveryService {
         return true; // 예시: 항상 true 반환
     }
 }
-
 
