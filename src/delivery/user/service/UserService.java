@@ -108,6 +108,8 @@ public class UserService implements DeliveryService {
             case 4: // 전체
                 System.out.println("전체 유저를 검색합니다.");
             default:
+                System.out.println("잘못된 입력입니다.");
+                return null;
         }
 
         String keyword = "";
@@ -117,6 +119,7 @@ public class UserService implements DeliveryService {
 
         return userRepository.findUsers(condition, keyword);
     }
+
     private void showFoundUserData() {
         List<User> users = findUserData();
         int count = users.size();
@@ -126,7 +129,7 @@ public class UserService implements DeliveryService {
                 System.out.println(user);
             }
         } else {
-            System.out.println("\n## 검색된 리뷰가 없습니다.");
+            System.out.println("\n## 검색된 회원이 없습니다.");
         }
     }
 

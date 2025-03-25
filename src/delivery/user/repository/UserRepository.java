@@ -41,40 +41,60 @@ public class UserRepository {
 
     public List<User> findUsers(int condition, String keyword) {
         List<User> foundUsers = new ArrayList<>();
-        String sql = "SELECT * FROM users_info";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-        try (Connection conn = DBConnectionManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            conn = DBConnectionManager.getConnection();
+            String sql = "SELECT * FROM users_info";
 
             if (condition == 1) { // 회원 번호
                 sql += " WHERE user_num = ?";
+                pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, Integer.parseInt(keyword));
             } else if (condition == 2) { // 이름
                 sql += " WHERE user_name = ?";
+                pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, keyword);
             } else if (condition == 3) { // 아이디
                 sql += " WHERE user_id = ?";
+                pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, keyword);
+            } else {
+                pstmt = conn.prepareStatement(sql); // 조건이 없을 경우 모든 사용자 검색
             }
 
-            ResultSet rs = pstmt.executeQuery();
-
+            rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                foundUsers.add(new User(
-                        rs.getInt("user_num"),
-                        rs.getString("user_name"),
-                        rs.getString("user_id"),
-                        rs.getString("user_passward"),
-                        rs.getString("address"),
-                        rs.getString("phone_number"),
-                        rs.getString("user_type"),
-                        Grade.valueOf(rs.getString("grade")),
-                        rs.getString("active")
-                ));
+                try {
+                    foundUsers.add(new User(
+                            rs.getInt("user_num"),
+                            rs.getString("user_name"),
+                            rs.getString("user_id"),
+                            rs.getString("user_password"), // 오타 수정
+                            rs.getString("address"),
+                            rs.getString("phone_number"),
+                            rs.getString("user_type"),
+                            Grade.valueOf(rs.getString("grade")),
+                            rs.getString("active")
+                    ));
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Grade 열 값 오류: " + e.getMessage());
+                    // 또는 로그에 기록하거나, 다른 예외 처리 수행
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return foundUsers;
     }
