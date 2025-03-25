@@ -93,7 +93,7 @@ public class AppUi {
         System.out.println();
     }
 
-    public static String find_userType(String id, String pw) {
+    public static String findUserType(String id, String pw) {
         String userType = "";
         List<User> searchList = new ArrayList<>();
         String sql = "SELECT * FROM users_info WHERE user_id = ? AND user_password = ?";

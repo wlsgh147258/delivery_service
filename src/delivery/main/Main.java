@@ -9,7 +9,7 @@ import static delivery.user.repository.UserRepository.findUserType;
 public class Main {
 
     public static void main(String[] args) {
-        int selectNumber = 0;
+        int userType = 0;
         AppController controller = new AppController();
         UserService userservice =new UserService();
 
@@ -25,14 +25,14 @@ public class Main {
                 System.out.println("### 비밀번호를 입력하세요.");
                 String userpw = inputString(">>> ");
 
-                String type = find_userType(userid,userpw);
+                String type = findUserType(userid,userpw);
 
                 if (type.equals("고객")) {
-                    selectNumber = 1;
+                    userType = 1;
                 } else if (type.equals("라이더")) {
-                    selectNumber = 2;
+                    userType = 2;
                 } else if (type.equals("점주")) {
-                    selectNumber = 3;
+                    userType = 3;
                 }
 
             } else {
@@ -40,7 +40,7 @@ public class Main {
                 userservice.insertUserData();
             }
 
-            controller.chooseSystem(selectNumber);
+            controller.chooseSystem(userType);
         }
 
 
