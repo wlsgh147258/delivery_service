@@ -20,20 +20,20 @@ public class UserRepository {
     public void addUser(User user){
         String sql = "INSERT INTO users_info" +
                 "(user_num, user_name, user_id, user_password, address, phone_number, user_type, user_grade, active) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"; // 열 이름 명시
+                "VALUES (users_info_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)"; // 열 이름 명시
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, user.getUserNum());
-            pstmt.setString(2, user.getUserName());
-            pstmt.setString(3, user.getUserId());
-            pstmt.setString(4, user.getUserPassword());
-            pstmt.setString(5, user.getAddress());
-            pstmt.setString(6, user.getPhoneNumber());
-            pstmt.setString(7, user.getUserType());
-            pstmt.setString(8, user.getUserGrade().toString()); // Grade enum을 문자열로 변환
-            pstmt.setString(9, user.getActive()); // 열 이름으로 설정
+
+            pstmt.setString(1, user.getUserName());
+            pstmt.setString(2, user.getUserId());
+            pstmt.setString(3, user.getUserPassword());
+            pstmt.setString(4, user.getAddress());
+            pstmt.setString(5, user.getPhoneNumber());
+            pstmt.setString(6, user.getUserType());
+            pstmt.setString(7, user.getUserGrade().toString()); // Grade enum을 문자열로 변환
+            pstmt.setString(8, user.getActive()); // 열 이름으로 설정
 
             pstmt.executeUpdate();
 
