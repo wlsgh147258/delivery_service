@@ -56,7 +56,7 @@ public class AppUi {
         System.out.println("### 3. 식당 영업 시간 수정");
         System.out.println("### 4. 식당 전화 번호 수정");
         System.out.println("### 5. 식당 주소 수정");
-        System.out.println("### 6. 식당 정보 수정");
+        System.out.println("### 6. 식당 상세 정보 수정");
         System.out.println("### 7. 식당 메뉴 수정");
         System.out.println("### 8. 식당 정보 삭제");
         System.out.println();

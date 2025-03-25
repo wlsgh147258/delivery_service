@@ -94,10 +94,11 @@ public class RestaurantsService implements DeliveryService {
                         case 1, 2, 3, 4, 5, 6:
 
                             for (Restaurants restaurant : restaurantsList) {
-
-                                //수정 프로세스 진행
-                                updateProcess(updateSelection, updateRestaNum, restaurant);
-                                break;
+                                if(restaurant.getStore_num()==updateRestaNum){
+                                    //수정 프로세스 진행
+                                    updateProcess(updateSelection, restaurant);
+                                    break;
+                                }
                             }
 
                             break;
@@ -139,7 +140,7 @@ public class RestaurantsService implements DeliveryService {
     }
 
     // 수정 프로세스
-    private void updateProcess(int updateSelection, int updateRestaNum, Restaurants restaurant) {
+    private void updateProcess(int updateSelection, Restaurants restaurant) {
 
         try {
 
@@ -183,8 +184,8 @@ public class RestaurantsService implements DeliveryService {
             }
 
             // DB 업데이트 실행
-            updateRestaurantInfo(updateRestaNum, column, newValue);
-            System.out.printf("\n###[ %d번 ] 식당의[ %s ] 정보가 성공적으로 수정되었습니다.\n", updateRestaNum, column);
+            updateRestaurantInfo(restaurant.getStore_num(), column, newValue);
+            System.out.printf("\n###[ %d번 ] 식당의 [ %s ] 정보가 성공적으로 수정되었습니다.\n", restaurant.getStore_num(), column);
 
         } catch (Exception e) {
             e.printStackTrace();
