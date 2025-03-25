@@ -1,8 +1,12 @@
 package delivery.restaurants.service;
 
+import delivery.jdbc.DBConnectionManager;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +16,12 @@ public class RestaurantsService {
 
     private final RestaurantsRepository restaurantsRepository = new RestaurantsRepository();
 
-    public void start()  {
+    public void start() {
 
         while (true) {
 
             //로그인 로직 추가하기
-            int userNum = 0;
+            int userNum = 11;
 
             restaurantManagementScreen();
             int num = inputInteger(">>> ");
@@ -88,7 +92,7 @@ public class RestaurantsService {
                             for (Restaurants restaurant : restaurantsList) {
                                 if (restaurant.getStore_num() == updateSelection) {
                                     //수정 프로세스 진행
-                                    updateProcess(restaurant);
+                                    updateProcess(updateSelection, restaurant);
                                     break;
                                 }
 
@@ -110,10 +114,11 @@ public class RestaurantsService {
                         } else {
                             System.out.println("\n### 알맞은 식당 번호만 삭제할 수 있습니다.");
                         }
+                        break;
                     default:
                         System.out.println("### 메뉴를 다시 입력해주세요.");
+                        break;
                 }
-
 
             } else {
                 System.out.println("운영중인 식당이 존재하지 않습니다.");
@@ -125,16 +130,87 @@ public class RestaurantsService {
     }
 
     // 수정 프로세스
-    private void updateProcess(Restaurants restaurant) {
+    private void updateProcess(int updateSelection, Restaurants restaurant) {
+
+        try {
+
+            String column = "";
+            String newValue = "";
+
+            switch (updateSelection) {
+                case 1:
+                    column = "restaurant_name";
+                    System.out.print("새로운 식당 이름 입력: ");
+                    newValue = inputString(">> ");
+                    break;
+                case 2:
+                    column = "category";
+                    System.out.print("새로운 카테고리 입력: ");
+                    newValue = inputString(">> ");
+                    break;
+                case 3:
+                    column = "business_hours";
+                    System.out.print("새로운 영업 시간 입력: ");
+                    newValue = inputString(">> ");
+                    break;
+                case 4:
+                    column = "phone_number";
+                    System.out.print("새로운 전화번호 입력: ");
+                    newValue = inputString(">> ");
+                    break;
+                case 5:
+                    column = "address";
+                    System.out.print("새로운 주소 입력: ");
+                    newValue = inputString(">> ");
+                    break;
+                case 6:
+                    column = "description";
+                    System.out.print("새로운 식당 정보 입력: ");
+                    newValue = inputString(">> ");
+                    break;
+                default:
+                    System.out.println("### 잘못된 입력입니다.");
+                    return;
+            }
+
+            // DB 업데이트 실행
+            updateRestaurantInfo(restaurant.getStore_num(), column, newValue);
+            System.out.printf("\n###[ %d번 ] 식당의[ %s ] 정보가 성공적으로 수정되었습니다.\n", restaurant.getStore_num(), column);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
+    // DB에서 특정 컬럼을 업데이트하는 메서드
+    private void updateRestaurantInfo(int storeNum, String column, String newValue) {
+        String sql = "UPDATE restaurants SET " + column + " = ? WHERE store_num = ?";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newValue);
+            pstmt.setInt(2, storeNum);
+
+            pstmt.executeUpdate();
+
+            System.out.println("### 업데이트 성공!");
+
+        } catch (SQLException e) {
+            System.out.println("### 업데이트 실패. 해당 식당이 존재하는지 확인하세요.");
+            e.printStackTrace();
+        }
+    }
+
+
     // 운영중인 식당 정보 출력
-    private void searchRestaurant(int userNum)  {
+    private void searchRestaurant(int userNum) {
 
         try {
 
             List<Restaurants> restaurantsList = restaurantsRepository.searchRestaurantByOwner(userNum);
+
             int count = restaurantsList.size();
 
 //            List<Integer> restaurantNums = new ArrayList<>();
@@ -149,11 +225,10 @@ public class RestaurantsService {
             } else {
                 System.out.println("\n### 검색 결과가 없습니다.");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-
 
 }
