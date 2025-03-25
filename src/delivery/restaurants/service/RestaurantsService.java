@@ -1,6 +1,5 @@
 package delivery.restaurants.service;
 
-import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
@@ -13,7 +12,7 @@ import java.util.List;
 
 import static delivery.ui.AppUi.*;
 
-public class RestaurantsService implements DeliveryService {
+public class RestaurantsService {
 
     private final RestaurantsRepository restaurantsRepository = new RestaurantsRepository();
 
@@ -87,7 +86,7 @@ public class RestaurantsService implements DeliveryService {
                 int updateSelection = inputInteger(">>> ");
 
                 switch (updateSelection) {
-                    case 1, 2, 3, 4, 5, 6, 7:
+                    case 1, 2, 3, 4, 5, 6:
                         if (storeNums.contains(updateSelection)) {
 
                             for (Restaurants restaurant : restaurantsList) {
@@ -100,7 +99,7 @@ public class RestaurantsService implements DeliveryService {
                             }
                         }
                         break;
-                    case 8:
+                    case 7:
                         if (storeNums.contains(updateRestaNum)) {
                             restaurantsRepository.deleteRestaurant(updateRestaNum);
 
