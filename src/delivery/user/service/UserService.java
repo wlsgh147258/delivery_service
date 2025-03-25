@@ -1,6 +1,8 @@
 package delivery.user.service;
 
 import static delivery.ui.AppUi.*;
+
+import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
 
@@ -10,8 +12,9 @@ public class UserService {
     private final UserRepository userRepository = new UserRepository();
 
     private final int FIND_BY_NUM = 1;
-    private final int FIND_BY_ID = 2;
-    private final int FIND_ALL = 3;
+    private final int FIND_BY_NAME = 2;
+    private final int FIND_BY_ID = 3;
+    private final int FIND_ALL = 4;
 
     public void start() {
         while (true) {
@@ -42,7 +45,7 @@ public class UserService {
         System.out.println("2. 라이더");
         System.out.println("3. 점주");
         while(true) {
-            int userTypeNum = inputInteger();
+            int userTypeNum = inputInteger(">>> ");
             if(userTypeNum == 1) {
                 return "고객";
             } else if(userTypeNum == 2) {
@@ -57,17 +60,18 @@ public class UserService {
 
     private void insertUserData() {
         System.out.println("===== 회원가입을 진행합니다. =====");
-        int userName = inputInteger("주문번호: ");
-        int userId = inputInteger("평점: ");
+        String userName = inputString("주문번호: ");
+        String userId = inputString("평점: ");
         String userPassword = inputString("내용: ");
         String userAddress = inputString("주소: ");
         String phoneNumber = inputString("전화번호: ");
         String userType = inputUserType();
-        String userGrade = "BRONZE";
+        Grade userGrade = Grade.BRONZE;
         String active = "Y";
 
         userRepository.addUser(
                 new User(
+                        -1,
                         userName,
                         userId,
                         userPassword,
@@ -87,12 +91,20 @@ public class UserService {
         int condition = FIND_ALL;
 
         switch (selection) {
-            case 1:
+            case 1: // 회원 번호
+                condition = FIND_BY_ID;
+                System.out.println("회원 번호로 검색합니다.");
                 break;
-            case 2:
+            case 2: // 이름
+                condition = FIND_BY_NAME;
+                System.out.println("이름으로 검색합니다.");
                 break;
-            case 3:
+            case 3: // 아이디
+                condition = FIND_BY_ID;
+                System.out.println("아이디로 검색합니다.");
                 break;
+            case 4: // 전체
+                System.out.println("전체 유저를 검색합니다.");
             default:
         }
 
@@ -101,7 +113,7 @@ public class UserService {
             keyword = inputString("검색어: ");
         }
 
-        return userRepository.findUsers(condition, );
+        return userRepository.findUsers(condition, keyword);
     }
     private void showFoundUserData() {
         List<User> users = findUserData();
@@ -118,6 +130,21 @@ public class UserService {
 
     private void deleteUserData() {
         System.out.println("탈퇴를 위한 유저 검색을 시작합니다.");
-        List
+        List<User> users = findUserData();
+
+        if(users.size() > 0) {
+            System.out.println("탈퇴할 유저 번호를 입력하세요.");
+            int delUserNum = inputInteger(">>> ");
+
+            if(users.stream().anyMatch(user -> user.getUserNum() == delUserNum)) {
+                userRepository.deleteUser(delUserNum);
+                System.out.println("유저번호 " + delUserNum + "번 회원탈퇴 완료.");
+            } else {
+                System.out.println("검색된 유저 번호를 입력해주세요.");
+            }
+        } else {
+            System.out.println("조회 결과가 없습니다.");
+        }
+
     }
 }
