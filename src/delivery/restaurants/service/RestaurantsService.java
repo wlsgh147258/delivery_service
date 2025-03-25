@@ -1,5 +1,6 @@
 package delivery.restaurants.service;
 
+import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import static delivery.ui.AppUi.*;
 
-public class RestaurantsService {
+public class RestaurantsService implements DeliveryService {
 
     private final RestaurantsRepository restaurantsRepository = new RestaurantsRepository();
 
