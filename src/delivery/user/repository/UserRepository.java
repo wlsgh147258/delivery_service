@@ -1,6 +1,7 @@
 package delivery.user.repository;
 
 import delivery.jdbc.DBConnectionManager;
+import delivery.order.domain.Order;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 
@@ -94,6 +95,39 @@ public class UserRepository {
             }
         }
         return foundUsers;
+    }
+
+    public List<Order> findOrders() {
+        List<Order> foundOrders = new ArrayList<>();
+        String sql = "SELECT * FROM order_info WHERE ride_yn = 'N' ";
+        PreparedStatement pstmt = null;
+
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            pstmt = conn.prepareStatement(sql); // try 블록 안에서 PreparedStatement 생성
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    foundOrders.add(new Order(
+                            rs.getInt("order_num"),
+                            rs.getInt("user_num"),
+                            rs.getInt("restaurant_num"),
+                            rs.getInt("menu_num"),
+                            rs.getString("ride_yn"),
+                            rs.getString("payment_info")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return foundOrders;
     }
 
 

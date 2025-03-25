@@ -70,6 +70,15 @@ public class AppUi {
         System.out.println();
     }
 
+    public static void riderManagementScreen(){
+        System.out.println("\n========= 라이더 관리 시스템 =========");
+        System.out.println("### 1. 대기 중인 주문 확인하기");
+        System.out.println("### 2. 라이더 정보 검색");
+        System.out.println("### 3. 라이더 탈퇴하기");
+        System.out.println("### 4. 첫 화면으로 가기");
+        System.out.println();
+    }
+
     public static void reviewManagementScreen() {
         System.out.println("\n========= 리뷰 시스템 =========");
         System.out.println("### 1. 리뷰 입력");

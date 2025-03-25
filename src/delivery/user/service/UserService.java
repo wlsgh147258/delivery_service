@@ -60,12 +60,13 @@ public class UserService implements DeliveryService {
     }
 
     public void insertUserData() {
-        System.out.println("===== 회원가입을 진행합니다. =====");
-        String userName = inputString("회원 이름: ");
-        String userId = inputString("회원 아이디: ");
-        String userPassword = inputString("회원 비밀번호: ");
-        String userAddress = inputString("주소: ");
-        String phoneNumber = inputString("전화번호: ");
+        System.out.println("===== 회원가입을 진행합니다.(이전 단계는 q) =====");
+
+        String userName = inputString("회원 이름: ");  if (userName.equals("q")) return;
+        String userId = inputString("회원 아이디: ");  if (userId.equals("q")) return;
+        String userPassword = inputString("회원 비밀번호: ");  if (userPassword.equals("q")) return;
+        String userAddress = inputString("주소: ");  if (userAddress.equals("q")) return;
+        String phoneNumber = inputString("전화번호: ");  if (phoneNumber.equals("q")) return;
         String userType = inputUserType();
         Grade userGrade = Grade.BRONZE;
         String active = "Y";
@@ -128,7 +129,7 @@ public class UserService implements DeliveryService {
         List<User> users = findUserData();
         int count = users.size();
         if(count > 0) {
-            System.out.printf("\n========== 검색 결과 %d개 ==========", count);
+            System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
             for(User user: users) {
                 System.out.println(user);
             }
@@ -137,7 +138,7 @@ public class UserService implements DeliveryService {
         }
     }
 
-    private void deleteUserData() {
+    public void deleteUserData() {
         System.out.println("탈퇴를 위한 유저 검색을 시작합니다.");
         List<User> users = findUserData();
 
