@@ -15,7 +15,7 @@ public class AppController {
                 service = new UserService();
                 break;
             case 2:
-                service = new RiderService();
+                //service = new RiderService();
                 break;
             case 3:
                 service = new RestaurantsService();

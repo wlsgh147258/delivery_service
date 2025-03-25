@@ -108,7 +108,7 @@ public class AppUi {
     public static String find_userType(String id, String pw) {
         String userType = "";
         List<User> searchList = new ArrayList<>();
-        String sql = "SELECT * FROM users_info WHERE user_id = ?, user_password = ?";
+        String sql = "SELECT * FROM users_info WHERE user_id = ? AND user_password = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -126,7 +126,7 @@ public class AppUi {
                         rs.getString("address"),
                         rs.getString("phone_number"),
                         rs.getString("user_type"),
-                        Grade.valueOf(rs.getString("grade")),
+                        Grade.valueOf(rs.getString("user_grade")),
                         rs.getString("active"));
 
                 searchList.add(user);

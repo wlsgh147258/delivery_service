@@ -61,9 +61,9 @@ public class UserService implements DeliveryService {
 
     private void insertUserData() {
         System.out.println("===== 회원가입을 진행합니다. =====");
-        String userName = inputString("주문번호: ");
-        String userId = inputString("평점: ");
-        String userPassword = inputString("내용: ");
+        String userName = inputString("회원 이름: ");
+        String userId = inputString("회원 아이디: ");
+        String userPassword = inputString("회원 비밀번호: ");
         String userAddress = inputString("주소: ");
         String phoneNumber = inputString("전화번호: ");
         String userType = inputUserType();
@@ -88,7 +88,7 @@ public class UserService implements DeliveryService {
 
     private List<User> findUserData() {
         System.out.println("유저를 검색합니다.");
-        System.out.println("[1. 회원 번호로 검색 | 2. 회원 이름으로 검색 | 3. 전체검색]");
+        System.out.println("[1. 회원 번호로 검색 | 2. 회원 이름으로 검색 | 3. 아이디로 검색 | 4. 전체검색]");
         int selection = inputInteger(">>> ");
         int condition = FIND_ALL;
 
