@@ -2,14 +2,14 @@ package delivery.user.service;
 
 import static delivery.ui.AppUi.*;
 
-import delivery.common.AppService;
+import delivery.common.DeliveryService;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
 
 import java.util.List;
 
-public class UserService implements AppService {
+public class UserService implements DeliveryService {
     private final UserRepository userRepository = new UserRepository();
 
     private final int FIND_BY_NUM = 1;
@@ -23,16 +23,16 @@ public class UserService implements AppService {
             int selection = inputInteger(">>> ");
 
             switch (selection) {
-                case 1: // 회원가입
+                case 1:
                     insertUserData();
                     break;
-                case 2: // 유저 검색
+                case 2:
                     showFoundUserData();
                     break;
-                case 3: // 회원 탈퇴
+                case 3:
                     deleteUserData();
                     break;
-                case 4: // 첫 화면으로 이동
+                case 4:
                     return;
                 default:
                     System.out.println("### 메뉴를 다시 입력하세요.");
@@ -88,6 +88,7 @@ public class UserService implements AppService {
 
     private List<User> findUserData() {
         System.out.println("유저를 검색합니다.");
+        System.out.println("[1. 회원 번호로 검색 | 2. 회원 이름으로 검색 | 3. 아이디로 검색 | 4. 전체검색]");
         int selection = inputInteger(">>> ");
         int condition = FIND_ALL;
 
@@ -106,9 +107,7 @@ public class UserService implements AppService {
                 break;
             case 4: // 전체
                 System.out.println("전체 유저를 검색합니다.");
-                break;
             default:
-                System.out.println();
         }
 
         String keyword = "";
@@ -127,7 +126,7 @@ public class UserService implements AppService {
                 System.out.println(user);
             }
         } else {
-            System.out.println("\n## 검색된 회원이 없습니다.");
+            System.out.println("\n## 검색된 리뷰가 없습니다.");
         }
     }
 

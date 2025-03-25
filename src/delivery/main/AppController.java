@@ -2,6 +2,8 @@ package delivery.main;
 
 import delivery.common.DeliveryService;
 import delivery.restaurants.service.RestaurantsService;
+import delivery.user.domain.User;
+import delivery.user.service.UserService;
 
 public class AppController {
     private DeliveryService service;
@@ -13,10 +15,10 @@ public class AppController {
                 service = new UserService();
                 break;
             case 2:
-                service = new RestaurantsService();
+                //service = new RiderService();
                 break;
             case 3:
-                service = new MovieService();
+                service = new RestaurantsService();
                 break;
             case 4:
                 System.out.println("# 프로그램을 종료합니다.");
