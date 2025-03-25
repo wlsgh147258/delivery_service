@@ -60,13 +60,13 @@ public class UserService implements DeliveryService {
     }
 
     public void insertUserData() {
-        System.out.println("===== 회원가입을 진행합니다.(이전 단계는 q) =====");
+        System.out.println("===== 회원가입을 진행합니다.=====");
 
-        String userName = inputString("회원 이름: ");  if (userName.equals("q")) return;
-        String userId = inputString("회원 아이디: ");  if (userId.equals("q")) return;
-        String userPassword = inputString("회원 비밀번호: ");  if (userPassword.equals("q")) return;
-        String userAddress = inputString("주소: ");  if (userAddress.equals("q")) return;
-        String phoneNumber = inputString("전화번호: ");  if (phoneNumber.equals("q")) return;
+        String userName = inputString("회원 이름: ");
+        String userId = inputString("회원 아이디: ");
+        String userPassword = inputString("회원 비밀번호: ");
+        String userAddress = inputString("주소: ");
+        String phoneNumber = inputString("전화번호: ");
         String userType = inputUserType();
         Grade userGrade = Grade.BRONZE;
         String active = "Y";
