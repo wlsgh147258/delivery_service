@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ReviewRepository {
     public void addReview(Review review) {
-        String sql = "INSERT INTO reviews VALUES(reviews_seq.NEXT_VAL, ?, ?, ?)";
+        String sql = "INSERT INTO reviews VALUES(reviews_seq.NEXTVAL, ?, ?, ?)";
 
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {

@@ -87,6 +87,7 @@ public class UserService {
 
     private List<User> findUserData() {
         System.out.println("유저를 검색합니다.");
+        System.out.println("[1. 회원 번호로 검색 | 2. 회원 이름으로 검색 | 3. 전체검색]");
         int selection = inputInteger(">>> ");
         int condition = FIND_ALL;
 
