@@ -155,7 +155,7 @@ public class OrderService implements DeliveryService {
         // 주문 취소 처리
         orderRepository.deleteOrder(orderNumber);
 
-            System.out.println("### 주문이 취소되었습니다.");
+        System.out.println("### 주문이 취소되었습니다.");
 
     }
     // 주문 취소 가능 여부 확인 (가상의 메서드)
@@ -165,5 +165,4 @@ public class OrderService implements DeliveryService {
         return true; // 예시: 항상 true 반환
     }
 }
-
 

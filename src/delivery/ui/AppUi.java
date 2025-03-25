@@ -62,7 +62,6 @@ public class AppUi {
         System.out.println();
     }
 
-
     public static void MenuManagementScreen(){
         System.out.println("\n========= 식당 관리 시스템 =========");
         System.out.println("### 1. 메뉴 추가");
@@ -80,6 +79,7 @@ public class AppUi {
         System.out.println("### 4. 첫 화면으로 가기");
         System.out.println();
     }
+
 
         public static void startScreen(String id, String pw){
         System.out.println("\n========= 음식 배달 시스템 =========");
