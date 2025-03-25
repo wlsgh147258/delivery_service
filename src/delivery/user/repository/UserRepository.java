@@ -18,7 +18,7 @@ public class UserRepository {
     private static final Map<Integer, User> userDatabase = new HashMap<>();
 
     public void addUser(User user){
-        String sql = "INSERT INTO users VALUES(user_seq.NEXTVAL,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO users_info VALUES(users_info_seq.NEXTVAL,?,?,?,?,?,?,?,?)";
 
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -77,6 +77,47 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
         return foundUsers;
+    }
+
+    public static String findUserType(String id, String pw) {
+        String userType = "";
+        List<User> searchList = new ArrayList<>();
+        String sql = "SELECT * FROM users_info WHERE user_id = ? AND user_password = ?";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, id);
+            pstmt.setString(2, pw);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                User user = new User(rs.getInt("user_num"),
+                        rs.getString("user_name"),
+                        rs.getString("user_id"),
+                        rs.getString("user_password"),
+                        rs.getString("address"),
+                        rs.getString("phone_number"),
+                        rs.getString("user_type"),
+                        Grade.valueOf(rs.getString("user_grade")),
+                        rs.getString("active"));
+
+                searchList.add(user);
+            }
+
+
+            if (!searchList.isEmpty()) {
+                for (User users : searchList) {
+                    userType = users.getUserType();
+                }
+            }
+            return userType;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return searchList.toString();
     }
 
 

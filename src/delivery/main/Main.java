@@ -1,8 +1,7 @@
 package delivery.main;
 
-import delivery.restaurants.service.RestaurantsService;
-
 import static delivery.ui.AppUi.*;
+import static delivery.user.repository.UserRepository.findUserType;
 
 public class Main {
 
@@ -18,7 +17,7 @@ public class Main {
             System.out.println("### 비밀번호를 입력하세요.");
             String userpw = inputString(">>> ");
 
-            String type = find_userType(userid,userpw);
+            String type = findUserType(userid,userpw);
 
             if (type.equals("고객")) {
                 selectNumber = 1;
