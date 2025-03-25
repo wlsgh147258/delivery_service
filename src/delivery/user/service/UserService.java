@@ -84,7 +84,7 @@ public class UserService implements DeliveryService {
                         active
                 )
         );
-        System.out.printf("## [%s] 님의 [%s] 계정이 정상적으로 생성되었습니다.", userName, userId);
+        System.out.printf("## [%s] 님의 [%s] 계정이 정상적으로 생성되었습니다.\n", userName, userId);
     }
 
     private List<User> findUserData() {

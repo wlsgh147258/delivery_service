@@ -19,15 +19,12 @@ public class AppController {
                 service = new UserService();
                 break;
             case 2:
-                service = new OrderService();
+                service = new RiderService();
                 break;
             case 3:
                 service = new RestaurantsService();
                 break;
             case 4:
-                service = new RiderService();
-                break;
-            case 5:
                 System.out.println("# 프로그램을 종료합니다.");
                 System.exit(0);
             default:
