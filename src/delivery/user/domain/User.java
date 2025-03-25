@@ -26,6 +26,7 @@ public class User {
 
     private Map<Integer, Order> orderList;
 
+
     public int getTotalPaying() {
         return totalPaying;
     }

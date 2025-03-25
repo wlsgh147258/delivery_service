@@ -59,7 +59,7 @@ public class UserService implements DeliveryService {
         }
     }
 
-    private void insertUserData() {
+    public void insertUserData() {
         System.out.println("===== 회원가입을 진행합니다. =====");
         String userName = inputString("회원 이름: ");
         String userId = inputString("회원 아이디: ");

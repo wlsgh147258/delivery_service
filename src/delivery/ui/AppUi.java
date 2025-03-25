@@ -2,6 +2,7 @@ package delivery.ui;
 
 
 import delivery.jdbc.DBConnectionManager;
+import delivery.menu.domain.Menu;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 

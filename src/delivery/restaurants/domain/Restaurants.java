@@ -97,16 +97,13 @@ public class Restaurants {
 
     @Override
     public String toString() {
-        return "Restaurants{" +
-                "store_num=" + store_num +
-                ", store_name='" + store_name + '\'' +
-                ", open_hours='" + open_hours + '\'' +
-                ", call_number='" + call_number + '\'' +
-                ", delivery_area='" + delivery_area + '\'' +
-                ", detail_info='" + detail_info + '\'' +
-                ", active_flag='" + active_flag + '\'' +
-                ", user_num=" + user_num +
-                ", category='" + category + '\'' +
+        return "## 업장코드:" + store_num +
+                ", 업장명:'" + store_name + '\'' +
+                ", 오픈시간:'" + open_hours + '\'' +
+                ", 전화번호:'" + call_number + '\'' +
+                ", 배달지역:'" + delivery_area + '\'' +
+                ", 상세설명:'" + detail_info + '\'' +
+                ", 카테고리='" + category + '\'' +
                 '}';
     }
 }
