@@ -1,7 +1,11 @@
 package delivery.order.repository;
 
+import delivery.common.Condition;
 import delivery.jdbc.DBConnectionManager;
 import delivery.main.Main;
+
+import delivery.menu.domain.Menu;
+import delivery.menu.repository.MenuRepository;
 import delivery.order.domain.Order;
 
 import java.sql.Connection;
@@ -12,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderRepository {
-    public void addOrder(Order order) {
+
+    public void addOrder(Order order, Menu menu) {
         String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?)";
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -23,6 +28,11 @@ public class OrderRepository {
             pstmt.setString(5, "credit_card");
 
             pstmt.executeUpdate();
+
+
+
+            Main.user.setTotalPaying(menu.getPrice());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

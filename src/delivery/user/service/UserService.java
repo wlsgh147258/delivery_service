@@ -3,6 +3,7 @@ package delivery.user.service;
 import static delivery.ui.AppUi.*;
 
 import delivery.common.DeliveryService;
+import delivery.main.Main;
 import delivery.review.service.ReviewService;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
@@ -22,7 +23,6 @@ public class UserService implements DeliveryService {
         while (true) {
             userManagementScreen();
             int selection = inputInteger(">>> ");
-
             switch (selection) {
                 case 1:
                     showFoundUserData();
@@ -31,9 +31,12 @@ public class UserService implements DeliveryService {
                     deleteUserData();
                     break;
                 case 3:
-                    (new ReviewService()).start();
-                    return;
+
+                    break;
                 case 4:
+                    (new ReviewService()).start();
+                    break;
+                case 5:
                     return;
                 default:
                     System.out.println("### 메뉴를 다시 입력하세요.");
@@ -157,5 +160,11 @@ public class UserService implements DeliveryService {
             System.out.println("조회 결과가 없습니다.");
         }
 
+    }
+    public void showUserGrade(User user){
+        System.out.println("현재 회원님의 등급: ");
+        System.out.print(user.getUserGrade());
+        System.out.print("\n현재 회원님의 총 사용 금액: ");
+        System.out.println(user.getTotalPaying());
     }
 }

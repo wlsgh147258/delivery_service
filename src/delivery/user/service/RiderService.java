@@ -2,6 +2,7 @@ package delivery.user.service;
 
 import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
+import delivery.main.Main;
 import delivery.order.domain.Order;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
@@ -24,6 +25,7 @@ public class RiderService implements DeliveryService {
     private final int FIND_BY_NAME = 2;
     private final int FIND_BY_ID = 3;
     private final int FIND_ALL = 4;
+
 
     @Override
     public void start() {
@@ -54,40 +56,33 @@ public class RiderService implements DeliveryService {
     }
 
     private void completeDelivery() {
-
         List<Order> orders = findCompleteData();
+
         int count = orders.size();
-        if(count > 0) {
-            System.out.printf("\n========== 완료한 배달 %d개 ==========\n", count);
+        if (count > 0) {
+            System.out.printf("\n========== %s님이 완료한 배달 %d개 ==========\n",Main.user.getUserName(), count);
             List<Integer> deliveryNums = new ArrayList<>();
-            for(Order order: orders) {
+            for (Order order : orders) {
                 System.out.println(order);
                 deliveryNums.add(order.getOrderNum());
             }
-            System.out.println("\n배달 완료한 주문 번호를 입력해 주세요.");
-
-        }
-
-
-        int okdelivery_no = inputInteger(">>> ");
-        if(deliveryNums.contains(okdelivery_no)){
-
-
-
-
-
-                    completeOrderDelivery(okdelivery_no);
-
-                }else {
-                    System.out.println("\n존재하는 주문 번호를 입력해 주세요.");
-                }
-
+            System.out.printf("\n%s님이 배달 완료한 주문 번호를 입력해 주세요.\n", Main.user.getUserName());
+            int okdelivery_no = inputInteger(">>> ");
+            if (deliveryNums.contains(okdelivery_no)) {
+                completeOrderDelivery(okdelivery_no);
+            } else {
+                System.out.println("\n존재하는 주문 번호를 입력해 주세요.");
+            }
 
         } else {
-            System.out.println("\n## 대기 중인 주문이 없습니다.");
+            System.out.println("\n## 완료 체크할 주문이 없습니다.");
         }
 
+
+
     }
+
+
 
     private void completeOrderDelivery(int okdeliveryNo) {
         String sql = "UPDATE order_info SET ride_yn = 'Y' WHERE order_num = ?";
