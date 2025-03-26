@@ -132,8 +132,9 @@ public class RiderService implements DeliveryService {
             }
 
             System.out.println("\n배달을 하시겠습니까?");
-            String ans = inputString(">>> ");
-            if(ans.equals("네") || ans.equals("yes")){
+            System.out.println("1. 네 | 2. 아니요");
+            int ans = inputInteger(">>> ");
+            if(ans == 1){
 
                 System.out.println("\n담당할 주문 번호를 입력해 주세요.");
 
@@ -147,7 +148,7 @@ public class RiderService implements DeliveryService {
                     System.out.println("\n존재하는 주문 번호를 입력해 주세요.");
                 }
 
-            } else if (ans.equals("아니오") || ans.equals("no")) {
+            } else if (ans == 2) {
                 System.out.println("라이더 관리 시스템 화면으로 돌아갑니다.");
             } else System.out.println("올바르지 않은 답변입니다.");
 

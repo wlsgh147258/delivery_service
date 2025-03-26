@@ -138,6 +138,18 @@ public class OrderService implements DeliveryService {
 
     private void processOrder(Menu menu) {
         System.out.println(menu.getMenu_name() + "을(를) 주문합니다.");
+        System.out.println("결제수단을 선택해주세요");
+        System.out.println("1. 현금결제 |  2. 카드결제");
+        int paynum = inputInteger(">>> ");
+
+        String payment;
+
+        if (paynum==1) {
+            payment = "cash";
+        } else {
+            payment = "credit_card";
+        }
+
         User currentUser = Main.getCurrentUser();
         Order order = new Order(
                 menu.getMenu_num(),
@@ -145,8 +157,7 @@ public class OrderService implements DeliveryService {
                 menu.getRestaurantNum(),
                 menu.getMenu_num(),
                 "N",
-                "credit_card"
-
+                payment
         );
         orderRepository.addOrder(order, menu.getPrice());
         System.out.println("주문이 완료되었습니다.");
@@ -197,7 +208,7 @@ public class OrderService implements DeliveryService {
                         ", 메뉴 번호: " + order.getMenuNum() +
                         ", 고객 번호: " + order.getUserNum() +
                         ", 가게 번호: " + order.getRestaurantNum() +
-                        ", 배달 기사: " + order.getRideYN() +
+                        ", 배달 상태: " + order.getRideYN() +
                         ", 결제 정보: " + order.getPaymentInfo());
             }
         }

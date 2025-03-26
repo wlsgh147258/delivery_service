@@ -21,14 +21,15 @@ public class OrderRepository {
 
 
     public void addOrder(Order order, int pri) {
-        String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?, ?)";
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, order.getUserNum());
             pstmt.setInt(2, order.getRestaurantNum());
             pstmt.setInt(3, order.getMenuNum());
             pstmt.setString(4, "N");
-            pstmt.setString(5, "credit_card");
+            pstmt.setString(5, order.getPaymentInfo());
+            pstmt.setInt(6, 0);
 
             pstmt.executeUpdate();
 
