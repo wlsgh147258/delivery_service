@@ -192,9 +192,16 @@ public class OrderService implements DeliveryService {
     }
     // 주문 취소 가능 여부 확인 (가상의 메서드)
     private boolean isOrderCancelable(Order order) {
-        // 주문 상태, 배송 상태 등을 확인하여 주문 취소 가능 여부를 반환
-        // 실제 구현에서는 데이터베이스에서 주문 상태, 배송 상태 등을 조회하여 확인해야 함
-        return true; // 예시: 항상 true 반환
+        String orderStatus = order.getRideYN(); // 현재 주문 상태 (예: 'N' - 주문 완료, '~' - 배송 중)
+
+        if ("N".equals(orderStatus)) { // 주문 배달 전 상태
+            return true; // 주문 완료 상태이므로 취소 가능
+        } else if ("~".equals(orderStatus)) { // 배송 중 상태
+            return false;
+        } else if ("Y".equals(orderStatus)) { // 이미 취소된 상태
+            return false;
+        }
+        return false; // 다른 상태의 경우 기본적으로 취소 불가
     }
     public List<Order> findOrderMenu(int userNum) {
         List<Order> orderList = orderRepository.findOrderMenu(userNum);
