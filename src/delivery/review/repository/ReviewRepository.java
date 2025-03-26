@@ -46,7 +46,7 @@ public class ReviewRepository {
         if (op == Option.FIND_BY_ORDER_NUM) {
             sql += "WHERE order_num = ?";
         } else if (op == Option.FIND_BY_USER_NUM) {
-            sql = "SELECT * FROM reviews r INNER JOIN (SELECT o.order_num FROM order_info o INNER JOIN users_info u ON o.user_num = u.user_num" +
+            sql = "SELECT * FROM reviews r INNER JOIN (SELECT DISTINCT o.order_num FROM order_info o INNER JOIN users_info u ON o.user_num = u.user_num" +
                     " WHERE o.user_num = ?) orn ON r.order_num = orn.order_num";
         } else if (op == Option.FIND_BY_MASTER_NUM) {
             sql = "SELECT * FROM reviews r" +
