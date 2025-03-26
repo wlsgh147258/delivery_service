@@ -57,7 +57,7 @@ public class Order {
                         ", 사용자 번호: " + userNum +
                         ", 식당 번호: " + restaurantNum +
                         ", 메뉴 번호: " + menuNum +
-                        ", 라이더 가능여부: " + rideYN +
+                        ", 라이더 배치여부: " + rideYN +
                         ", 금액: " + paymentInfo + "원"
                 ;
     }
