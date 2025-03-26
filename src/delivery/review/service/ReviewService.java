@@ -78,12 +78,12 @@ public class ReviewService implements DeliveryService {
     }
 
     private void deleteReviewData() {
-        System.out.println("삭제를 위한 리뷰 검색을 시작합니다.");
+        System.out.println("===== 삭제를 위한 리뷰 검색을 시작합니다. =====");
         List<Review> reviews;
         if(Main.user.getUserType().equals("고객")) {
             reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         } else {
-            reviews = null;//findReviewData(Option.FIND_BY_RESTAURANT_NUM, null);
+            reviews = findReviewData(Option.FIND_BY_MASTER_NUM, Integer.toString(Main.user.getUserNum()));//findReviewData(Option.FIND_BY_RESTAURANT_NUM, null);
         }
         for (Review review : reviews) {
             System.out.println(review);
@@ -125,6 +125,7 @@ public class ReviewService implements DeliveryService {
         List<Order> orderList = orderRepository.findOrderMenu(Main.user.getUserNum());
         List<Review> userReviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         Set<Integer> orderNumOfReviewsSet = new HashSet<>();
+
         for (Review userReview : userReviews) {
             orderNumOfReviewsSet.add(userReview.getOrderNum());
         }
@@ -133,7 +134,7 @@ public class ReviewService implements DeliveryService {
                 System.out.println(order);
             }
         }
-        if(orderList.isEmpty()) {
+        if(orderList.isEmpty() || orderNumOfReviewsSet.size() == orderList.size()) {
             System.out.println("===== 리뷰를 작성할 수 있는 주문이 없습니다. =====");
             return;
         }
