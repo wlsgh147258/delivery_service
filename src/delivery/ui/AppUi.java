@@ -116,6 +116,17 @@ public class AppUi {
         System.out.println();
     }
 
+    public static void userUpdateScreen() {
+        System.out.println("\n========= 사용자 정보 수정 시스템 =========");
+        System.out.println("### 1. 회원 이름");
+        System.out.println("### 2. 회원 아이디");
+        System.out.println("### 3. 회원 비밀번호");
+        System.out.println("### 4. 회원 주소");
+        System.out.println("### 5. 회원 전화번호");
+        System.out.println("### 6. 회원 탈퇴");
+        System.out.println();
+    }
+
     public static String findUserType(String id, String pw) {
         String userType = "";
         List<User> searchList = new ArrayList<>();

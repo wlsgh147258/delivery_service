@@ -13,6 +13,7 @@ import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService implements DeliveryService {
@@ -34,7 +35,7 @@ public class UserService implements DeliveryService {
                     showFoundUserData();
                     break;
                 case 2:
-                    deleteUserData();
+                    updateUserData();
                     break;
                 case 3:
                     getTotalPrice();
@@ -160,6 +161,89 @@ public class UserService implements DeliveryService {
 
     }
 
+    private void updateUserData() {
+
+        try {
+            //회원의 어떤 정보를 수정할지 선택
+            userUpdateScreen();
+            System.out.print("### 수정할 정보의 번호를 입력하세요.");
+            int updateSelection = inputInteger(">>> ");
+
+            switch (updateSelection) {
+                case 1, 2, 3, 4, 5:
+                    updateProcess(updateSelection, Main.user);
+                    break;
+                case 6:
+                    System.out.println("정말 탈퇴를 하시겠습니까?");
+                    System.out.println("탈퇴를 하시려면 '탈퇴' 를 입력해주세요.");
+
+                    String delAnswer = inputString(">>> ");
+                    if (delAnswer.equals("탈퇴")) {
+                        userRepository.deleteUser(Main.user.getUserNum());
+                        System.out.println("유저 " + Main.user.getUserName() + "님 회원탈퇴 완료되었습니다.");
+                    } else {
+                        System.out.println("회원 탈퇴가 되지 않았습니다.");
+                    }
+                    break;
+                default:
+                    System.out.println("### 메뉴를 다시 입력해주세요.");
+                    break;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 수정 프로세스
+    private void updateProcess(int updateSelection, User user) {
+
+        try {
+            String column = "";
+            String newValue = "";
+
+            switch (updateSelection) {
+                case 1:
+                    column = "user_name";
+                    System.out.printf("기존 회원 이름: %s >> 새로운 이름: ", Main.user.getUserName());
+                    newValue = inputString(" ");
+                    break;
+                case 2:
+                    column = "user_id";
+                    System.out.printf("기존 회원 아이디: %s >> 새로운 아이디: ", Main.user.getUserId());
+                    newValue = inputString(" ");
+                    break;
+                case 3:
+                    column = "user_password";
+                    System.out.printf("기존 회원 비밀번호: %s >> 새로운 비밀번호: ", Main.user.getUserPassword());
+                    newValue = inputString(" ");
+                    break;
+                case 4:
+                    column = "user_address";
+                    System.out.printf("기존 회원 주소: %s >> 새로운 주소: ", Main.user.getAddress());
+                    newValue = inputString(" ");
+                    break;
+                case 5:
+                    column = "phone_number";
+                    System.out.printf("기존 회원 전화번호: %s >> 새로운 전화번호: ", Main.user.getPhoneNumber());
+                    newValue = inputString(" ");
+                    break;
+                default:
+                    System.out.println("### 잘못된 입력입니다.");
+                    return;
+            }
+
+            // DB 업데이트 실행
+            userRepository.updateUserInfo(Main.user.getUserNum(), column, newValue);
+            System.out.printf("\n###[ %s ] 회원의 [ %s ] 정보가 성공적으로 수정되었습니다.\n", Main.user.getUserName(), column);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public int getTotalPrice() {
         User currentUser = Main.getCurrentUser();
         if (currentUser == null) {
@@ -200,3 +284,7 @@ public class UserService implements DeliveryService {
     }
 
 }
+
+
+
+
