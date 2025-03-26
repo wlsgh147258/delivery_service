@@ -4,11 +4,15 @@ import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
 import delivery.main.Main;
 import delivery.menu.service.MenuService;
+import delivery.order.domain.Order;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
+import delivery.user.domain.Grade;
+import delivery.user.domain.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +68,7 @@ public class RestaurantsService implements DeliveryService {
 
         restaurantsRepository.insertRestaurant(restaurants);
 
-        System.out.printf("### [%s] 정보가 정상적으로 추가되었습니다.", store_name);
+        System.out.printf("### [%s] 식당 정보가 정상적으로 추가되었습니다.\n", store_name);
 
     }
 
@@ -98,7 +102,7 @@ public class RestaurantsService implements DeliveryService {
                         case 1:
                             //메뉴 관리 시스템 실행
                             for (Restaurants restaurants : restaurantsList) {
-                                if (restaurants.getStore_num()==updateRestaNum){
+                                if (restaurants.getStore_num() == updateRestaNum) {
                                     MenuService menuService = new MenuService();
                                     menuService.menu(restaurants);
                                     break;
@@ -109,7 +113,7 @@ public class RestaurantsService implements DeliveryService {
                         case 2, 3, 4, 5, 6, 7:
 
                             for (Restaurants restaurant : restaurantsList) {
-                                if(restaurant.getStore_num()==updateRestaNum){
+                                if (restaurant.getStore_num() == updateRestaNum) {
                                     //수정 프로세스 진행
                                     updateProcess(updateSelection, restaurant);
                                     break;
@@ -206,7 +210,6 @@ public class RestaurantsService implements DeliveryService {
     }
 
 
-
     // 운영중인 식당 정보 출력
     private void searchRestaurant(int userNum) {
 
@@ -231,5 +234,7 @@ public class RestaurantsService implements DeliveryService {
         }
 
     }
+
+
 
 }
