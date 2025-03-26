@@ -6,6 +6,7 @@ import delivery.jdbc.DBConnectionManager;
 import delivery.menu.domain.Menu;
 import delivery.menu.repository.MenuRepository;
 import delivery.restaurants.domain.Restaurants;
+import delivery.restaurants.repository.RestaurantsRepository;
 import delivery.restaurants.service.RestaurantsService;
 
 import java.sql.Connection;
@@ -24,7 +25,7 @@ public class MenuService {
     private final MenuRepository menuRepository = new MenuRepository();
 
 
-    public void menu(int updateRestaNum) {
+    public void menu(Restaurants restaurant) {
 
         while (true) {
             MenuManagementScreen();
@@ -32,13 +33,13 @@ public class MenuService {
 
             switch (selection) {
                 case 1:
-                    insertMenuData(updateRestaNum);
+                    insertMenuData(restaurant);
                     break;
                 case 2:
-                    searchMenuOwner(updateRestaNum);
+                    searchMenuOwner(restaurant);
                     break;
                 case 3:
-                    updateMenuData(updateRestaNum);
+                    updateMenuData(restaurant);
                     break;
                 case 4:
                     return;
@@ -51,7 +52,7 @@ public class MenuService {
     }
 
 
-    private void insertMenuData(int storeNum) {
+    private void insertMenuData(Restaurants restaurants) {
         System.out.println("\n ====== 메뉴 정보를 추가합니다. ======");
         String menuName = inputString("# 메뉴명: ");
         String category = inputString("# 카테고리 분류: ");
@@ -59,18 +60,18 @@ public class MenuService {
 
         Menu newMenu = new Menu(menuName, category, price);
 
-        menuRepository.insertMenu(storeNum, newMenu);
+        menuRepository.insertMenu(restaurants.getStore_num(), newMenu);
 
         System.out.printf("\n### [%s] 정보가 정상적으로 추가되었습니다.\n", menuName);
     }
 
 
-    private void searchMenuOwner(int storeNum) {
+    private void searchMenuOwner(Restaurants restaurant) {
         try {
-            List<Menu> menus = searchMenuDataOwner(storeNum);
+            List<Menu> menus = searchMenuDataOwner(restaurant);
             int count = menus.size();
             if (count > 0) {
-                System.out.printf("\n======================================= 검색 결과(총 %d건) =======================================\n", count);
+                System.out.printf("\n========================== [ %s ] 메뉴 검색 결과(총 %d건) ========================\n", restaurant.getStore_name(), restaurant.getStore_num());
                 for (Menu menu : menus) {
                     System.out.println(menu);
                 }
@@ -82,11 +83,11 @@ public class MenuService {
         }
     }
 
-    private List<Menu> searchMenuDataOwner(int storeNum) throws Exception {
+    private List<Menu> searchMenuDataOwner(Restaurants restaurant) throws Exception {
 
-        System.out.printf("\n## [ %d 번 ] 식당 메뉴를 검색합니다.\n", storeNum);
+        System.out.printf("\n## [ %s ] 식당 메뉴를 검색합니다. \n", restaurant.getStore_name());
 
-        return menuRepository.searchMenuListByOwner(storeNum);
+        return menuRepository.searchMenuListByOwner(restaurant.getStore_num());
     }
 
 
@@ -134,13 +135,13 @@ public class MenuService {
 
 
     //식당 메뉴 정보 수정
-    private void updateMenuData(int storeNum) {
+    private void updateMenuData(Restaurants restaurant) {
 
         try {
             //메서드 실행되면 바로 운영중인 식당 리스트 보여주고 수정할 식당 선택
             System.out.println("\n### 메뉴 수정/삭제를 위한 검색을 시작합니다. \n");
 
-            List<Menu> menus = searchMenuDataOwner(storeNum);
+            List<Menu> menus = searchMenuDataOwner(restaurant);
 
             if (!menus.isEmpty()) {
                 List<Integer> menuNums = new ArrayList<>();
@@ -174,7 +175,7 @@ public class MenuService {
                                 menuRepository.deleteMenu(updateMenuNum);
                                 for (Menu menu : menus) {
                                     if (menu.getMenu_num() == updateMenuNum) {
-                                        System.out.printf("\n### 메뉴번호: %d -> %s 메뉴의 정보를 정상 삭제하였습니다.\n"
+                                        System.out.printf("\n### 메뉴번호: %d -> 메뉴 %s 의 정보를 정상 삭제하였습니다.\n"
                                                 , menu.getMenu_num(), menu.getMenu_name());
                                         break;
                                     }

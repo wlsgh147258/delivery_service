@@ -100,7 +100,7 @@ public class RestaurantsService implements DeliveryService {
                             for (Restaurants restaurants : restaurantsList) {
                                 if (restaurants.getStore_num()==updateRestaNum){
                                     MenuService menuService = new MenuService();
-                                    menuService.menu(updateRestaNum);
+                                    menuService.menu(restaurants);
                                     break;
                                 }
                             }
