@@ -56,7 +56,7 @@ public class MenuService implements DeliveryService {
 
         menuRepository.insertMenu(store_num,newMenu);
 
-        System.out.printf("\n### [%s] 정보가 정상적으로 추가되었습니다.", menuName);
+        System.out.printf("\n### [%s] 정보가 정상적으로 추가되었습니다.\n", menuName);
     }
 
 

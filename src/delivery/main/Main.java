@@ -37,10 +37,10 @@ public class Main {
                     userType = 3;
                 }
 
-            } else {
+            } else if (initnum == 2){
                 // 회원가입
                 userservice.insertUserData();
-            }
+            } else continue;
 
             controller.chooseSystem(userType);
         }
