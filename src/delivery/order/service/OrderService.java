@@ -4,6 +4,7 @@ import delivery.common.Condition;
 import delivery.common.DeliveryService;
 import delivery.main.Main;
 import delivery.menu.repository.MenuRepository;
+import delivery.menu.service.MenuService;
 import delivery.order.domain.Order;
 import delivery.menu.domain.Menu;
 import delivery.order.repository.OrderRepository;
@@ -61,69 +62,128 @@ public class OrderService implements DeliveryService {
     private void processOrderMenu() { // 오더 메뉴
         while (true) {
             System.out.println("\n============================ 음식 주문 시스템을 실행합니다. ============================");
-            System.out.println("[ 1. 한식 | 2. 중식 | 3. 양식 | 4. 분식 | 5. 패스트 푸드 | 6. 후식 | 7.이전으로 돌아가기 ]");
-            int selection = inputInteger(">>>");
+            System.out.println("[ 1. 이름검색 | 2. 가격검색 | 3. 카테고리검색 | 4. 전체검색 ]");
+            int selection1 = inputInteger(">>> ");
+            Condition condition = Condition.ALL;
 
-            switch (selection) {
-                case KOREAN_FOOD:
-                    showFoodList("한식");
+            switch (selection1) {
+                case 1:
+                    System.out.println("\n## 이름으로 검색합니다.");
+                    condition = Condition.MENU_NAME;
                     break;
-                case CHINESE_FOOD:
-                    showFoodList("중식");
+                case 2:
+                    System.out.println("\n## 가격으로 검색합니다.");
+                    condition = Condition.PRICE;
                     break;
-                case WESTERN_FOOD:
-                    showFoodList("양식");
+                case 3:
+                    System.out.println("\n## 카테고리로 검색합니다.");
+                    condition = Condition.CATEGORY;
                     break;
-                case SNACK_FOOD:
-                    showFoodList("분식");
+                case 4:
+                    System.out.println("\n## 전체 정보를 검색합니다.");
                     break;
-                case FAST_FOOD:
-                    showFoodList("패스트 푸드");
-                    break;
-                case DESSERT:
-                    showFoodList("후식");
-                    break;
-                case PREVIOUS_MENU:
-                    return;
                 default:
-                    System.out.println("\n### 메뉴를 다시 입력하세요.");
+                    System.out.println("\n### 해당 메뉴가 존재하지 않습니다. 전체 정보로 검색합니다.");
             }
+
+            if (condition == Condition.PRICE) {
+                int keyword = inputInteger("# 입력값 이하의 메뉴 검색: ");
+                try {
+                    List<Menu> menus = menuRepository.searchMenuList(condition, keyword);
+                    getOrder(menus);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (condition == Condition.CATEGORY) {
+                System.out.println("[ 1. 한식 | 2. 중식 | 3. 양식 | 4. 분식 | 5. 패스트 푸드 | 6. 후식 | 7.이전으로 돌아가기 ]");
+                int selection = inputInteger(">>>");
+                if (selectCategory(selection)) return;
+            } else if (condition == Condition.MENU_NAME) {
+                String keyword = inputString("# 검색어: ");
+                try {
+                    List<Menu> menus = menuRepository.searchMenuList(condition, keyword);
+                    getOrder(menus);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                String keyword = "";
+                try {
+                    List<Menu> menus = menuRepository.searchMenuList(condition, keyword);
+                    getOrder(menus);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
         }
+    }
+
+    private boolean selectCategory(int selection) {
+        switch (selection) {
+            case KOREAN_FOOD:
+                showFoodList("한식");
+                break;
+            case CHINESE_FOOD:
+                showFoodList("중식");
+                break;
+            case WESTERN_FOOD:
+                showFoodList("양식");
+                break;
+            case SNACK_FOOD:
+                showFoodList("분식");
+                break;
+            case FAST_FOOD:
+                showFoodList("패스트 푸드");
+                break;
+            case DESSERT:
+                showFoodList("후식");
+                break;
+            case PREVIOUS_MENU:
+                return true;
+            default:
+                System.out.println("\n### 메뉴를 다시 입력하세요.");
+        }
+        return false;
     }
 
     // 카테고리 안의 음식 보여주는 메서드
     public void showFoodList(String category) {
         try {
             List<Menu> menuList = menuRepository.searchMenuList(Condition.CATEGORY, category);
-            int count = menuList.size();
-
-            List<Integer> menuNum = new ArrayList<>();
-            if (count > 0) {
-                for (Menu menu : menuList) {
-                    System.out.println(menu.getMenu_num()+ " " + menu.getMenu_name() + " | " + menu.getCategory() + " - " + menu.getPrice());
-                    menuNum.add(menu.getMenu_num());
-                }
-                System.out.println("==========================================================================================");
-                System.out.println("### 주문할 음식의 번호를 입력하세요.");
-                int foodNumber = inputInteger(">>> "); // 주문할 음식의 번호라 foodNumber로 지정
-
-                if (menuNum.contains(foodNumber)) {
-                    Menu selectedMenu = findMenuByNumber(menuList, foodNumber);
-                    if (selectedMenu != null) {
-                        processOrder(selectedMenu);
-                    } else {
-                        System.out.println("### 잘못된 음식 번호입니다.");
-                    }
-                } else {
-                    System.out.println("### 잘못된 음식 번호입니다.");
-                }
-            } else {
-                System.out.println("### 해당 카테고리에 음식이 없습니다.");
-            }
+            getOrder(menuList);
         }
         catch (Exception e){
             System.out.println("### 음식 목록을 가져오는 중 오류가 발생했습니다: ");
             e.printStackTrace();
+        }
+    }
+
+    private void getOrder(List<Menu> menuList) {
+        int count = menuList.size();
+
+        List<Integer> menuNum = new ArrayList<>();
+        if (count > 0) {
+            for (Menu menu : menuList) {
+                System.out.println(menu.getMenu_num()+ " " + menu.getMenu_name() + " | " + menu.getCategory() + " - " + menu.getPrice());
+                menuNum.add(menu.getMenu_num());
+            }
+            System.out.println("==========================================================================================");
+            System.out.println("### 주문할 음식의 번호를 입력하세요.");
+            int foodNumber = inputInteger(">>> "); // 주문할 음식의 번호라 foodNumber로 지정
+
+            if (menuNum.contains(foodNumber)) {
+                Menu selectedMenu = findMenuByNumber(menuList, foodNumber);
+                if (selectedMenu != null) {
+                    processOrder(selectedMenu);
+                } else {
+                    System.out.println("### 잘못된 음식 번호입니다.");
+                }
+            } else {
+                System.out.println("### 잘못된 음식 번호입니다.");
+            }
+        } else {
+            System.out.println("### 해당 카테고리에 음식이 없습니다.");
         }
     }
 

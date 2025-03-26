@@ -79,13 +79,13 @@ public class MenuRepository {
     public List<Menu> searchMenuList(Condition condition, int keyword) throws Exception {
         List<Menu> searchList = new ArrayList<>();
 
-        String sql = "SELECT * FROM menu_info WHERE active = 'Y'";
+        String sql = "SELECT * FROM menu_info WHERE active = 'Y' AND price < ? ORDER BY restaurant_num, menu_num";
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             if (condition == PRICE) {
-                sql += " AND price < ? ORDER BY restaurant_num, menu_num";
+//                sql += " AND price < ? ORDER BY restaurant_num, menu_num";
                 pstmt.setInt(1, keyword);
             }
 

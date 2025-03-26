@@ -53,7 +53,7 @@ public class RestaurantsService implements DeliveryService {
 
         System.out.println("====== 식당 정보를 추가합니다 =====");
         String store_name = inputString("# 식당명: ");
-        String category = inputString("# 카테고리: ");
+        String category = inputString("# 한식 | 중식 | 양식 | 분식 | 패스트 푸드 | 후식 : ");
         String open_hours = inputString("# 영업 시간: ");
         String call_number = inputString("# 식당 전화 번호: ");
         String delivery_area = inputString("# 식당 주소: ");

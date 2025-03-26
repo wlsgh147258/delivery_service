@@ -21,7 +21,7 @@ import static delivery.ui.AppUi.inputString;
 
 public class MenuService {
 
-    private final MenuRepository menuRepository = new MenuRepository();
+    private static final MenuRepository menuRepository = new MenuRepository();
 
 
     public void menu(int updateRestaNum) {
@@ -54,7 +54,7 @@ public class MenuService {
     private void insertMenuData(int storeNum) {
         System.out.println("\n ====== 메뉴 정보를 추가합니다. ======");
         String menuName = inputString("# 메뉴명: ");
-        String category = inputString("# 카테고리 분류: ");
+        String category = inputString("# 한식 | 중식 | 양식 | 분식 | 패스트 푸드 | 후식 : ");
         int price = inputInteger("# 가격: ");
 
         Menu newMenu = new Menu(menuName, category, price);
@@ -82,15 +82,32 @@ public class MenuService {
         }
     }
 
+    public static void searchMenu() {
+        try {
+            List<Menu> menus = searchMenuData();
+            int count = menus.size();
+            if (count > 0) {
+                System.out.printf("\n======================================= 검색 결과(총 %d건) =======================================\n", count);
+                for (Menu menu : menus) {
+                    System.out.println(menu);
+                }
+            } else {
+                System.out.println("\n### 검색 결과가 없습니다.");
+            }
+        } catch (Exception e) {
+            System.out.println("\n ### 검색 결과가 없습니다.2");
+        }
+    }
+
     private List<Menu> searchMenuDataOwner(int storeNum) throws Exception {
 
-        System.out.printf("\n## [ %d 번 ] 식당 메뉴를 검색합니다.\n", storeNum);
+        System.out.printf("\n## %d번 식당 메뉴를 검색합니다.\n", storeNum);
 
         return menuRepository.searchMenuListByOwner(storeNum);
     }
 
 
-    private List<Menu> searchMenuData() throws Exception {
+    private static List<Menu> searchMenuData() throws Exception {
         System.out.println("\n============== 메뉴 검색 조건을 선택하세요. ===============");
         System.out.println("[ 1. 이름검색 | 2. 가격검색 | 3. 카테고리검색 | 4. 전체검색 ]");
         int selection = inputInteger(">>> ");
@@ -118,8 +135,15 @@ public class MenuService {
         }
 
 //        String keyword = "";
+        return getMenus(condition);
+    }
+
+    private static List<Menu> getMenus(Condition condition) throws Exception {
         if (condition == Condition.PRICE) {
             int keyword = inputInteger("# 입력값 이하의 메뉴 검색: ");
+            return menuRepository.searchMenuList(condition, keyword);
+        } else if (condition == Condition.CATEGORY) {
+            String keyword = inputString("# 검색어: ");
             return menuRepository.searchMenuList(condition, keyword);
         } else if (condition != Condition.ALL) {
             String keyword = inputString("# 검색어: ");
@@ -128,8 +152,6 @@ public class MenuService {
             String keyword = "";
             return menuRepository.searchMenuList(condition, keyword);
         }
-
-
     }
 
 
