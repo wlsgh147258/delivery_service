@@ -4,6 +4,10 @@ import static delivery.ui.AppUi.*;
 
 import delivery.common.DeliveryService;
 import delivery.main.Main;
+import delivery.menu.domain.Menu;
+import delivery.menu.repository.MenuRepository;
+import delivery.order.domain.Order;
+import delivery.order.repository.OrderRepository;
 import delivery.review.service.ReviewService;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
@@ -13,6 +17,8 @@ import java.util.List;
 
 public class UserService implements DeliveryService {
     private final UserRepository userRepository = new UserRepository();
+    private final OrderRepository orderRepository = new OrderRepository();
+    private final MenuRepository menuRepository = new MenuRepository();
 
     private final int FIND_BY_NUM = 1;
     private final int FIND_BY_NAME = 2;
@@ -31,7 +37,7 @@ public class UserService implements DeliveryService {
                     deleteUserData();
                     break;
                 case 3:
-
+                    getTotalPrice();
                     break;
                 case 4:
                     (new ReviewService()).start();
@@ -153,10 +159,44 @@ public class UserService implements DeliveryService {
         }
 
     }
-    public void showUserGrade(User user){
-        System.out.println("현재 회원님의 등급: ");
-        System.out.print(user.getUserGrade());
-        System.out.print("\n현재 회원님의 총 사용 금액: ");
-        System.out.println(user.getTotalPaying());
+
+    public int getTotalPrice() {
+        User currentUser = Main.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("로그인된 유저가 없습니다.");
+            return 0;
+        }
+
+        List<Menu> orderedMenuList;
+        try {
+            orderedMenuList = menuRepository.findOrderedMenusByUserNum(currentUser.getUserNum());
+        } catch (Exception e) {
+            System.err.println("주문 내역 조회 중 오류 발생: " + e.getMessage());
+            return 0;
+        }
+
+        if (orderedMenuList == null || orderedMenuList.isEmpty()) {
+            System.out.println("주문 내역이 없습니다.");
+            return 0;
+        }
+
+        int totalPrice = 0; // 초기화 위치 변경
+
+        for (Menu menu : orderedMenuList) {
+            totalPrice += menu.getPrice();
+        }
+
+        currentUser.setTotalPaying(totalPrice);
+
+        System.out.println("--- 회원 정보 ---");
+        if (currentUser != null) {
+            System.out.println("현재 회원님의 등급: " + currentUser.getUserGrade());
+            System.out.println("총 주문 금액: " + currentUser.getTotalPaying() + "원");
+        } else {
+            System.out.println("로그인된 유저가 없습니다.");
+        }
+        System.out.println("-----------------");
+        return currentUser.getTotalPaying();
     }
+
 }

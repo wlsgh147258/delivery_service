@@ -9,7 +9,7 @@ import static delivery.user.repository.UserRepository.findUserOne;
 public class Main {
 
     public static User user;
-
+    public static User getCurrentUser(){return Main.user;}
     public static void main(String[] args) {
         int userType = 0;
         AppController controller = new AppController();
