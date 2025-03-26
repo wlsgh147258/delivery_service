@@ -133,7 +133,7 @@ public class UserService implements DeliveryService {
         List<User> users = findUserData();
         int count = users.size();
         if (count > 0) {
-            System.out.printf("\n========== 검색 결과 %d개 ==========", count);
+            System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
             for (User user : users) {
                 System.out.println(user);
             }
