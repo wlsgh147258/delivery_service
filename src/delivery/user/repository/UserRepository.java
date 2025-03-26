@@ -178,19 +178,24 @@ public class UserRepository {
             pstmt.setString(2, pw);
 
             ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getInt("user_num"),
+                        rs.getString("user_name"),
+                        rs.getString("user_id"),
+                        rs.getString("user_password"),
+                        rs.getString("address"),
+                        rs.getString("phone_number"),
+                        rs.getString("user_type"),
+                        Grade.valueOf(rs.getString("user_grade")),
+                        rs.getString("active"));
+                return user;
+            } else {
+                System.out.println("\n입력하신 회원정보와 일치하는 회원이 없습니다!\n");
+                Main.Main_run(Main.userTypeno, Main.userservice, Main.controller);
+            }
 
-            rs.next();
-            User user = new User(rs.getInt("user_num"),
-                    rs.getString("user_name"),
-                    rs.getString("user_id"),
-                    rs.getString("user_password"),
-                    rs.getString("address"),
-                    rs.getString("phone_number"),
-                    rs.getString("user_type"),
-                    Grade.valueOf(rs.getString("user_grade")),
-                    rs.getString("active"));
-            return user;
         } catch (Exception e) {
+
             e.printStackTrace();
         }
         return null;

@@ -9,12 +9,16 @@ import static delivery.user.repository.UserRepository.findUserOne;
 public class Main {
 
     public static User user;
+    public static int userTypeno = 0;
+    public static AppController controller = new AppController();
+    public static UserService userservice = new UserService();
 
     public static void main(String[] args) {
-        int userType = 0;
-        AppController controller = new AppController();
-        UserService userservice = new UserService();
 
+        Main_run(userTypeno, userservice, controller);
+    }
+
+    public static void Main_run(int userTypeno, UserService userservice, AppController controller) {
         while (true) {
             System.out.println("\n========= 음식 배달 시스템 =========");
             System.out.println("### 1. 로그인");
@@ -30,11 +34,11 @@ public class Main {
                 user = findUserOne(userid, userpw);
 
                 if (user.getUserType().equals("고객")) {
-                    userType = 1;
+                    userTypeno = 1;
                 } else if (user.getUserType().equals("라이더")) {
-                    userType = 2;
+                    userTypeno = 2;
                 } else if (user.getUserType().equals("점주")) {
-                    userType = 3;
+                    userTypeno = 3;
                 }
 
             } else if (initnum == 2){
@@ -42,9 +46,7 @@ public class Main {
                 userservice.insertUserData();
             } else continue;
 
-            controller.chooseSystem(userType);
+            controller.chooseSystem(userTypeno);
         }
-
-
     }
 }

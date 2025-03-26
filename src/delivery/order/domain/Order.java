@@ -9,6 +9,7 @@ public class Order {
     private String rideYN;
     private String paymentInfo;
 
+
     public Order(int orderNum, int userNum, int restaurantNum, int menuNum, String rideYN, String paymentInfo) {
         this.orderNum = orderNum;
         this.userNum = userNum;
