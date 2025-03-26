@@ -162,6 +162,11 @@ public class ReviewService implements DeliveryService {
             return;
         }
         int rating = inputInteger("# 평점: ");
+        if (rating < 0) {
+            System.out.println("별점은 마이너스가 될 수 없습니다. 처음으로 돌아갑니다.");
+            return;
+        }
+
         String content = inputString("# 내용: ");
 
         reviewRepository.addReview(new Review(orderNum, rating, content));
