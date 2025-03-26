@@ -11,6 +11,7 @@ import static delivery.ui.AppUi.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +36,15 @@ public class RiderService implements DeliveryService {
                     getDelivery();
                     break;
                 case 2:
-                    showFoundUserData();
+                    completeDelivery();
                     break;
                 case 3:
-                    userservice.deleteUserData();
+                    showFoundUserData();
                     break;
                 case 4:
+                    userservice.deleteUserData();
+                    break;
+                case 5:
                     return;
                 default:
                     System.out.println("### 메뉴를 다시 입력하세요.");
@@ -49,6 +53,66 @@ public class RiderService implements DeliveryService {
 
     }
 
+    private void completeDelivery() {
+
+        List<Order> orders = findCompleteData();
+        int count = orders.size();
+        if(count > 0) {
+            System.out.printf("\n========== 완료한 배달 %d개 ==========\n", count);
+            List<Integer> deliveryNums = new ArrayList<>();
+            for(Order order: orders) {
+                System.out.println(order);
+                deliveryNums.add(order.getOrderNum());
+            }
+            System.out.println("\n배달 완료한 주문 번호를 입력해 주세요.");
+
+        }
+
+
+        int okdelivery_no = inputInteger(">>> ");
+        if(deliveryNums.contains(okdelivery_no)){
+
+
+
+
+
+                    completeOrderDelivery(okdelivery_no);
+
+                }else {
+                    System.out.println("\n존재하는 주문 번호를 입력해 주세요.");
+                }
+
+
+        } else {
+            System.out.println("\n## 대기 중인 주문이 없습니다.");
+        }
+
+    }
+
+    private void completeOrderDelivery(int okdeliveryNo) {
+        String sql = "UPDATE order_info SET ride_yn = 'Y' WHERE order_num = ?";
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, okdeliveryNo);
+            pstmt.executeUpdate();
+            System.out.printf("%d 번 주문을 배달 완료하였습니다.\n", okdeliveryNo);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private List<Order> findCompleteData() {
+        System.out.println("\n배달 완료한 주문 검색");
+
+        try {
+            return userRepository.findOrdersComplete();
+        } catch (Exception e) {
+            System.out.println("완료주문 검색 중 오류가 발생했습니다: " + e.getMessage());
+            return List.of(); // 빈 리스트 반환 또는 예외 처리
+        }
+    }
 
 
     private List<Order> findOrderData() {
@@ -107,11 +171,12 @@ public class RiderService implements DeliveryService {
 
             pstmt.setInt(1, getdeliveryNo);
             pstmt.executeUpdate();
-            System.out.printf("%d 번 주문을 배달하였습니다.\n", getdeliveryNo);
+            System.out.printf("%d 번 주문을 배달 시작하였습니다.\n", getdeliveryNo);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     private List<User> findRiderData() {
         System.out.println("라이더를 검색합니다.");
