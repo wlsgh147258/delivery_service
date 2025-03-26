@@ -1,12 +1,15 @@
 package delivery.review.service;
 
 import static delivery.ui.AppUi.*;
+import static delivery.ui.AppUi.reviewManagementScreenForMaster;
 
 import delivery.common.DeliveryService;
 import delivery.main.Main;
 import delivery.order.domain.Order;
 import delivery.order.repository.Option;
 import delivery.order.repository.OrderRepository;
+import delivery.restaurants.domain.Restaurants;
+import delivery.restaurants.repository.RestaurantsRepository;
 import delivery.review.domain.Review;
 import delivery.review.repository.ReviewRepository;
 
@@ -18,28 +21,39 @@ import java.util.Set;
 public class ReviewService implements DeliveryService {
     private final ReviewRepository reviewRepository = new ReviewRepository();
     private final OrderRepository orderRepository = new OrderRepository();
+    private final RestaurantsRepository restaurantsRepository = new RestaurantsRepository();
 
     @Override
     public void start() {
         while (true) {
-            reviewManagementScreen();
-            int selection = inputInteger(">>> ");
+            boolean isMaster = Main.user.getUserType().equals("점주");
 
-            switch (selection) {
-                case 1:
-                    insertReviewData();
-                    break;
-                case 2:
-                    showFoundReviewData();
-                    break;
-                case 3:
-                    deleteReviewData();
-                    break;
-                case 4:
+            if (isMaster) {
+                int restaurantNum = reviewManagementScreenForMaster(restaurantsRepository);
+                if (restaurantNum == -1) {
                     return;
-                default:
-                    System.out.println("### 메뉴를 다시 입력하세요.");
+                }
+                showFoundReviewData(restaurantNum);
+            } else {
+                reviewManagementScreen();
+                int selection = inputInteger(">>> ");
+                switch (selection) {
+                    case 1:
+                        insertReviewData();
+                        break;
+                    case 2:
+                        showFoundReviewData(-1);
+                        break;
+                    case 3:
+                        deleteReviewData();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        System.out.println("### 메뉴를 다시 입력하세요.");
+                }
             }
+
         }
     }
 
@@ -103,12 +117,12 @@ public class ReviewService implements DeliveryService {
         }
     }
 
-    private void showFoundReviewData() {
+    private void showFoundReviewData(int restaurantNum) {
         List<Review> reviews;
         if(Main.user.getUserType().equals("고객")) {
             reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         } else {
-            reviews = findReviewData(Option.FIND_BY_MASTER_NUM, Integer.toString(Main.user.getUserNum()));
+            reviews = findReviewData(Option.FIND_BY_RESTAURANT_NUM, Integer.toString(restaurantNum));
         }
         int count = reviews.size();
         if(count > 0) {
@@ -123,7 +137,7 @@ public class ReviewService implements DeliveryService {
 
     private void insertReviewData() {
         System.out.println("===== 주문 내역을 검색합니다. =====");
-        List<Order> orderList = orderRepository.findOrderMenu(Main.user.getUserNum());
+        List<Order> orderList = orderRepository.findOrderByUserNum(Main.user.getUserNum());
         List<Review> userReviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         Set<Integer> orderNumOfReviewsSet = new HashSet<>();
         List<Order> availableOrderList = new ArrayList<>();

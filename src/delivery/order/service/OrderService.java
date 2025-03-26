@@ -8,8 +8,6 @@ import delivery.menu.service.MenuService;
 import delivery.order.domain.Order;
 import delivery.menu.domain.Menu;
 import delivery.order.repository.OrderRepository;
-import delivery.restaurants.repository.RestaurantsRepository;
-import delivery.review.repository.ReviewRepository;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
 import delivery.user.service.UserService;
@@ -252,12 +250,19 @@ public class OrderService implements DeliveryService {
     }
     // 주문 취소 가능 여부 확인 (가상의 메서드)
     private boolean isOrderCancelable(Order order) {
-        // 주문 상태, 배송 상태 등을 확인하여 주문 취소 가능 여부를 반환
-        // 실제 구현에서는 데이터베이스에서 주문 상태, 배송 상태 등을 조회하여 확인해야 함
-        return true; // 예시: 항상 true 반환
+        String orderStatus = order.getRideYN(); // 현재 주문 상태 (예: 'N' - 주문 완료, '~' - 배송 중)
+
+        if ("N".equals(orderStatus)) { // 주문 배달 전 상태
+            return true; // 주문 완료 상태이므로 취소 가능
+        } else if ("~".equals(orderStatus)) { // 배송 중 상태
+            return false;
+        } else if ("Y".equals(orderStatus)) { // 이미 취소된 상태
+            return false;
+        }
+        return false; // 다른 상태의 경우 기본적으로 취소 불가
     }
     public List<Order> findOrderMenu(int userNum) {
-        List<Order> orderList = orderRepository.findOrderMenu(userNum);
+        List<Order> orderList = orderRepository.findOrderByUserNum(userNum);
 
         if (orderList.isEmpty()) {
             System.out.println("### 주문 내역이 없습니다.");
@@ -269,7 +274,8 @@ public class OrderService implements DeliveryService {
                         ", 고객 번호: " + order.getUserNum() +
                         ", 가게 번호: " + order.getRestaurantNum() +
                         ", 배달 상태: " + order.getRideYN() +
-                        ", 결제 정보: " + order.getPaymentInfo());
+                        ", 결제 정보: " + order.getPaymentInfo() +
+                        ", 금액: " + order.getMenuPrice());
             }
         }
         return orderList;

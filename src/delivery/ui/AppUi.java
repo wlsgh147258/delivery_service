@@ -2,7 +2,10 @@ package delivery.ui;
 
 
 import delivery.jdbc.DBConnectionManager;
+import delivery.main.Main;
 import delivery.menu.domain.Menu;
+import delivery.restaurants.domain.Restaurants;
+import delivery.restaurants.repository.RestaurantsRepository;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 
@@ -66,7 +69,7 @@ public class AppUi {
     public static void userManagementScreen(){
         System.out.println("\n========= 사용자 관리 시스템 =========");
         System.out.println("### 1. 사용자 정보 검색");
-        System.out.println("### 2. 사용자 정보 수정/삭제");
+        System.out.println("### 2. 사용자 정보 수정/탈퇴");
         System.out.println("### 3. 사용자 등급");
         System.out.println("### 4. 리뷰 서비스");
         System.out.println("### 5. 첫 화면으로 가기");
@@ -78,9 +81,41 @@ public class AppUi {
         System.out.println("### 1. 대기 중인 주문 확인");
         System.out.println("### 2. 배달 완료 체크");
         System.out.println("### 3. 라이더 정보 검색");
-        System.out.println("### 4. 라이더 탈퇴하기");
+        System.out.println("### 4. 라이더 정보 수정/탈퇴");
         System.out.println("### 5. 첫 화면으로 가기");
         System.out.println();
+    }
+
+    public static int reviewManagementScreenForMaster(RestaurantsRepository restaurantsRepository) {
+        try {
+
+            List<Restaurants> restaurants = restaurantsRepository.searchRestaurantByOwner(Main.user.getUserNum());
+            System.out.println("\n========= 점주 리뷰 시스템 진입 =========");
+            if(!restaurants.isEmpty()) {
+                System.out.printf("\n========= 운영중인 가게 목록 (%d)개 ========= \n", restaurants.size());
+                for (Restaurants restaurant : restaurants) {
+                    System.out.println(restaurant);
+                }
+                System.out.println("0. 처음화면으로 나가기.");
+                System.out.println("\n========= 리뷰를 확인할 업장 코드를 입력하세요. =========");
+                int restaurantNum = inputInteger(">>> ");
+                if (restaurantNum == 0) {
+                    return -1;
+                }
+                if (restaurants.stream().noneMatch(rest -> rest.getStore_num() == restaurantNum)) {
+                    System.out.println("잘못된 업장 코드를 입력하셨습니다. 처음 화면으로 나갑니다.");
+                    return -1;
+                }
+                return restaurantNum;
+
+            } else {
+                System.out.println("운영중인 가게가 없습니다. 처음 화면으로 나갑니다.");
+                return -1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public static void reviewManagementScreen() {
@@ -113,6 +148,17 @@ public class AppUi {
         System.out.println("### 2. 메뉴 카테고리 수정");
         System.out.println("### 3. 메뉴 가격 수정");
         System.out.println("### 4. 메뉴 삭제");
+        System.out.println();
+    }
+
+    public static void userUpdateScreen() {
+        System.out.println("\n========= 사용자 정보 수정 시스템 =========");
+        System.out.println("### 1. 회원 이름 수정");
+        System.out.println("### 2. 회원 아이디 수정");
+        System.out.println("### 3. 회원 비밀번호 수정");
+        System.out.println("### 4. 회원 주소 수정");
+        System.out.println("### 5. 회원 전화번호 수정");
+        System.out.println("### 6. 회원 탈퇴 수정");
         System.out.println();
     }
 
