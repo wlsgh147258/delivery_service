@@ -4,6 +4,8 @@ import delivery.common.Condition;
 import delivery.common.DeliveryService;
 import delivery.menu.domain.Menu;
 import delivery.menu.repository.MenuRepository;
+import delivery.restaurants.domain.Restaurants;
+import delivery.restaurants.service.RestaurantsService;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -12,12 +14,12 @@ import java.util.Scanner;
 
 import static delivery.ui.AppUi.MenuManagementScreen;
 
-public class MenuService implements DeliveryService {
+public class MenuService {
 
     private final MenuRepository menuRepository = new MenuRepository();
 
-    @Override
-    public void start() {
+
+    public void menu(int updateRestaNum) {
 
         while (true) {
             MenuManagementScreen();
@@ -25,13 +27,13 @@ public class MenuService implements DeliveryService {
 
             switch (selection) {
                 case 1:
-                    insertMenuData();
+                    insertMenuData(updateRestaNum);
                     break;
                 case 2:
-                    showSearchMenuData();
+                    searchMenuOwner(updateRestaNum);
                     break;
                 case 3:
-                    deleteMenuData();
+                    deleteMenuData(updateRestaNum);
                     break;
                 case 4:
                     return;
@@ -44,27 +46,25 @@ public class MenuService implements DeliveryService {
     }
 
 
-
-    private void insertMenuData() {
+    private void insertMenuData(int storeNum) {
         System.out.println("\n ====== 메뉴 정보를 추가합니다. ======");
-        int store_num = inputInteger("# Restaurant 번호 : ");
         String menuName = inputString("# 메뉴명: ");
         String category = inputString("# 카테고리 분류: ");
         int price = inputInteger("# 가격: ");
 
         Menu newMenu = new Menu(menuName, category, price);
 
-        menuRepository.insertMenu(store_num,newMenu);
+        menuRepository.insertMenu(storeNum, newMenu);
 
         System.out.printf("\n### [%s] 정보가 정상적으로 추가되었습니다.\n", menuName);
     }
 
 
-    private void showSearchMenuData() {
+    private void searchMenuOwner(int storeNum) {
         try {
-            List<Menu> menus = searchMenuData();
+            List<Menu> menus = searchMenuDataOwner(storeNum);
             int count = menus.size();
-            if(count > 0) {
+            if (count > 0) {
                 System.out.printf("\n======================================= 검색 결과(총 %d건) =======================================\n", count);
                 for (Menu menu : menus) {
                     System.out.println(menu);
@@ -75,6 +75,13 @@ public class MenuService implements DeliveryService {
         } catch (Exception e) {
             System.out.println("\n ### 검색 결과가 없습니다.2");
         }
+    }
+
+    private List<Menu> searchMenuDataOwner(int storeNum) throws Exception {
+
+        System.out.printf("\n## [ %d 번 ] 식당 메뉴를 검색합니다.", storeNum);
+
+        return menuRepository.searchMenuListByOwner(storeNum);
     }
 
 
@@ -113,7 +120,7 @@ public class MenuService implements DeliveryService {
             String keyword = inputString("# 검색어: ");
             return menuRepository.searchMenuList(condition, keyword);
         } else {
-            String keyword= "";
+            String keyword = "";
             return menuRepository.searchMenuList(condition, keyword);
         }
 
@@ -121,11 +128,10 @@ public class MenuService implements DeliveryService {
     }
 
 
-
-    private void deleteMenuData() {
+    private void deleteMenuData(int storeNum) {
         try {
-            System.out.println("\n### 삭제를 위한 영화 검색을 시작합니다.");
-            List<Menu> menus = searchMenuData();
+            System.out.println("\n### 삭제를 위한 메뉴 검색을 시작합니다.\n");
+            List<Menu> menus = searchMenuDataOwner(storeNum);
 
             if (!menus.isEmpty()) {
                 List<Integer> menuNums = new ArrayList<>();
@@ -134,14 +140,14 @@ public class MenuService implements DeliveryService {
                     System.out.println(menu);
                     menuNums.add(menu.getMenu_num());
                 }
-                System.out.println("\n### 삭제할 영화의 번호를 입력하세요.");
+                System.out.println("\n### 삭제할 메뉴의 번호를 입력하세요.");
                 int delMenuNum = inputInteger(">>> ");
 
                 if (menuNums.contains(delMenuNum)) {
                     menuRepository.deleteMenu(delMenuNum);
                     for (Menu menu : menus) {
                         if (menu.getMenu_num() == delMenuNum) {
-                            System.out.printf("\n### 영화번호: %d -> %s 영화의 정보를 정상 삭제하였습니다.\n"
+                            System.out.printf("\n### 메뉴번호: %d -> %s 메뉴의 정보를 정상 삭제하였습니다.\n"
                                     , menu.getMenu_num(), menu.getMenu_name());
                             break;
                         }

@@ -67,8 +67,9 @@ public class AppUi {
         System.out.println("\n========= 사용자 관리 시스템 =========");
         System.out.println("### 1. 사용자 정보 검색");
         System.out.println("### 2. 사용자 정보 수정/삭제");
-        System.out.println("### 3. 리뷰 서비스");
-        System.out.println("### 4. 첫 화면으로 가기");
+        System.out.println("### 3. 사용자 등급");
+        System.out.println("### 4. 리뷰 서비스");
+        System.out.println("### 5. 첫 화면으로 가기");
         System.out.println();
     }
 

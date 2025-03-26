@@ -2,6 +2,7 @@ package delivery.review.service;
 
 import static delivery.ui.AppUi.*;
 
+import delivery.common.DeliveryService;
 import delivery.main.Main;
 import delivery.order.domain.Order;
 import delivery.order.repository.Option;
@@ -13,10 +14,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ReviewService {
+public class ReviewService implements DeliveryService {
     private final ReviewRepository reviewRepository = new ReviewRepository();
     private final OrderRepository orderRepository = new OrderRepository();
 
+    @Override
     public void start() {
         while (true) {
             reviewManagementScreen();
@@ -101,7 +103,12 @@ public class ReviewService {
     }
 
     private void showFoundReviewData() {
-        List<Review> reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        List<Review> reviews;
+        if(Main.user.getUserType().equals("고객")) {
+            reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        } else {
+            reviews = findReviewData(Option.FIND_BY_MASTER_NUM, Integer.toString(Main.user.getUserNum()));
+        }
         int count = reviews.size();
         if(count > 0) {
             System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);

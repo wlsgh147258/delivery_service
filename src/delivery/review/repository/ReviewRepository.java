@@ -48,6 +48,10 @@ public class ReviewRepository {
         } else if (op == Option.FIND_BY_USER_NUM) {
             sql = "SELECT * FROM reviews r INNER JOIN (SELECT o.order_num FROM order_info o INNER JOIN users_info u ON o.user_num = u.user_num" +
                     " WHERE o.user_num = ?) orn ON r.order_num = orn.order_num";
+        } else if (op == Option.FIND_BY_MASTER_NUM) {
+            sql = "SELECT * FROM reviews r" +
+                    " INNER JOIN (SELECT * FROM restaurant rt INNER JOIN order_info o ON rt.restaurant_num = o.restaurant_num WHERE rt.user_num = ?) rto" +
+                    " ON r.order_num = rto.order_num";
         }
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
