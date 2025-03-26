@@ -21,14 +21,15 @@ public class OrderRepository {
 
 
     public void addOrder(Order order, int pri) {
-        String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?, ?)";
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, order.getUserNum());
             pstmt.setInt(2, order.getRestaurantNum());
             pstmt.setInt(3, order.getMenuNum());
             pstmt.setString(4, "N");
-            pstmt.setString(5, "credit_card");
+            pstmt.setString(5, order.getPaymentInfo());
+            pstmt.setInt(6, 0);
 
             pstmt.executeUpdate();
 
@@ -93,8 +94,7 @@ public class OrderRepository {
     // 주문 번호를 통해
     public List<Order> findOrderByNumber(int orderNum) {
         List<Order> orderList = new ArrayList<>();
-        String sql = "SELECT * FROM order_info WHERE order_num = ?";
-
+        String sql = "SELECT o.*, m.price FROM order_info o INNER JOIN menu_info m ON o.menu_num = m.menu_num WHERE order_num = ?";
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -113,6 +113,7 @@ public class OrderRepository {
                         rs.getString("ride_yn"),
                         rs.getString("payment_info")
                 );
+                order.setMenuPrice(rs.getInt("price"));
                 orderList.add(order);
             }
         } catch (SQLException e) {

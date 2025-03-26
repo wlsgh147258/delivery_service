@@ -102,7 +102,7 @@ public class UserRepository {
 
     public List<Order> findOrders() {
         List<Order> foundOrders = new ArrayList<>();
-        String sql = "SELECT * FROM order_info WHERE ride_yn = 'N' ";
+        String sql = "SELECT o.*, m.price FROM order_info o INNER JOIN menu_info m ON o.menu_num = m.menu_num WHERE ride_yn = 'N'";
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
@@ -110,13 +110,15 @@ public class UserRepository {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    foundOrders.add(new Order(
+                    Order order = new Order(
                             rs.getInt("order_num"),
                             rs.getInt("user_num"),
                             rs.getInt("restaurant_num"),
                             rs.getInt("menu_num"),
                             rs.getString("ride_yn"),
-                            rs.getString("payment_info")));
+                            rs.getString("payment_info"));
+                    order.setMenuPrice(rs.getInt("price"));
+                    foundOrders.add(order);
                 }
             }
         } catch (SQLException e) {
@@ -178,19 +180,24 @@ public class UserRepository {
             pstmt.setString(2, pw);
 
             ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getInt("user_num"),
+                        rs.getString("user_name"),
+                        rs.getString("user_id"),
+                        rs.getString("user_password"),
+                        rs.getString("address"),
+                        rs.getString("phone_number"),
+                        rs.getString("user_type"),
+                        Grade.valueOf(rs.getString("user_grade")),
+                        rs.getString("active"));
+                return user;
+            } else {
+                System.out.println("\n입력하신 회원정보와 일치하는 회원이 없습니다!\n");
+                Main.Main_run(Main.userTypeno, Main.userservice, Main.controller);
+            }
 
-            rs.next();
-            User user = new User(rs.getInt("user_num"),
-                    rs.getString("user_name"),
-                    rs.getString("user_id"),
-                    rs.getString("user_password"),
-                    rs.getString("address"),
-                    rs.getString("phone_number"),
-                    rs.getString("user_type"),
-                    Grade.valueOf(rs.getString("user_grade")),
-                    rs.getString("active"));
-            return user;
         } catch (Exception e) {
+
             e.printStackTrace();
         }
         return null;
