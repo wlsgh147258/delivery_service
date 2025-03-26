@@ -95,6 +95,7 @@ public class RestaurantsService implements DeliveryService {
 
                     switch (updateSelection) {
                         case 1:
+                            //메뉴 관리 시스템 실행
                             for (Restaurants restaurants : restaurantsList) {
                                 if (restaurants.getStore_num()==updateRestaNum){
                                     MenuService menuService = new MenuService();

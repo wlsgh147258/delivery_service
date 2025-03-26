@@ -107,6 +107,15 @@ public class AppUi {
         System.out.println();
     }
 
+    public static void menuUpdateScreen() {
+        System.out.println("\n========= 식당 메뉴 수정 시스템 =========");
+        System.out.println("### 1. 메뉴 이름");
+        System.out.println("### 2. 메뉴 카테고리 수정");
+        System.out.println("### 3. 메뉴 가격 수정");
+        System.out.println("### 4. 메뉴 삭제");
+        System.out.println();
+    }
+
     public static String findUserType(String id, String pw) {
         String userType = "";
         List<User> searchList = new ArrayList<>();
