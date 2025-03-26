@@ -2,6 +2,7 @@ package delivery.review.service;
 
 import static delivery.ui.AppUi.*;
 
+import delivery.common.DeliveryService;
 import delivery.main.Main;
 import delivery.order.domain.Order;
 import delivery.order.repository.Option;
@@ -13,10 +14,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ReviewService {
+public class ReviewService implements DeliveryService {
     private final ReviewRepository reviewRepository = new ReviewRepository();
     private final OrderRepository orderRepository = new OrderRepository();
 
+    @Override
     public void start() {
         while (true) {
             reviewManagementScreen();
