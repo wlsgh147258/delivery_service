@@ -30,7 +30,7 @@ public class MenuRepository{
             pstmt.setString(2, menu.getMenu_name());
             pstmt.setString(3, menu.getCategory());
             pstmt.setInt(4, menu.getPrice());
-            pstmt.setString(5, menu.getActive());
+            pstmt.setString(5, "Y");
 
             pstmt.executeUpdate();
 

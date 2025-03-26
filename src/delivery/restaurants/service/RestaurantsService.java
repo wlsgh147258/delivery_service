@@ -3,6 +3,7 @@ package delivery.restaurants.service;
 import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
 import delivery.main.Main;
+import delivery.menu.service.MenuService;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
 
@@ -92,7 +93,12 @@ public class RestaurantsService implements DeliveryService {
                     int updateSelection = inputInteger(">>> ");
 
                     switch (updateSelection) {
-                        case 1, 2, 3, 4, 5, 6:
+                        case 1:
+                            MenuService menuService = new MenuService();
+                            menuService.start();
+                            break;
+
+                        case 2, 3, 4, 5, 6, 7:
 
                             for (Restaurants restaurant : restaurantsList) {
                                 if(restaurant.getStore_num()==updateRestaNum){
@@ -102,9 +108,6 @@ public class RestaurantsService implements DeliveryService {
                                 }
                             }
 
-                            break;
-                        case 7:
-                            System.out.println("메뉴 수정 하기");
                             break;
                         case 8:
                             if (storeNums.contains(updateRestaNum)) {

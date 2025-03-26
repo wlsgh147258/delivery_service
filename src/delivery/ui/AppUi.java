@@ -52,13 +52,14 @@ public class AppUi {
 
     public static void restaurantUpdateScreen() {
         System.out.println("\n========= 식당 정보 수정 시스템 =========");
-        System.out.println("### 1. 식당명 수정");
-        System.out.println("### 2. 식당 카테고리 수정");
-        System.out.println("### 3. 식당 영업 시간 수정");
-        System.out.println("### 4. 식당 전화 번호 수정");
-        System.out.println("### 5. 식당 주소 수정");
-        System.out.println("### 6. 식당 정보 수정");
-        System.out.println("### 7. 식당 정보 삭제");
+        System.out.println("### 1. 식당 메뉴 관리");
+        System.out.println("### 2. 식당명 수정");
+        System.out.println("### 3. 식당 카테고리 수정");
+        System.out.println("### 4. 식당 영업 시간 수정");
+        System.out.println("### 5. 식당 전화 번호 수정");
+        System.out.println("### 6. 식당 주소 수정");
+        System.out.println("### 7. 식당 상세 정보 수정");
+        System.out.println("### 8. 식당 정보 삭제");
         System.out.println();
     }
 
@@ -97,7 +98,7 @@ public class AppUi {
         System.out.println("### 4. 이전 화면으로 돌아가기");
     }
     public static void MenuManagementScreen(){
-        System.out.println("\n========= 식당 관리 시스템 =========");
+        System.out.println("\n========= 식당 메뉴 관리 시스템 =========");
         System.out.println("### 1. 메뉴 추가");
         System.out.println("### 2. 메뉴 정보 검색");
         System.out.println("### 3. 메뉴 정보 수정/삭제");

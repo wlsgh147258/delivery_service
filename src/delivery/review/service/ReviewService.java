@@ -1,18 +1,22 @@
 package delivery.review.service;
 
 import static delivery.ui.AppUi.*;
+
+import delivery.main.Main;
+import delivery.order.domain.Order;
+import delivery.order.repository.Option;
+import delivery.order.repository.OrderRepository;
 import delivery.review.domain.Review;
 import delivery.review.repository.ReviewRepository;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ReviewService {
     private final ReviewRepository reviewRepository = new ReviewRepository();
+    private final OrderRepository orderRepository = new OrderRepository();
 
-    private final int FIND_BY_NUM = 1;
-    private final int FIND_BY_ID = 2;
-    private final int FIND_ALL = 3;
     public void start() {
         while (true) {
             reviewManagementScreen();
@@ -36,58 +40,60 @@ public class ReviewService {
         }
     }
 
-    private List<Review> findReviewData() {
+    private Option getSelectedOptions() {
         System.out.println("\n========== 리뷰 검색 조건을 선택하세요 ===========");
         System.out.println("[1. 주문번호로 검색 | 2. 유저 아이디로 검색 | 3. 전체검색]");
         int selection = inputInteger(">>> ");
 
-        int condition = FIND_ALL;
+        Option option = Option.FIND_ALL;
 
         switch(selection) {
             case 1:
                 System.out.println("주문 번호로 검색합니다.");
-                condition = FIND_BY_NUM;
+                option = Option.FIND_BY_ORDER_NUM;
                 break;
             case 2:
                 System.out.println("유저 번호로 검색합니다.");
-                condition = FIND_BY_ID;
+                option = Option.FIND_BY_USER_NUM;
                 break;
             case 3:
                 System.out.println("전체 리뷰를 검색합니다.");
-                condition = FIND_ALL;
                 break;
             default:
                 System.out.println("해당 메뉴가 존재하지 않습니다. 전체 정보로 검색합니다.");
         }
-        String keyword = "";
-        if (condition != FIND_ALL) {
+        return option;
+
+    }
+
+    private List<Review> findReviewData(Option option, String keyword) {
+        if (keyword == null && option != Option.FIND_ALL) {
             keyword = inputString("검색어: ");
         }
 
-        return reviewRepository.findReviews(condition, keyword);
+        return reviewRepository.findReviews(option, keyword);
 
     }
 
     private void deleteReviewData() {
         System.out.println("삭제를 위한 리뷰 검색을 시작합니다.");
-        List<Review> reviews = findReviewData();
-
+        List<Review> reviews;
+        if(Main.user.getUserType().equals("고객")) {
+            reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        } else {
+            reviews = null;//findReviewData(Option.FIND_BY_RESTAURANT_NUM, null);
+        }
+        for (Review review : reviews) {
+            System.out.println(review);
+        }
         if (reviews.size() > 0) {
-            List<Integer> reviewNums = new ArrayList<>();
-            for (Review review: reviews) {
-                System.out.println(review);
-                reviewNums.add(review.getReviewNum());
-            }
             System.out.println("삭제할 리뷰의 번호를 입력하세요.");
             int delReviewNum = inputInteger(">>> ");
-
-            if (reviewNums.contains(delReviewNum)) {
+            if (reviews.stream().anyMatch(review -> review.getReviewNum() == delReviewNum)) {
                 reviewRepository.deleteReview(delReviewNum);
-                Review deletedReview = reviews.stream().filter(x->x.getReviewNum() == delReviewNum).findFirst().orElse(null);
-                System.out.printf("리뷰번호: %d 리뷰의 정보를 정상 삭제하였습니다.\n",
-                        deletedReview.getReviewNum());
+                System.out.printf("리뷰번호: %d 리뷰의 정보를 정상 삭제하였습니다.\n", delReviewNum);
             } else {
-                System.out.println("검색된 영화 번호로만 삭제가 가능합니다.");
+                System.out.println("검색된 리뷰 번호로만 삭제가 가능합니다.");
             }
         } else {
             System.out.println("조회 결과가 없습니다.");
@@ -95,10 +101,10 @@ public class ReviewService {
     }
 
     private void showFoundReviewData() {
-        List<Review> reviews = findReviewData();
+        List<Review> reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         int count = reviews.size();
         if(count > 0) {
-            System.out.printf("\n========== 검색 결과 %d개 ==========", count);
+            System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
             for(Review review: reviews) {
                 System.out.println(review);
             }
@@ -108,8 +114,29 @@ public class ReviewService {
     }
 
     private void insertReviewData() {
+        System.out.println("===== 주문 내역을 검색합니다. =====");
+        List<Order> orderList = orderRepository.findOrderMenu(Main.user.getUserNum());
+        List<Review> userReviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        Set<Integer> orderNumOfReviewsSet = new HashSet<>();
+        for (Review userReview : userReviews) {
+            orderNumOfReviewsSet.add(userReview.getOrderNum());
+        }
+        for (Order order : orderList) {
+            if(!orderNumOfReviewsSet.contains(order.getOrderNum())) {
+                System.out.println(order);
+            }
+        }
+        if(orderList.isEmpty()) {
+            System.out.println("===== 리뷰를 작성할 수 있는 주문이 없습니다. =====");
+            return;
+        }
         System.out.println("\n===== review를 등록합니다. =====");
         int orderNum = inputInteger("# 주문번호: ");
+        if(orderList.stream().noneMatch(order -> order.getOrderNum() == orderNum)
+            || orderNumOfReviewsSet.contains(orderNum)) {
+            System.out.println("잘못된 주문 번호 입력입니다. 처음으로 돌아갑니다.");
+            return;
+        }
         int rating = inputInteger("# 평점: ");
         String content = inputString("# 내용: ");
 

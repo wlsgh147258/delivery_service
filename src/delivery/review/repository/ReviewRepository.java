@@ -1,6 +1,8 @@
 package delivery.review.repository;
 
 import delivery.jdbc.DBConnectionManager;
+import delivery.main.Main;
+import delivery.order.repository.Option;
 import delivery.review.domain.Review;
 
 import java.sql.Connection;
@@ -26,34 +28,8 @@ public class ReviewRepository {
         }
     }
 
-    public List<Review> findByUserNum(int userNum) {
-
-        List<Review> reviewList = new ArrayList<>();
-        // JOIN 문 이용
-        String sql = "SELECT * FROM reviews r INNER JOIN (SELECT o.order_num FROM order_info o INNER JOIN users_info u ON o.user_num = u.user_num" +
-                " WHERE o.user_num = ?) orn ON r.order_num = orn.order_num";
-
-        try(Connection conn = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
-                Review review = new Review(
-                        rs.getInt("review_num"),
-                        rs.getInt("order_num"),
-                        rs.getInt("rating"),
-                        rs.getString("content")
-                );
-
-                reviewList.add(review);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return reviewList;
-    }
-
     public void deleteReview(int delReviewNum) {
+        int userNum = Main.user.getUserNum();
         String sql = "DELETE FROM reviews WHERE review_num = ?";
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -64,18 +40,18 @@ public class ReviewRepository {
         }
     }
 
-    public List<Review> findReviews(int condition, String keyword) {
+    public List<Review> findReviews(Option op, String keyword) {
         List<Review> foundReviews = new ArrayList<>();
         String sql = "SELECT * FROM reviews ";
-        if (condition == 1) {
+        if (op == Option.FIND_BY_ORDER_NUM) {
             sql += "WHERE order_num = ?";
-        } else if (condition == 2) {
+        } else if (op == Option.FIND_BY_USER_NUM) {
             sql = "SELECT * FROM reviews r INNER JOIN (SELECT o.order_num FROM order_info o INNER JOIN users_info u ON o.user_num = u.user_num" +
                     " WHERE o.user_num = ?) orn ON r.order_num = orn.order_num";
         }
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            if(condition != 3) {
+            if(op != Option.FIND_ALL) {
                 pstmt.setInt(1, Integer.parseInt(keyword));
             }
             ResultSet rs = pstmt.executeQuery();
