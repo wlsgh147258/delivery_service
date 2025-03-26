@@ -158,11 +158,12 @@ public class RiderService implements DeliveryService {
     }
 
     private void getOrderDelivery(int getdeliveryNo) {
-        String sql = "UPDATE order_info SET ride_yn = '~' WHERE order_num = ?";
+        String sql = "UPDATE order_info SET ride_yn = '~', rider_num =? WHERE order_num = ?";
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, getdeliveryNo);
+            pstmt.setInt(1, Main.user.getUserNum());
+            pstmt.setInt(2, getdeliveryNo);
             pstmt.executeUpdate();
             System.out.printf("%d 번 주문을 배달 시작하였습니다.\n", getdeliveryNo);
         } catch (SQLException e) {

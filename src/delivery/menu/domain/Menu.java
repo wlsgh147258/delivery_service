@@ -74,12 +74,12 @@ public class Menu {
 
     @Override
     public String toString() {
-        return "Menu{" +
-                "menu_num='" + menu_num + '\'' +
-                ", menu_name='" + menu_name + '\'' +
-                ", category='" + category + '\'' +
-                ", price=" + price +
-                ", active='" + active + '\'' +
-                '}';
+        return "Menu [ " +
+                "메뉴 번호: " + menu_num  +
+                ", 메뉴 이름: " + menu_name +
+                ", 카테고리: " + category +
+                ", 가격: " + price +
+                ", 활성화: " + active +
+                " ]";
     }
 }

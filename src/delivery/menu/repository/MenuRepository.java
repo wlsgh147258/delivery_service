@@ -188,6 +188,26 @@ public class MenuRepository {
         return searchList;
     }
 
+    // DB에서 특정 컬럼을 업데이트하는 메서드
+    public void updateMenuInfo(int menuNum, String column, String newValue) {
+
+        String sql = "UPDATE menu_info SET " + column + " = ? WHERE menu_num = ?";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newValue);
+            pstmt.setInt(2, menuNum);
+
+            pstmt.executeUpdate();
+
+            System.out.println("### 업데이트 성공!");
+
+        } catch (SQLException e) {
+            System.out.println("### 업데이트 실패. 입력을 다시 확인하세요!");
+            e.printStackTrace();
+        }
+    }
 
     // String store_name, String open_hours, String call_number, String delivery_area, String detail_info
     // ResultSet에서 추출한 결과를 Restaurant 객체로 포장해주는 헬터 메서드

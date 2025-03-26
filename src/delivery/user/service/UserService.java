@@ -139,7 +139,7 @@ public class UserService implements DeliveryService {
         List<User> users = findUserData();
         int count = users.size();
         if (count > 0) {
-            System.out.printf("\n========== 검색 결과 %d개 ==========", count);
+            System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
             for (User user : users) {
                 System.out.println(user);
             }
@@ -149,21 +149,13 @@ public class UserService implements DeliveryService {
     }
 
     public void deleteUserData() {
-        System.out.println("탈퇴를 위한 유저 검색을 시작합니다.");
-        List<User> users = findUserData();
+        System.out.println("정말 탈퇴를 하시겠습니까?");
+        System.out.println("탈퇴를 하시려면 '탈퇴' 를 입력해주세요.");
 
-        if (users.size() > 0) {
-            System.out.println("탈퇴할 유저 번호를 입력하세요.");
-            int delUserNum = inputInteger(">>> ");
-
-            if (users.stream().anyMatch(user -> user.getUserNum() == delUserNum)) {
-                userRepository.deleteUser(delUserNum);
-                System.out.println("유저번호 " + delUserNum + "번 회원탈퇴 완료.");
-            } else {
-                System.out.println("검색된 유저 번호를 입력해주세요.");
-            }
-        } else {
-            System.out.println("조회 결과가 없습니다.");
+        String delAnswer = inputString(">>> ");
+        if (delAnswer.equals("탈퇴")) {
+            userRepository.deleteUser(Main.user.getUserNum());
+            System.out.println("유저 " + Main.user.getUserName() + "님 회원탈퇴 완료되었습니다.");
         }
 
     }
