@@ -161,12 +161,12 @@ public class UserService implements DeliveryService {
 
     }
 
-    private void updateUserData() {
+    public void updateUserData() {
 
         try {
             //회원의 어떤 정보를 수정할지 선택
             userUpdateScreen();
-            System.out.print("### 수정할 정보의 번호를 입력하세요.");
+            System.out.println("### 수정할 정보의 번호를 입력하세요.");
             int updateSelection = inputInteger(">>> ");
 
             switch (updateSelection) {
@@ -206,27 +206,27 @@ public class UserService implements DeliveryService {
             switch (updateSelection) {
                 case 1:
                     column = "user_name";
-                    System.out.printf("기존 회원 이름: %s >> 새로운 이름: ", Main.user.getUserName());
+                    System.out.printf("회원의 기존 이름: %s >> 새로운 이름: ", Main.user.getUserName());
                     newValue = inputString(" ");
                     break;
                 case 2:
                     column = "user_id";
-                    System.out.printf("기존 회원 아이디: %s >> 새로운 아이디: ", Main.user.getUserId());
+                    System.out.printf("회원의 기존 아이디: %s >> 새로운 아이디: ", Main.user.getUserId());
                     newValue = inputString(" ");
                     break;
                 case 3:
                     column = "user_password";
-                    System.out.printf("기존 회원 비밀번호: %s >> 새로운 비밀번호: ", Main.user.getUserPassword());
+                    System.out.printf("회원의 기존 비밀번호: %s >> 새로운 비밀번호: ", Main.user.getUserPassword());
                     newValue = inputString(" ");
                     break;
                 case 4:
                     column = "user_address";
-                    System.out.printf("기존 회원 주소: %s >> 새로운 주소: ", Main.user.getAddress());
+                    System.out.printf("회원의 기존 주소: %s >> 새로운 주소: ", Main.user.getAddress());
                     newValue = inputString(" ");
                     break;
                 case 5:
                     column = "phone_number";
-                    System.out.printf("기존 회원 전화번호: %s >> 새로운 전화번호: ", Main.user.getPhoneNumber());
+                    System.out.printf("회원의 기존 전화번호: %s >> 새로운 전화번호: ", Main.user.getPhoneNumber());
                     newValue = inputString(" ");
                     break;
                 default:

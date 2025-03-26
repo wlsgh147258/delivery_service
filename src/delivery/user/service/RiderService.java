@@ -44,7 +44,7 @@ public class RiderService implements DeliveryService {
                     showFoundUserData();
                     break;
                 case 4:
-                    userservice.deleteUserData();
+                    userservice.updateUserData();
                     break;
                 case 5:
                     return;
