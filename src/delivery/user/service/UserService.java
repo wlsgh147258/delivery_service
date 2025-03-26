@@ -3,6 +3,7 @@ package delivery.user.service;
 import static delivery.ui.AppUi.*;
 
 import delivery.common.DeliveryService;
+import delivery.review.service.ReviewService;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
@@ -24,14 +25,14 @@ public class UserService implements DeliveryService {
 
             switch (selection) {
                 case 1:
-                    insertUserData();
-                    break;
-                case 2:
                     showFoundUserData();
                     break;
-                case 3:
+                case 2:
                     deleteUserData();
                     break;
+                case 3:
+                    (new ReviewService()).start();
+                    return;
                 case 4:
                     return;
                 default:

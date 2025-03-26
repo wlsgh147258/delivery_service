@@ -53,7 +53,7 @@ public class UserRepository {
         if (condition == 1) { // 회원 번호
             sql += " WHERE user_num = ? AND active ='Y' ";
         } else if (condition == 2) { // 이름
-            sql += " WHERE user_name = ? AND active ='Y' ";
+            sql += " WHERE user_name LIKE ? AND active ='Y' ";
         } else if (condition == 3) { // 아이디
             sql += " WHERE user_id = ? AND active ='Y' ";
         }
@@ -64,12 +64,13 @@ public class UserRepository {
             if (condition == 1) { // 회원 번호
                 pstmt.setInt(1, Integer.parseInt(keyword));
             } else if (condition == 2) { // 이름
-                pstmt.setString(1, keyword);
+                pstmt.setString(1, "%" + keyword + "%");
             } else if (condition == 3) { // 아이디
                 pstmt.setString(1, keyword);
             }
+            ResultSet rs = pstmt.executeQuery();
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+
                 while (rs.next()) {
                     foundUsers.add(new User(
                             rs.getInt("user_num"),
@@ -83,7 +84,7 @@ public class UserRepository {
                             rs.getString("active")
                     ));
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -99,6 +100,39 @@ public class UserRepository {
     }
 
     public List<Order> findOrders() {
+        List<Order> foundOrders = new ArrayList<>();
+        String sql = "SELECT * FROM order_info WHERE ride_yn = 'N' ";
+        PreparedStatement pstmt = null;
+
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            pstmt = conn.prepareStatement(sql); // try 블록 안에서 PreparedStatement 생성
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    foundOrders.add(new Order(
+                            rs.getInt("order_num"),
+                            rs.getInt("user_num"),
+                            rs.getInt("restaurant_num"),
+                            rs.getInt("menu_num"),
+                            rs.getString("ride_yn"),
+                            rs.getString("payment_info")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return foundOrders;
+    }
+
+    public List<Order> findOrdersComplete() {
         List<Order> foundOrders = new ArrayList<>();
         String sql = "SELECT * FROM order_info WHERE ride_yn = 'N' ";
         PreparedStatement pstmt = null;
