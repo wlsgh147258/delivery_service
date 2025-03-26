@@ -18,7 +18,7 @@ public class AppController {
         int selectNumber;
 
         if (userType == 1) {
-            System.out.println("[1. 고객관리 서비스 | 2. 주문 서비스 | 3. 프로그램 종료]");
+            System.out.println("[1. 사용자 관리 서비스 | 2. 주문 서비스 | 3. 프로그램 종료]");
             selectNumber = inputInteger(">>> ");
             switch (selectNumber) {
                 case 1:
