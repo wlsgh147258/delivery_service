@@ -50,13 +50,16 @@ public class AppController {
                     return;
             }
         } else if (userType == 3) {
-            System.out.println("[1. 식당 서비스 | 2. 프로그램 종료]");
+            System.out.println("[1. 식당 서비스 |2. 식당 리뷰 확인 | 2. 프로그램 종료]");
             selectNumber = inputInteger(">>> ");
             switch (selectNumber) {
                 case 1:
                     service = new RestaurantsService();
                     break;
                 case 2:
+                    System.out.println("내 식당의 리뷰를 확인합니다.");
+                    break;
+                case 3:
                     System.out.println("# 프로그램을 종료합니다.");
                     System.exit(0);
                     break;
