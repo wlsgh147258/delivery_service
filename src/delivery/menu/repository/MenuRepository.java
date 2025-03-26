@@ -5,6 +5,7 @@ import delivery.common.Condition;
 import delivery.jdbc.DBConnectionManager;
 import delivery.menu.domain.Menu;
 import delivery.restaurants.domain.Restaurants;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -15,7 +16,7 @@ import java.sql.ResultSet;
 import static delivery.common.Condition.*;
 
 
-public class MenuRepository{
+public class MenuRepository {
 
     // 음식점 추가하기
     public void insertMenu(int store_num, Menu menu) {
@@ -34,12 +35,74 @@ public class MenuRepository{
 
             pstmt.executeUpdate();
 
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // 음식점 찾기
+    public List<Menu> searchMenuList(Condition condition, String keyword, int storeNum) throws Exception {
+        List<Menu> searchList = new ArrayList<>();
+
+        String sql = "SELECT * FROM menu_info WHERE active = 'Y'";
+
+        if (condition == MENU_NAME) {
+            sql += " AND menu_name LIKE ? ORDER BY restaurant_num, menu_num";
+
+        } else if (condition == CATEGORY) {
+            sql += " AND category LIKE ? ORDER BY restaurant_num, menu_num";
+        }
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            if (condition == MENU_NAME) {
+                pstmt.setString(1, "%" + keyword + "%");
+            } else if (condition == CATEGORY) {
+                pstmt.setString(1, "%" + keyword + "%");
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Menu menu = createMenuFromResultSet(rs);
+                searchList.add(menu);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return searchList;
+    }
+
+    public List<Menu> searchMenuList(Condition condition, int keyword) throws Exception {
+        List<Menu> searchList = new ArrayList<>();
+
+        String sql = "SELECT * FROM menu_info WHERE active = 'Y'";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            if (condition == PRICE) {
+                sql += " AND price < ? ORDER BY restaurant_num, menu_num";
+                pstmt.setInt(1, keyword);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Menu menu = createMenuFromResultSet(rs);
+                searchList.add(menu);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return searchList;
+    }
+
     public List<Menu> searchMenuList(Condition condition, String keyword) throws Exception {
         List<Menu> searchList = new ArrayList<>();
 
@@ -52,14 +115,14 @@ public class MenuRepository{
             sql += " AND category LIKE ? ORDER BY restaurant_num, menu_num";
         }
 
-        try(Connection conn = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        if (condition == MENU_NAME) {
-             pstmt.setString(1,"%"+keyword+"%");
-        } else if (condition == CATEGORY) {
-                 pstmt.setString(1,"%"+keyword+"%");
-        }
+            if (condition == MENU_NAME) {
+                pstmt.setString(1, "%" + keyword + "%");
+            } else if (condition == CATEGORY) {
+                pstmt.setString(1, "%" + keyword + "%");
+            }
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -68,26 +131,23 @@ public class MenuRepository{
                 searchList.add(menu);
             }
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return searchList;
     }
 
-    public List<Menu> searchMenuList(Condition condition, int keyword) throws Exception {
+    public List<Menu> searchMenuListByOwner(int storeNum) throws Exception {
         List<Menu> searchList = new ArrayList<>();
 
-        String sql = "SELECT * FROM menu_info WHERE active = 'Y'";
+        String sql = "SELECT * FROM menu_info WHERE active = 'Y' AND restaurant_num = ?";
 
-        try(Connection conn = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            if  (condition == PRICE) {
-                sql += " AND price < ? ORDER BY restaurant_num, menu_num";
-                pstmt.setInt(1,keyword);
-            }
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, storeNum);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -96,8 +156,7 @@ public class MenuRepository{
                 searchList.add(menu);
             }
 
-        }
-        catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -124,8 +183,8 @@ public class MenuRepository{
         String sql = "UPDATE menu_info SET active = 'N' WHERE menu_num = ?";
 
         Connection conn = null;
-        try(Connection conn1 = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn1.prepareStatement(sql)) {
+        try (Connection conn1 = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn1.prepareStatement(sql)) {
 
             pstmt.setInt(1, delMenuNum);
             pstmt.executeUpdate();
