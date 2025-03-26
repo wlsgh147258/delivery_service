@@ -9,7 +9,9 @@ import delivery.menu.domain.Menu;
 import delivery.order.repository.OrderRepository;
 import delivery.restaurants.repository.RestaurantsRepository;
 import delivery.review.repository.ReviewRepository;
+import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
+import delivery.user.service.UserService;
 
 import static delivery.ui.AppUi.*;
 
@@ -19,9 +21,9 @@ import java.util.List;
 public class OrderService implements DeliveryService {
     private final UserRepository userRepository = new UserRepository();
     private final OrderRepository orderRepository = new OrderRepository();
-    private final RestaurantsRepository restaurantRepository = new RestaurantsRepository();
+    private final UserService userService = new UserService();
     private final MenuRepository menuRepository = new MenuRepository();
-    private final ReviewRepository reviewRepository = new ReviewRepository();
+
 
     private static final int KOREAN_FOOD = 1;
     private static final int CHINESE_FOOD = 2;
@@ -136,6 +138,7 @@ public class OrderService implements DeliveryService {
 
     private void processOrder(Menu menu) {
         System.out.println(menu.getMenu_name() + "을(를) 주문합니다.");
+        User currentUser = Main.getCurrentUser();
         Order order = new Order(
                 menu.getMenu_num(),
                 Main.user.getUserNum(),
@@ -145,10 +148,11 @@ public class OrderService implements DeliveryService {
                 "credit_card"
 
         );
-
-        orderRepository.addOrder(order, menu);
+        orderRepository.addOrder(order, menu.getPrice());
         System.out.println("주문이 완료되었습니다.");
     }
+
+
 
     private void processReturnMenu() {
         System.out.println("\n============================ 주문 취소 시스템을 실행합니다. ============================");

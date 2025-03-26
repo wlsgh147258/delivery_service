@@ -4,6 +4,10 @@ import static delivery.ui.AppUi.*;
 
 import delivery.common.DeliveryService;
 import delivery.main.Main;
+import delivery.menu.domain.Menu;
+import delivery.menu.repository.MenuRepository;
+import delivery.order.domain.Order;
+import delivery.order.repository.OrderRepository;
 import delivery.review.service.ReviewService;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
@@ -13,6 +17,8 @@ import java.util.List;
 
 public class UserService implements DeliveryService {
     private final UserRepository userRepository = new UserRepository();
+    private final OrderRepository orderRepository = new OrderRepository();
+    private final MenuRepository menuRepository = new MenuRepository();
 
     private final int FIND_BY_NUM = 1;
     private final int FIND_BY_NAME = 2;
@@ -31,7 +37,7 @@ public class UserService implements DeliveryService {
                     deleteUserData();
                     break;
                 case 3:
-
+                    getTotalPrice();
                     break;
                 case 4:
                     (new ReviewService()).start();
@@ -133,7 +139,7 @@ public class UserService implements DeliveryService {
         List<User> users = findUserData();
         int count = users.size();
         if (count > 0) {
-            System.out.printf("\n========== 검색 결과 %d개 ==========", count);
+            System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
             for (User user : users) {
                 System.out.println(user);
             }
@@ -143,28 +149,54 @@ public class UserService implements DeliveryService {
     }
 
     public void deleteUserData() {
-        System.out.println("탈퇴를 위한 유저 검색을 시작합니다.");
-        List<User> users = findUserData();
+        System.out.println("정말 탈퇴를 하시겠습니까?");
+        System.out.println("탈퇴를 하시려면 '탈퇴' 를 입력해주세요.");
 
-        if (users.size() > 0) {
-            System.out.println("탈퇴할 유저 번호를 입력하세요.");
-            int delUserNum = inputInteger(">>> ");
-
-            if (users.stream().anyMatch(user -> user.getUserNum() == delUserNum)) {
-                userRepository.deleteUser(delUserNum);
-                System.out.println("유저번호 " + delUserNum + "번 회원탈퇴 완료.");
-            } else {
-                System.out.println("검색된 유저 번호를 입력해주세요.");
-            }
-        } else {
-            System.out.println("조회 결과가 없습니다.");
+        String delAnswer = inputString(">>> ");
+        if (delAnswer.equals("탈퇴")) {
+            userRepository.deleteUser(Main.user.getUserNum());
+            System.out.println("유저 " + Main.user.getUserName() + "님 회원탈퇴 완료되었습니다.");
         }
 
     }
-    public void showUserGrade(User user){
-        System.out.println("현재 회원님의 등급: ");
-        System.out.print(user.getUserGrade());
-        System.out.print("\n현재 회원님의 총 사용 금액: ");
-        System.out.println(user.getTotalPaying());
+
+    public int getTotalPrice() {
+        User currentUser = Main.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("로그인된 유저가 없습니다.");
+            return 0;
+        }
+
+        List<Menu> orderedMenuList;
+        try {
+            orderedMenuList = menuRepository.findOrderedMenusByUserNum(currentUser.getUserNum());
+        } catch (Exception e) {
+            System.err.println("주문 내역 조회 중 오류 발생: " + e.getMessage());
+            return 0;
+        }
+
+        if (orderedMenuList == null || orderedMenuList.isEmpty()) {
+            System.out.println("주문 내역이 없습니다.");
+            return 0;
+        }
+
+        int totalPrice = 0; // 초기화 위치 변경
+
+        for (Menu menu : orderedMenuList) {
+            totalPrice += menu.getPrice();
+        }
+
+        currentUser.setTotalPaying(totalPrice);
+
+        System.out.println("--- 회원 정보 ---");
+        if (currentUser != null) {
+            System.out.println("현재 회원님의 등급: " + currentUser.getUserGrade());
+            System.out.println("총 주문 금액: " + currentUser.getTotalPaying() + "원");
+        } else {
+            System.out.println("로그인된 유저가 없습니다.");
+        }
+        System.out.println("-----------------");
+        return currentUser.getTotalPaying();
     }
+
 }

@@ -13,6 +13,7 @@ public class Main {
     public static AppController controller = new AppController();
     public static UserService userservice = new UserService();
 
+    public static User getCurrentUser(){return Main.user;}
     public static void main(String[] args) {
 
         Main_run(userTypeno, userservice, controller);
@@ -48,5 +49,7 @@ public class Main {
 
             controller.chooseSystem(userTypeno);
         }
+
+
     }
 }
