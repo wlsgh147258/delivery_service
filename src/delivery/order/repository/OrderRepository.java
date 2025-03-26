@@ -13,7 +13,7 @@ import java.util.List;
 
 public class OrderRepository {
     public void addOrder(Order order) {
-        String sql = "INSERT INTO order_info_seq VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?)";
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, order.getUserNum());
@@ -28,29 +28,30 @@ public class OrderRepository {
         }
     }
 
-    public List<Order> findByUserNum(int userNum) {
-
+    public List<Order> findOrderMenu(int userNum) {
         List<Order> orderList = new ArrayList<>();
         // JOIN 문 이용
-        String sql = "SELECT * FROM reviews r " +
-                "INNER JOIN (SELECT o.order_num FROM order_info o WHERE o.user_num = ?) orn " +
-                "ON r.order_num = orn.order_num";
+        String sql = "SELECT * " +
+                "FROM order_info " +
+                "WHERE user_num = ?";
 
-        try(Connection conn = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            pstmt.setInt(1, userNum); // userNum 매개변수 설정
             ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
-                Order review = new Order(
+
+            while (rs.next()) {
+                Order order = new Order(
                         rs.getInt("order_num"),
                         rs.getInt("user_num"),
                         rs.getInt("restaurant_num"),
                         rs.getInt("menu_num"),
                         rs.getString("ride_yn"),
-                        rs.getString("content")
+                        rs.getString("payment_info")
                 );
 
-                orderList.add(review);
+                orderList.add(order);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,8 +90,8 @@ public class OrderRepository {
                 Order order = new Order(
                         rs.getInt("order_num"),
                         rs.getInt("user_num"),
-                        rs.getInt("restaurantNum"),
-                        rs.getInt("menuNum"),
+                        rs.getInt("restaurant_num"),
+                        rs.getInt("menu_num"),
                         rs.getString("ride_yn"),
                         rs.getString("payment_info")
                 );

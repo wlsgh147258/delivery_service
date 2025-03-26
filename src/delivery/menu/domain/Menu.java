@@ -3,6 +3,7 @@ package delivery.menu.domain;
 public class Menu {
 
     private int menu_num; // 메뉴코드
+    private int restaurantNum;
     private String menu_name; // 메뉴명
     private String category; // 카테고리
     private int price; // 가격
@@ -45,6 +46,23 @@ public class Menu {
     }
 
     public void setActive(String active) {
+        this.active = active;
+    }
+
+    public int getRestaurantNum() {
+        return restaurantNum;
+    }
+
+    public void setRestaurantNum(int restaurant_num) {
+        this.restaurantNum = restaurant_num;
+    }
+
+    public Menu(int menu_num, int restaurantNum, String menu_name, String category, int price, String active) {
+        this.menu_num = menu_num;
+        this.restaurantNum = restaurantNum;
+        this.menu_name = menu_name;
+        this.category = category;
+        this.price = price;
         this.active = active;
     }
 

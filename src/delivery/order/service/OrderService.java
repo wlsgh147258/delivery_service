@@ -2,6 +2,7 @@ package delivery.order.service;
 
 import delivery.common.Condition;
 import delivery.common.DeliveryService;
+import delivery.main.Main;
 import delivery.menu.repository.MenuRepository;
 import delivery.order.domain.Order;
 import delivery.menu.domain.Menu;
@@ -33,8 +34,9 @@ public class OrderService implements DeliveryService {
     @Override
     public void start() { // start를 받아옴
         while (true) {
-            orderManagementScreen(); // 이름 바꿔야함.
+            orderManagementScreen();
             int selection = inputInteger(">>> ");
+            int userNum = Main.user.getUserNum();
 
             switch (selection) {
                 case 1:
@@ -44,6 +46,9 @@ public class OrderService implements DeliveryService {
                     processReturnMenu();
                     break;
                 case 3:
+                    findOrderMenu(userNum);
+                    return;
+                case 4:
                     return;
                 default:
                     System.out.println("\n### 메뉴를 다시 입력하세요.");
@@ -131,6 +136,18 @@ public class OrderService implements DeliveryService {
 
     private void processOrder(Menu menu) {
         System.out.println(menu.getMenu_name() + "을(를) 주문합니다.");
+        Order order = new Order(
+                menu.getMenu_num(),
+                Main.user.getUserNum(),
+                menu.getRestaurantNum(),
+                menu.getMenu_num(),
+                "N",
+                "credit_card"
+
+        );
+
+        orderRepository.addOrder(order);
+        System.out.println("주문이 완료되었습니다.");
     }
 
     private void processReturnMenu() {
@@ -163,6 +180,23 @@ public class OrderService implements DeliveryService {
         // 주문 상태, 배송 상태 등을 확인하여 주문 취소 가능 여부를 반환
         // 실제 구현에서는 데이터베이스에서 주문 상태, 배송 상태 등을 조회하여 확인해야 함
         return true; // 예시: 항상 true 반환
+    }
+    public List<Order> findOrderMenu(int userNum) {
+        List<Order> orderList = orderRepository.findOrderMenu(userNum);
+        if (orderList.isEmpty()) {
+            System.out.println("### 주문 내역이 없습니다.");
+        } else {
+            System.out.println("\n============================ 주문 내역 ============================");
+            for (Order order : orderList) {
+                System.out.println("주문 번호: " + order.getOrderNum() +
+                        ", 메뉴 번호: " + order.getMenuNum() +
+                        ", 고객 번호: " + order.getUserNum() +
+                        ", 가게 번호: " + order.getRestaurantNum() +
+                        ", 배달 기사: " + order.getRideYN() +
+                        ", 결제 정보: " + order.getPaymentInfo());
+            }
+        }
+        return orderList;
     }
 }
 

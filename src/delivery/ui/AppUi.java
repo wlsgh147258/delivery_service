@@ -92,7 +92,8 @@ public class AppUi {
         System.out.println("\n========= 주문 관리 시스템 =========");
         System.out.println("### 1. 주문 하기");
         System.out.println("### 2. 주문 취소");
-        System.out.println("### 3. 이전 화면으로 돌아가기");
+        System.out.println("### 3. 주문 내역 확인하기");
+        System.out.println("### 4. 이전 화면으로 돌아가기");
     }
     public static void MenuManagementScreen(){
         System.out.println("\n========= 식당 관리 시스템 =========");

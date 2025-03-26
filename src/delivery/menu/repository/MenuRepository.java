@@ -108,13 +108,15 @@ public class MenuRepository{
     // String store_name, String open_hours, String call_number, String delivery_area, String detail_info
     // ResultSet에서 추출한 결과를 Restaurant 객체로 포장해주는 헬터 메서드
     private static Menu createMenuFromResultSet(ResultSet rs) throws SQLException {
-        Menu menu = new Menu(rs.getString("menu_name"),
-                rs.getString("category"),
-                rs.getInt("price"));
 
-        menu.setMenu_num(rs.getInt("menu_num"));
-        menu.setActive(rs.getString("active"));
-        return menu;
+        return new Menu(
+                rs.getInt("menu_num"),
+                rs.getInt("restaurant_num"),
+                rs.getString("menu_name"),
+                rs.getString("category"),
+                rs.getInt("price"),
+                rs.getString("active")
+        );
     }
 
 

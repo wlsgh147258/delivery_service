@@ -1,17 +1,19 @@
 package delivery.main;
 
-import delivery.restaurants.service.RestaurantsService;
+import delivery.user.domain.User;
 import delivery.user.service.UserService;
 
 import static delivery.ui.AppUi.*;
-import static delivery.user.repository.UserRepository.findUserType;
+import static delivery.user.repository.UserRepository.findUserOne;
 
 public class Main {
+
+    public static User user;
 
     public static void main(String[] args) {
         int userType = 0;
         AppController controller = new AppController();
-        UserService userservice =new UserService();
+        UserService userservice = new UserService();
 
         while (true) {
             System.out.println("\n========= 음식 배달 시스템 =========");
@@ -25,13 +27,13 @@ public class Main {
                 System.out.println("### 비밀번호를 입력하세요.");
                 String userpw = inputString(">>> ");
 
-                String type = findUserType(userid,userpw);
+                user = findUserOne(userid, userpw);
 
-                if (type.equals("고객")) {
+                if (user.getUserType().equals("고객")) {
                     userType = 1;
-                } else if (type.equals("라이더")) {
+                } else if (user.getUserType().equals("라이더")) {
                     userType = 2;
-                } else if (type.equals("점주")) {
+                } else if (user.getUserType().equals("점주")) {
                     userType = 3;
                 }
 
