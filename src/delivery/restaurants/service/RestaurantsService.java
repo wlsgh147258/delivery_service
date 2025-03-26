@@ -80,6 +80,7 @@ public class RestaurantsService implements DeliveryService {
                 System.out.printf("\n===================회원 번호 %d번 님의 restaurant 검색 결과 (총 %d건)=====================\n", userNum, restaurantsList.size());
                 List<Integer> storeNums = new ArrayList<>();
                 for (Restaurants restaurant : restaurantsList) {
+                    //운영중인 식당 리스트 보여주기
                     System.out.println(restaurant);
                     storeNums.add(restaurant.getStore_num());
                 }
@@ -94,8 +95,13 @@ public class RestaurantsService implements DeliveryService {
 
                     switch (updateSelection) {
                         case 1:
-                            MenuService menuService = new MenuService();
-                            menuService.start();
+                            for (Restaurants restaurants : restaurantsList) {
+                                if (restaurants.getStore_num()==updateRestaNum){
+                                    MenuService menuService = new MenuService();
+                                    menuService.menu(updateRestaNum);
+                                    break;
+                                }
+                            }
                             break;
 
                         case 2, 3, 4, 5, 6, 7:

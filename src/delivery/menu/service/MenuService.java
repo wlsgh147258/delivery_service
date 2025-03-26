@@ -4,6 +4,8 @@ import delivery.common.Condition;
 import delivery.common.DeliveryService;
 import delivery.menu.domain.Menu;
 import delivery.menu.repository.MenuRepository;
+import delivery.restaurants.domain.Restaurants;
+import delivery.restaurants.service.RestaurantsService;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -12,12 +14,12 @@ import java.util.Scanner;
 
 import static delivery.ui.AppUi.MenuManagementScreen;
 
-public class MenuService implements DeliveryService {
+public class MenuService {
 
     private final MenuRepository menuRepository = new MenuRepository();
 
-    @Override
-    public void start() {
+
+    public void menu(int updateRestaNum) {
 
         while (true) {
             MenuManagementScreen();
@@ -25,13 +27,14 @@ public class MenuService implements DeliveryService {
 
             switch (selection) {
                 case 1:
-                    insertMenuData();
+                    insertMenuData(updateRestaNum);
+//                    System.out.println(res);
                     break;
                 case 2:
-                    showSearchMenuData();
+                    searchMenuOwner(updateRestaNum);
                     break;
                 case 3:
-                    deleteMenuData();
+                    deleteMenuData(updateRestaNum);
                     break;
                 case 4:
                     return;
@@ -44,8 +47,7 @@ public class MenuService implements DeliveryService {
     }
 
 
-
-    private void insertMenuData() {
+    private void insertMenuData(int storeNum) {
         System.out.println("\n ====== 메뉴 정보를 추가합니다. ======");
         int store_num = inputInteger("# Restaurant 번호 : ");
         String menuName = inputString("# 메뉴명: ");
@@ -54,17 +56,17 @@ public class MenuService implements DeliveryService {
 
         Menu newMenu = new Menu(menuName, category, price);
 
-        menuRepository.insertMenu(store_num,newMenu);
+        menuRepository.insertMenu(store_num, newMenu);
 
         System.out.printf("\n### [%s] 정보가 정상적으로 추가되었습니다.\n", menuName);
     }
 
 
-    private void showSearchMenuData() {
+    private void showSearchMenuData(int storeNum) {
         try {
-            List<Menu> menus = searchMenuData();
+            List<Menu> menus = searchMenuData(storeNum);
             int count = menus.size();
-            if(count > 0) {
+            if (count > 0) {
                 System.out.printf("\n======================================= 검색 결과(총 %d건) =======================================\n", count);
                 for (Menu menu : menus) {
                     System.out.println(menu);
@@ -77,8 +79,40 @@ public class MenuService implements DeliveryService {
         }
     }
 
+    private void searchMenuOwner(int storeNum) {
+        try {
+            List<Menu> menus = searchMenuDataOwner(storeNum);
+            int count = menus.size();
+            if (count > 0) {
+                System.out.printf("\n======================================= 검색 결과(총 %d건) =======================================\n", count);
+                for (Menu menu : menus) {
+                    System.out.println(menu);
+                }
+            } else {
+                System.out.println("\n### 검색 결과가 없습니다.");
+            }
+        } catch (Exception e) {
+            System.out.println("\n ### 검색 결과가 없습니다.2");
+        }
+    }
 
-    private List<Menu> searchMenuData() throws Exception {
+    private List<Menu> searchMenuDataOwner(int storeNum) throws Exception {
+
+        Condition condition = Condition.ALL;
+
+
+        System.out.println("\n## 운영중인 식당 메뉴를 검색합니다.");
+
+
+//        String keyword = "";
+
+        return menuRepository.searchMenuListByOwner(storeNum);
+
+
+    }
+
+
+    private List<Menu> searchMenuData(int storeNum) throws Exception {
         System.out.println("\n============== 메뉴 검색 조건을 선택하세요. ===============");
         System.out.println("[ 1. 이름검색 | 2. 가격검색 | 3. 카테고리검색 | 4. 전체검색 ]");
         int selection = inputInteger(">>> ");
@@ -113,7 +147,7 @@ public class MenuService implements DeliveryService {
             String keyword = inputString("# 검색어: ");
             return menuRepository.searchMenuList(condition, keyword);
         } else {
-            String keyword= "";
+            String keyword = "";
             return menuRepository.searchMenuList(condition, keyword);
         }
 
@@ -121,11 +155,10 @@ public class MenuService implements DeliveryService {
     }
 
 
-
-    private void deleteMenuData() {
+    private void deleteMenuData(int storeNum) {
         try {
-            System.out.println("\n### 삭제를 위한 영화 검색을 시작합니다.");
-            List<Menu> menus = searchMenuData();
+            System.out.println("\n### 삭제를 위한 메뉴 검색을 시작합니다.");
+            List<Menu> menus = searchMenuData(storeNum);
 
             if (!menus.isEmpty()) {
                 List<Integer> menuNums = new ArrayList<>();
