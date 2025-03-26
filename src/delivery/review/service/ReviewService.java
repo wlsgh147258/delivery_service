@@ -10,6 +10,7 @@ import delivery.order.repository.OrderRepository;
 import delivery.review.domain.Review;
 import delivery.review.repository.ReviewRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,17 +79,17 @@ public class ReviewService implements DeliveryService {
     }
 
     private void deleteReviewData() {
-        System.out.println("삭제를 위한 리뷰 검색을 시작합니다.");
+        System.out.println("===== 삭제를 위한 리뷰 검색을 시작합니다. =====");
         List<Review> reviews;
         if(Main.user.getUserType().equals("고객")) {
             reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         } else {
-            reviews = null;//findReviewData(Option.FIND_BY_RESTAURANT_NUM, null);
+            reviews = findReviewData(Option.FIND_BY_MASTER_NUM, Integer.toString(Main.user.getUserNum()));//findReviewData(Option.FIND_BY_RESTAURANT_NUM, null);
         }
         for (Review review : reviews) {
             System.out.println(review);
         }
-        if (reviews.size() > 0) {
+        if (!reviews.isEmpty()) {
             System.out.println("삭제할 리뷰의 번호를 입력하세요.");
             int delReviewNum = inputInteger(">>> ");
             if (reviews.stream().anyMatch(review -> review.getReviewNum() == delReviewNum)) {
@@ -103,7 +104,12 @@ public class ReviewService implements DeliveryService {
     }
 
     private void showFoundReviewData() {
-        List<Review> reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        List<Review> reviews;
+        if(Main.user.getUserType().equals("고객")) {
+            reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        } else {
+            reviews = findReviewData(Option.FIND_BY_MASTER_NUM, Integer.toString(Main.user.getUserNum()));
+        }
         int count = reviews.size();
         if(count > 0) {
             System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
@@ -120,15 +126,17 @@ public class ReviewService implements DeliveryService {
         List<Order> orderList = orderRepository.findOrderMenu(Main.user.getUserNum());
         List<Review> userReviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         Set<Integer> orderNumOfReviewsSet = new HashSet<>();
+        List<Order> availableOrderList = new ArrayList<>();
         for (Review userReview : userReviews) {
             orderNumOfReviewsSet.add(userReview.getOrderNum());
         }
         for (Order order : orderList) {
-            if(!orderNumOfReviewsSet.contains(order.getOrderNum())) {
+            if(!orderNumOfReviewsSet.contains(order.getOrderNum()) && order.getRideYN().equals("Y")) {
+                availableOrderList.add(order);
                 System.out.println(order);
             }
         }
-        if(orderList.isEmpty()) {
+        if(availableOrderList.isEmpty()) {
             System.out.println("===== 리뷰를 작성할 수 있는 주문이 없습니다. =====");
             return;
         }
