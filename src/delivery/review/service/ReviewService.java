@@ -101,7 +101,12 @@ public class ReviewService {
     }
 
     private void showFoundReviewData() {
-        List<Review> reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        List<Review> reviews;
+        if(Main.user.getUserType().equals("고객")) {
+            reviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
+        } else {
+            reviews = findReviewData(Option.FIND_BY_MASTER_NUM, Integer.toString(Main.user.getUserNum()));
+        }
         int count = reviews.size();
         if(count > 0) {
             System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
