@@ -16,15 +16,17 @@ public class OrderRepository {
 
 
     public void addOrder(Order order, int pri) {
-        String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?, ?)";
-        try(Connection conn = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, order.getUserNum());
             pstmt.setInt(2, order.getRestaurantNum());
             pstmt.setInt(3, order.getMenuNum());
             pstmt.setString(4, "N");
             pstmt.setString(5, order.getPaymentInfo());
             pstmt.setInt(6, 0);
+            pstmt.setString(7, "N");
+
 
             pstmt.executeUpdate();
 
@@ -53,10 +55,9 @@ public class OrderRepository {
                         rs.getInt("restaurant_num"),
                         rs.getInt("menu_num"),
                         rs.getString("ride_yn"),
-                        rs.getString("cook_yn"),
-                        rs.getString("payment_info")
+                        rs.getString("payment_info"),
+                        rs.getString("cook_yn")
                 );
-
                 order.setMenuPrice(rs.getInt("price"));
                 orderList.add(order);
             }
@@ -69,8 +70,8 @@ public class OrderRepository {
     public void deleteOrder(int delOrderNum) {
         String sql = "DELETE FROM order_info WHERE order_num = ? AND user_num = ?";
 
-        try(Connection conn = DBConnectionManager.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, delOrderNum);
             pstmt.setInt(2, Main.user.getUserNum());
 
@@ -106,7 +107,8 @@ public class OrderRepository {
                         rs.getInt("restaurant_num"),
                         rs.getInt("menu_num"),
                         rs.getString("ride_yn"),
-                        rs.getString("payment_info")
+                        rs.getString("payment_info"),
+                        rs.getString("cook_yn")
                 );
                 order.setMenuPrice(rs.getInt("price"));
                 orderList.add(order);

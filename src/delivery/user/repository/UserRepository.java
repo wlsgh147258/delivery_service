@@ -102,7 +102,8 @@ public class UserRepository {
 
     public List<Order> findOrders() {
         List<Order> foundOrders = new ArrayList<>();
-        String sql = "SELECT o.*, m.price FROM order_info o INNER JOIN menu_info m ON o.menu_num = m.menu_num WHERE ride_yn = 'N'";
+        String sql = "SELECT o.*, m.price FROM order_info o INNER JOIN menu_info m ON o.menu_num = m.menu_num " +
+                "WHERE ride_yn = 'N' AND cook_yn = 'Y'";
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
@@ -116,7 +117,9 @@ public class UserRepository {
                             rs.getInt("restaurant_num"),
                             rs.getInt("menu_num"),
                             rs.getString("ride_yn"),
-                            rs.getString("payment_info"));
+                            rs.getString("payment_info"),
+                            rs.getString("cook_yn")
+                    );
                     order.setMenuPrice(rs.getInt("price"));
                     foundOrders.add(order);
                 }
@@ -152,7 +155,9 @@ public class UserRepository {
                             rs.getInt("restaurant_num"),
                             rs.getInt("menu_num"),
                             rs.getString("ride_yn"),
-                            rs.getString("payment_info")));
+                            rs.getString("payment_info"),
+                            rs.getString("cook_yn")
+                    ));
                 }
             }
         } catch (SQLException e) {

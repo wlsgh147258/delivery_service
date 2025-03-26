@@ -217,7 +217,8 @@ public class OrderService implements DeliveryService {
                 menu.getRestaurantNum(),
                 menu.getMenu_num(),
                 "N",
-                payment
+                payment,
+                "N"
         );
         orderRepository.addOrder(order, menu.getPrice());
         System.out.println("주문이 완료되었습니다.");
@@ -275,6 +276,7 @@ public class OrderService implements DeliveryService {
                         ", 메뉴 번호: " + order.getMenuNum() +
                         ", 고객 번호: " + order.getUserNum() +
                         ", 가게 번호: " + order.getRestaurantNum() +
+                        ", 조리 상태: " + order.getCookYN() +
                         ", 배달 상태: " + order.getRideYN() +
                         ", 결제 정보: " + order.getPaymentInfo() +
                         ", 금액: " + order.getMenuPrice());

@@ -79,9 +79,10 @@ public class Order {
                         ", 사용자 번호: " + userNum +
                         ", 식당 번호: " + restaurantNum +
                         ", 메뉴 번호: " + menuNum +
-                        ", 조리 완료여부: " + cookYN +
                         ", 라이더 배치여부: " + rideYN +
-                        ", 금액: " + menuPrice + "원"
+                        ", 결제수단: " + paymentInfo +
+                        ", 금액: " + menuPrice + "원" +
+                        ", 조리 완료여부: " + cookYN
                 ;
     }
 }
