@@ -8,6 +8,7 @@ public class Order {
     private int menuNum;
     private String rideYN;
     private String paymentInfo;
+    private int menuPrice;
 
     public Order(int orderNum, int userNum, int restaurantNum, int menuNum, String rideYN, String paymentInfo) {
         this.orderNum = orderNum;
@@ -16,6 +17,14 @@ public class Order {
         this.menuNum = menuNum;
         this.rideYN = rideYN;
         this.paymentInfo = paymentInfo;
+    }
+
+    public int getMenuPrice() {
+        return menuPrice;
+    }
+
+    public void setMenuPrice(int menuPrice) {
+        this.menuPrice = menuPrice;
     }
 
     public int getOrderNum() {return orderNum;}
@@ -49,7 +58,7 @@ public class Order {
                         ", 식당 번호: " + restaurantNum +
                         ", 메뉴 번호: " + menuNum +
                         ", 라이더 가능여부: " + rideYN +
-                        ", 금액: " + paymentInfo + "원"
+                        ", 금액: " + menuPrice + "원"
                 ;
     }
 }

@@ -187,6 +187,7 @@ public class OrderService implements DeliveryService {
     }
     public List<Order> findOrderMenu(int userNum) {
         List<Order> orderList = orderRepository.findOrderMenu(userNum);
+
         if (orderList.isEmpty()) {
             System.out.println("### 주문 내역이 없습니다.");
         } else {

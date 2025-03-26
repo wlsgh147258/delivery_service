@@ -93,8 +93,7 @@ public class OrderRepository {
     // 주문 번호를 통해
     public List<Order> findOrderByNumber(int orderNum) {
         List<Order> orderList = new ArrayList<>();
-        String sql = "SELECT * FROM order_info WHERE order_num = ?";
-
+        String sql = "SELECT o.*, m.price FROM order_info o INNER JOIN menu_info m ON o.menu_num = m.menu_num WHERE order_num = ?";
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -113,6 +112,7 @@ public class OrderRepository {
                         rs.getString("ride_yn"),
                         rs.getString("payment_info")
                 );
+                order.setMenuPrice(rs.getInt("price"));
                 orderList.add(order);
             }
         } catch (SQLException e) {

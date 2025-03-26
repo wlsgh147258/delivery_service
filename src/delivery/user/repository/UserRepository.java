@@ -102,7 +102,7 @@ public class UserRepository {
 
     public List<Order> findOrders() {
         List<Order> foundOrders = new ArrayList<>();
-        String sql = "SELECT * FROM order_info WHERE ride_yn = 'N' ";
+        String sql = "SELECT o.*, m.price FROM order_info o INNER JOIN menu_info m ON o.menu_num = m.menu_num WHERE ride_yn = 'N'";
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
@@ -110,13 +110,15 @@ public class UserRepository {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    foundOrders.add(new Order(
+                    Order order = new Order(
                             rs.getInt("order_num"),
                             rs.getInt("user_num"),
                             rs.getInt("restaurant_num"),
                             rs.getInt("menu_num"),
                             rs.getString("ride_yn"),
-                            rs.getString("payment_info")));
+                            rs.getString("payment_info"));
+                    order.setMenuPrice(rs.getInt("price"));
+                    foundOrders.add(order);
                 }
             }
         } catch (SQLException e) {
