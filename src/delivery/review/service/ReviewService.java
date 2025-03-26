@@ -10,6 +10,7 @@ import delivery.order.repository.OrderRepository;
 import delivery.review.domain.Review;
 import delivery.review.repository.ReviewRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -125,16 +126,17 @@ public class ReviewService implements DeliveryService {
         List<Order> orderList = orderRepository.findOrderMenu(Main.user.getUserNum());
         List<Review> userReviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         Set<Integer> orderNumOfReviewsSet = new HashSet<>();
-
+        List<Order> availableOrderList = new ArrayList<>();
         for (Review userReview : userReviews) {
             orderNumOfReviewsSet.add(userReview.getOrderNum());
         }
         for (Order order : orderList) {
-            if(!orderNumOfReviewsSet.contains(order.getOrderNum())) {
+            if(!orderNumOfReviewsSet.contains(order.getOrderNum()) && order.getRideYN().equals("Y")) {
+                availableOrderList.add(order);
                 System.out.println(order);
             }
         }
-        if(orderList.isEmpty() || orderNumOfReviewsSet.size() == orderList.size()) {
+        if(availableOrderList.isEmpty()) {
             System.out.println("===== 리뷰를 작성할 수 있는 주문이 없습니다. =====");
             return;
         }
