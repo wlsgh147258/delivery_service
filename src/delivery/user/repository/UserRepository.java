@@ -1,6 +1,7 @@
 package delivery.user.repository;
 
 import delivery.jdbc.DBConnectionManager;
+import delivery.main.Main;
 import delivery.order.domain.Order;
 import delivery.user.domain.Grade;
 import delivery.user.domain.User;
@@ -134,11 +135,12 @@ public class UserRepository {
 
     public List<Order> findOrdersComplete() {
         List<Order> foundOrders = new ArrayList<>();
-        String sql = "SELECT * FROM order_info WHERE ride_yn = 'N' ";
+        String sql = "SELECT * FROM order_info WHERE ride_yn = '~' AND rider_num = ? ";
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
             pstmt = conn.prepareStatement(sql); // try 블록 안에서 PreparedStatement 생성
+            pstmt.setInt(1, Main.user.getUserNum());
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
