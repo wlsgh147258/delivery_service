@@ -75,9 +75,10 @@ public class RestaurantsService implements DeliveryService {
         try {
             //메서드 실행되면 바로 운영중인 식당 리스트 보여주고 수정할 식당 선택
             List<Restaurants> restaurantsList = restaurantsRepository.searchRestaurantByOwner(userNum);
+            String userName = Main.user.getUserName();
 
             if (restaurantsList.size() > 0) {
-                System.out.printf("\n===================회원 번호 %d번 님의 restaurant 검색 결과 (총 %d건)=====================\n", userNum, restaurantsList.size());
+                System.out.printf("\n================== [ %d ] 님의 restaurant 검색 결과 (총 %d건)=====================\n", userName, restaurantsList.size());
                 List<Integer> storeNums = new ArrayList<>();
                 for (Restaurants restaurant : restaurantsList) {
                     //운영중인 식당 리스트 보여주기
@@ -123,7 +124,7 @@ public class RestaurantsService implements DeliveryService {
                                 for (Restaurants restaurant : restaurantsList) {
                                     if (restaurant.getStore_num() == updateRestaNum) {
 
-                                        System.out.printf("\n### %d번 %s 식당 정보를 정상 삭제하였습니다. \n",
+                                        System.out.printf("\n### [ %d 번 ] [ %s ] 식당 정보를 정상 삭제하였습니다. \n",
                                                 restaurant.getStore_num(), restaurant.getStore_name());
                                         break;
                                     }
@@ -195,8 +196,8 @@ public class RestaurantsService implements DeliveryService {
             }
 
             // DB 업데이트 실행
-            updateRestaurantInfo(restaurant.getStore_num(), column, newValue);
-            System.out.printf("\n###[ %d번 ] 식당의 [ %s ] 정보가 성공적으로 수정되었습니다.\n", restaurant.getStore_num(), column);
+            restaurantsRepository.updateRestaurantInfo(restaurant.getStore_num(), column, newValue);
+            System.out.printf("\n###[ %s ] 식당의 [ %s ] 정보가 성공적으로 수정되었습니다.\n", restaurant.getStore_name(), column);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -204,26 +205,6 @@ public class RestaurantsService implements DeliveryService {
 
     }
 
-    // DB에서 특정 컬럼을 업데이트하는 메서드
-    private void updateRestaurantInfo(int storeNum, String column, String newValue) {
-
-        String sql = "UPDATE restaurants SET " + column + " = ? WHERE restaurant_num = ?";
-
-        try (Connection conn = DBConnectionManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, newValue);
-            pstmt.setInt(2, storeNum);
-
-            pstmt.executeUpdate();
-
-            System.out.println("### 업데이트 성공!");
-
-        } catch (SQLException e) {
-            System.out.println("### 업데이트 실패. 입력을 다시 확인하세요!");
-            e.printStackTrace();
-        }
-    }
 
 
     // 운영중인 식당 정보 출력
@@ -235,17 +216,16 @@ public class RestaurantsService implements DeliveryService {
 
             int count = restaurantsList.size();
 
-//            List<Integer> restaurantNums = new ArrayList<>();
+            String userName = Main.user.getUserName();
 
             if (count > 0) {
-                System.out.printf("\n===================검색 결과 (총 %d건)=====================\n", restaurantsList.size());
+                System.out.printf("\n================== [ %d ] 님의 restaurant 검색 결과 (총 %d건)=====================\n", userName, restaurantsList.size());
                 for (Restaurants restaurants : restaurantsList) {
                     System.out.println(restaurants);
-//                    restaurantNums.add(restaurants.getStore_num());
                 }
                 System.out.println();
             } else {
-                System.out.println("\n### 검색 결과가 없습니다.");
+                System.out.println("\n### 운영중인 식당이 존재하지 않습니다.");
             }
         } catch (Exception e) {
             e.printStackTrace();

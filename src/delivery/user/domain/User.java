@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class User {
 
-    public static final int SILVER_PRICE = 5000;
-    public static final int GOLD_PRICE = 7000;
-    public static final int PLATINUM_PRICE = 10000; //나중에 상의해서 고치기
+    public static final int SILVER_PRICE = 50000;
+    public static final int GOLD_PRICE = 70000;
+    public static final int PLATINUM_PRICE = 100000; //나중에 상의해서 고치기
 
 
     private static int sequence;
