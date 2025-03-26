@@ -37,7 +37,7 @@ public class UserService implements DeliveryService {
                     deleteUserData();
                     break;
                 case 3:
-                    showUserGrade();
+                    getTotalPrice();
                     break;
                 case 4:
                     (new ReviewService()).start();
@@ -160,13 +160,6 @@ public class UserService implements DeliveryService {
 
     }
 
-    public void showUserGrade(){
-        System.out.println("--- 회원 정보 ---");
-        System.out.println("현재 회원님의 등급: " + Main.user.getUserGrade());
-        System.out.println("총 주문 금액: " + Main.user.getTotalPaying() + "원");
-        System.out.println("-----------------");
-    }
-
     public int getTotalPrice() {
         User currentUser = Main.getCurrentUser();
         if (currentUser == null) {
@@ -174,7 +167,6 @@ public class UserService implements DeliveryService {
             return 0;
         }
 
-        // 1. MenuRepository에서 로그인한 유저가 주문한 메뉴 목록을 가져옵니다.
         List<Menu> orderedMenuList;
         try {
             orderedMenuList = menuRepository.findOrderedMenusByUserNum(currentUser.getUserNum());
@@ -188,17 +180,23 @@ public class UserService implements DeliveryService {
             return 0;
         }
 
-        int totalPrice = 0;
+        int totalPrice = 0; // 초기화 위치 변경
 
-        // 2. 받아온 menuList에 있는 모든 가격을 합합니다.
         for (Menu menu : orderedMenuList) {
             totalPrice += menu.getPrice();
         }
 
-        // 3. totalPrice를 계산하고 grade를 업데이트합니다.
         currentUser.setTotalPaying(totalPrice);
 
-        System.out.println("총 주문 금액: " + currentUser.getTotalPaying() + "원");
-        return Main.getCurrentUser().getTotalPaying();
+        System.out.println("--- 회원 정보 ---");
+        if (currentUser != null) {
+            System.out.println("현재 회원님의 등급: " + currentUser.getUserGrade());
+            System.out.println("총 주문 금액: " + currentUser.getTotalPaying() + "원");
+        } else {
+            System.out.println("로그인된 유저가 없습니다.");
+        }
+        System.out.println("-----------------");
+        return currentUser.getTotalPaying();
     }
+
 }

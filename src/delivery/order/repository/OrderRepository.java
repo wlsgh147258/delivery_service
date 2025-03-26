@@ -8,6 +8,7 @@ import delivery.menu.domain.Menu;
 import delivery.menu.repository.MenuRepository;
 import delivery.order.domain.Order;
 import delivery.user.domain.User;
+import delivery.user.service.UserService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,8 @@ import java.util.List;
 
 public class OrderRepository {
 
-    public void addOrder(Order order, int price) {
+
+    public void addOrder(Order order, int pri) {
         String sql = "INSERT INTO order_info VALUES(order_info_seq.NEXTVAL, ?, ?, ?, ?, ?)";
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -29,6 +31,7 @@ public class OrderRepository {
             pstmt.setString(5, "credit_card");
 
             pstmt.executeUpdate();
+
 
         } catch (SQLException e) {
             e.printStackTrace();
