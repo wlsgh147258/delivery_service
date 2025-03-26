@@ -82,7 +82,7 @@ public class RiderService implements DeliveryService {
     }
 
     private void getOrderDelivery(int getdeliveryNo) {
-        String sql = "UPDATE order_info SET ride_yn = 'Y' WHERE order_num = ?";
+        String sql = "UPDATE order_info SET ride_yn = '~' WHERE order_num = ?";
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
