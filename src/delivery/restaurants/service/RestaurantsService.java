@@ -4,6 +4,8 @@ import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
 import delivery.main.Main;
 import delivery.menu.service.MenuService;
+import delivery.order.domain.Order;
+import delivery.order.repository.OrderRepository;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
 
@@ -32,20 +34,28 @@ public class RestaurantsService implements DeliveryService {
 
             switch (num) {
                 case 1:
-                    insertRestaurant(userNum);
+                    CheckOrderList(userNum);
                     break;
                 case 2:
-                    searchRestaurant(userNum);
+                    insertRestaurant(userNum);
                     break;
                 case 3:
-                    updateRestaurant(userNum);
+                    searchRestaurant(userNum);
                     break;
                 case 4:
+                    updateRestaurant(userNum);
+                    break;
+                case 5:
                     return;
                 default:
                     System.out.println("### 메뉴를 다시 입력해주세요.");
             }
         }
+    }
+
+    private void CheckOrderList(int userNum) {
+        System.out.println("====== 나에게 들어온 주문 =====");
+
     }
 
     //식당 정보 추가

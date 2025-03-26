@@ -46,10 +46,11 @@ public class AppUi {
 
     public static void restaurantManagementScreen() {
         System.out.println("\n========= 식당 관리 시스템 =========");
-        System.out.println("### 1. 신규 식당 추가");
-        System.out.println("### 2. 식당 정보 검색");
-        System.out.println("### 3. 식당 정보 수정/삭제");
-        System.out.println("### 4. 이전 화면으로 돌아가기");
+        System.out.println("### 1. 들어온 주문 확인하기");
+        System.out.println("### 2. 신규 식당 추가");
+        System.out.println("### 3. 식당 정보 검색");
+        System.out.println("### 4. 식당 정보 수정/삭제");
+        System.out.println("### 5. 이전 화면으로 돌아가기");
         System.out.println();
     }
 
