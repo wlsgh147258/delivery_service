@@ -214,7 +214,7 @@ public class UserRepository {
             pstmt.setInt(2, delUserNum);
             pstmt.executeUpdate();
 
-            System.out.println("회원 탈퇴가 완료 되었습니다.");
+            System.out.println("회원 탈퇴 완료!");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -273,5 +273,26 @@ public class UserRepository {
             }
         }
         return foundUsers;
+    }
+
+    // DB에서 특정 컬럼을 업데이트하는 메서드
+    public void updateUserInfo(int userNum, String column, String newValue) {
+
+        String sql = "UPDATE users_info SET " + column + " = ? WHERE user_num = ?";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newValue);
+            pstmt.setInt(2, userNum);
+
+            pstmt.executeUpdate();
+
+            System.out.println("### 업데이트 성공!");
+
+        } catch (SQLException e) {
+            System.out.println("### 업데이트 실패. 입력을 다시 확인하세요!");
+            e.printStackTrace();
+        }
     }
 }

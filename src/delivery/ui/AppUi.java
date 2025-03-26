@@ -69,7 +69,7 @@ public class AppUi {
     public static void userManagementScreen(){
         System.out.println("\n========= 사용자 관리 시스템 =========");
         System.out.println("### 1. 사용자 정보 검색");
-        System.out.println("### 2. 사용자 정보 수정/삭제");
+        System.out.println("### 2. 사용자 정보 수정/탈퇴");
         System.out.println("### 3. 사용자 등급");
         System.out.println("### 4. 리뷰 서비스");
         System.out.println("### 5. 첫 화면으로 가기");
@@ -81,7 +81,7 @@ public class AppUi {
         System.out.println("### 1. 대기 중인 주문 확인");
         System.out.println("### 2. 배달 완료 체크");
         System.out.println("### 3. 라이더 정보 검색");
-        System.out.println("### 4. 라이더 탈퇴하기");
+        System.out.println("### 4. 라이더 정보 수정/탈퇴");
         System.out.println("### 5. 첫 화면으로 가기");
         System.out.println();
     }
@@ -148,6 +148,17 @@ public class AppUi {
         System.out.println("### 2. 메뉴 카테고리 수정");
         System.out.println("### 3. 메뉴 가격 수정");
         System.out.println("### 4. 메뉴 삭제");
+        System.out.println();
+    }
+
+    public static void userUpdateScreen() {
+        System.out.println("\n========= 사용자 정보 수정 시스템 =========");
+        System.out.println("### 1. 회원 이름 수정");
+        System.out.println("### 2. 회원 아이디 수정");
+        System.out.println("### 3. 회원 비밀번호 수정");
+        System.out.println("### 4. 회원 주소 수정");
+        System.out.println("### 5. 회원 전화번호 수정");
+        System.out.println("### 6. 회원 탈퇴 수정");
         System.out.println();
     }
 
