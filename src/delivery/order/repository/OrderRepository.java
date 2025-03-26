@@ -1,14 +1,9 @@
 package delivery.order.repository;
 
-import delivery.common.Condition;
 import delivery.jdbc.DBConnectionManager;
 import delivery.main.Main;
 
-import delivery.menu.domain.Menu;
-import delivery.menu.repository.MenuRepository;
 import delivery.order.domain.Order;
-import delivery.user.domain.User;
-import delivery.user.service.UserService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,12 +35,10 @@ public class OrderRepository {
     }
 
 
-    public List<Order> findOrderMenu(int userNum) {
+    public List<Order> findOrderByUserNum(int userNum) {
         List<Order> orderList = new ArrayList<>();
         // JOIN 문 이용
-        String sql = "SELECT * " +
-                "FROM order_info " +
-                "WHERE user_num = ?";
+        String sql = "SELECT o.*, m.price FROM order_info o INNER JOIN menu_info m ON o.menu_num = m.menu_num WHERE user_num = ?";
 
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -63,6 +56,7 @@ public class OrderRepository {
                         rs.getString("payment_info")
                 );
 
+                order.setMenuPrice(rs.getInt("price"));
                 orderList.add(order);
             }
         } catch (SQLException e) {
