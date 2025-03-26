@@ -72,7 +72,7 @@ public class OrderRepository {
     }
 
     public void deleteOrder(int delOrderNum) {
-        String sql = "DELETE FROM order_info WHERE user_num = ? AND user_num = ?";
+        String sql = "DELETE FROM order_info WHERE order_num = ? AND user_num = ?";
 
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
