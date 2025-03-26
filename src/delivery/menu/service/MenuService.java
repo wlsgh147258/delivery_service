@@ -28,7 +28,6 @@ public class MenuService {
             switch (selection) {
                 case 1:
                     insertMenuData(updateRestaNum);
-//                    System.out.println(res);
                     break;
                 case 2:
                     searchMenuOwner(updateRestaNum);
@@ -49,35 +48,17 @@ public class MenuService {
 
     private void insertMenuData(int storeNum) {
         System.out.println("\n ====== 메뉴 정보를 추가합니다. ======");
-        int store_num = inputInteger("# Restaurant 번호 : ");
         String menuName = inputString("# 메뉴명: ");
         String category = inputString("# 카테고리 분류: ");
         int price = inputInteger("# 가격: ");
 
         Menu newMenu = new Menu(menuName, category, price);
 
-        menuRepository.insertMenu(store_num, newMenu);
+        menuRepository.insertMenu(storeNum, newMenu);
 
         System.out.printf("\n### [%s] 정보가 정상적으로 추가되었습니다.\n", menuName);
     }
 
-
-    private void showSearchMenuData(int storeNum) {
-        try {
-            List<Menu> menus = searchMenuData(storeNum);
-            int count = menus.size();
-            if (count > 0) {
-                System.out.printf("\n======================================= 검색 결과(총 %d건) =======================================\n", count);
-                for (Menu menu : menus) {
-                    System.out.println(menu);
-                }
-            } else {
-                System.out.println("\n### 검색 결과가 없습니다.");
-            }
-        } catch (Exception e) {
-            System.out.println("\n ### 검색 결과가 없습니다.2");
-        }
-    }
 
     private void searchMenuOwner(int storeNum) {
         try {
@@ -98,21 +79,13 @@ public class MenuService {
 
     private List<Menu> searchMenuDataOwner(int storeNum) throws Exception {
 
-        Condition condition = Condition.ALL;
-
-
-        System.out.println("\n## 운영중인 식당 메뉴를 검색합니다.");
-
-
-//        String keyword = "";
+        System.out.printf("\n## [ %d 번 ] 식당 메뉴를 검색합니다.", storeNum);
 
         return menuRepository.searchMenuListByOwner(storeNum);
-
-
     }
 
 
-    private List<Menu> searchMenuData(int storeNum) throws Exception {
+    private List<Menu> searchMenuData() throws Exception {
         System.out.println("\n============== 메뉴 검색 조건을 선택하세요. ===============");
         System.out.println("[ 1. 이름검색 | 2. 가격검색 | 3. 카테고리검색 | 4. 전체검색 ]");
         int selection = inputInteger(">>> ");
@@ -157,8 +130,8 @@ public class MenuService {
 
     private void deleteMenuData(int storeNum) {
         try {
-            System.out.println("\n### 삭제를 위한 메뉴 검색을 시작합니다.");
-            List<Menu> menus = searchMenuData(storeNum);
+            System.out.println("\n### 삭제를 위한 메뉴 검색을 시작합니다.\n");
+            List<Menu> menus = searchMenuDataOwner(storeNum);
 
             if (!menus.isEmpty()) {
                 List<Integer> menuNums = new ArrayList<>();
@@ -167,14 +140,14 @@ public class MenuService {
                     System.out.println(menu);
                     menuNums.add(menu.getMenu_num());
                 }
-                System.out.println("\n### 삭제할 영화의 번호를 입력하세요.");
+                System.out.println("\n### 삭제할 메뉴의 번호를 입력하세요.");
                 int delMenuNum = inputInteger(">>> ");
 
                 if (menuNums.contains(delMenuNum)) {
                     menuRepository.deleteMenu(delMenuNum);
                     for (Menu menu : menus) {
                         if (menu.getMenu_num() == delMenuNum) {
-                            System.out.printf("\n### 영화번호: %d -> %s 영화의 정보를 정상 삭제하였습니다.\n"
+                            System.out.printf("\n### 메뉴번호: %d -> %s 메뉴의 정보를 정상 삭제하였습니다.\n"
                                     , menu.getMenu_num(), menu.getMenu_name());
                             break;
                         }
