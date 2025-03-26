@@ -123,7 +123,7 @@ public class ReviewService implements DeliveryService {
 
     private void insertReviewData() {
         System.out.println("===== 주문 내역을 검색합니다. =====");
-        List<Order> orderList = orderRepository.findOrderMenu(Main.user.getUserNum());
+        List<Order> orderList = orderRepository.findOrderByUserNum(Main.user.getUserNum());
         List<Review> userReviews = findReviewData(Option.FIND_BY_USER_NUM, Integer.toString(Main.user.getUserNum()));
         Set<Integer> orderNumOfReviewsSet = new HashSet<>();
         List<Order> availableOrderList = new ArrayList<>();

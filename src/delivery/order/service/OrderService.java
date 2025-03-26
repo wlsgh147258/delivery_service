@@ -7,8 +7,6 @@ import delivery.menu.repository.MenuRepository;
 import delivery.order.domain.Order;
 import delivery.menu.domain.Menu;
 import delivery.order.repository.OrderRepository;
-import delivery.restaurants.repository.RestaurantsRepository;
-import delivery.review.repository.ReviewRepository;
 import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
 import delivery.user.service.UserService;
@@ -197,7 +195,7 @@ public class OrderService implements DeliveryService {
         return true; // 예시: 항상 true 반환
     }
     public List<Order> findOrderMenu(int userNum) {
-        List<Order> orderList = orderRepository.findOrderMenu(userNum);
+        List<Order> orderList = orderRepository.findOrderByUserNum(userNum);
 
         if (orderList.isEmpty()) {
             System.out.println("### 주문 내역이 없습니다.");
@@ -209,7 +207,8 @@ public class OrderService implements DeliveryService {
                         ", 고객 번호: " + order.getUserNum() +
                         ", 가게 번호: " + order.getRestaurantNum() +
                         ", 배달 상태: " + order.getRideYN() +
-                        ", 결제 정보: " + order.getPaymentInfo());
+                        ", 결제 정보: " + order.getPaymentInfo() +
+                        ", 금액: " + order.getMenuPrice());
             }
         }
         return orderList;
