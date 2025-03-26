@@ -38,6 +38,7 @@ public class AppController {
         try {
             service.start();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("# 메뉴를 다시 입력하세요!");
         }
 

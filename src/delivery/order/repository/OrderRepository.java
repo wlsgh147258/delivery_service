@@ -1,9 +1,9 @@
 package delivery.order.repository;
 
 import delivery.jdbc.DBConnectionManager;
+import delivery.main.Main;
 import delivery.order.domain.Order;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,13 +60,20 @@ public class OrderRepository {
     }
 
     public void deleteOrder(int delOrderNum) {
-        String sql = "DELETE FROM order_info WHERE order_num = ?";
+        String sql = "DELETE FROM order_info WHERE user_num = ? AND user_num = ?";
 
         try(Connection conn = DBConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, delOrderNum);
+            pstmt.setInt(2, Main.user.getUserNum());
 
-            pstmt.executeUpdate();
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("주문이 성공적으로 삭제되었습니다.");
+            } else {
+                System.out.println("해당 주문을 삭제할 권한이 없거나 주문 번호가 유효하지 않습니다.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

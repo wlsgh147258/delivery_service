@@ -47,7 +47,7 @@ public class OrderService implements DeliveryService {
                     break;
                 case 3:
                     findOrderMenu(userNum);
-                    return;
+                    break;
                 case 4:
                     return;
                 default:
