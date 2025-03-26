@@ -138,6 +138,31 @@ public class MenuRepository {
         return searchList;
     }
 
+    public List<Menu> findOrderedMenusByUserNum(int userNum) throws Exception {
+        List<Menu> orderedMenuList = new ArrayList<>();
+        String sql = "SELECT m.* " +
+                "FROM order_info o " +
+                "JOIN menu_info m ON o.menu_num = m.menu_num " +
+                "WHERE o.user_num = ? AND m.active = 'Y'";
+
+        try (Connection conn = DBConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userNum);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Menu menu = createMenuFromResultSet(rs);
+                orderedMenuList.add(menu);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return orderedMenuList;
+    }
+
     public List<Menu> searchMenuListByOwner(int storeNum) throws Exception {
         List<Menu> searchList = new ArrayList<>();
 

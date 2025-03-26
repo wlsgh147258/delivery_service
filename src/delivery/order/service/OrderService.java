@@ -9,6 +9,7 @@ import delivery.menu.domain.Menu;
 import delivery.order.repository.OrderRepository;
 import delivery.restaurants.repository.RestaurantsRepository;
 import delivery.review.repository.ReviewRepository;
+import delivery.user.domain.User;
 import delivery.user.repository.UserRepository;
 
 import static delivery.ui.AppUi.*;
@@ -145,8 +146,6 @@ public class OrderService implements DeliveryService {
                 "credit_card"
 
         );
-
-        orderRepository.addOrder(order, menu);
         System.out.println("주문이 완료되었습니다.");
     }
 

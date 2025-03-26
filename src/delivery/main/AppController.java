@@ -4,7 +4,6 @@ import delivery.common.DeliveryService;
 import delivery.order.service.OrderService;
 import delivery.restaurants.service.RestaurantsService;
 import delivery.review.service.ReviewService;
-import delivery.user.domain.User;
 import delivery.user.service.*;
 
 import static delivery.ui.AppUi.inputInteger;
