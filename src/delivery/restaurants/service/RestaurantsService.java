@@ -2,6 +2,7 @@ package delivery.restaurants.service;
 
 import delivery.common.DeliveryService;
 import delivery.jdbc.DBConnectionManager;
+import delivery.main.Main;
 import delivery.restaurants.domain.Restaurants;
 import delivery.restaurants.repository.RestaurantsRepository;
 
@@ -23,7 +24,7 @@ public class RestaurantsService implements DeliveryService {
         while (true) {
 
             //로그인 로직 추가하기
-            int userNum = 10;
+            int userNum = Main.user.getUserNum();
 
             restaurantManagementScreen();
             int num = inputInteger(">>> ");
@@ -195,9 +196,6 @@ public class RestaurantsService implements DeliveryService {
 
     // DB에서 특정 컬럼을 업데이트하는 메서드
     private void updateRestaurantInfo(int storeNum, String column, String newValue) {
-        System.out.println("storeNum = " + storeNum);
-        System.out.println("column = " + column);
-        System.out.println("newValue = " + newValue);
 
         String sql = "UPDATE restaurants SET " + column + " = ? WHERE restaurant_num = ?";
 

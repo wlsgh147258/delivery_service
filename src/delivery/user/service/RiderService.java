@@ -12,6 +12,7 @@ import static delivery.ui.AppUi.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RiderService implements DeliveryService {
@@ -51,7 +52,7 @@ public class RiderService implements DeliveryService {
 
 
     private List<Order> findOrderData() {
-        System.out.println("대기중인 주문 검색");
+        System.out.println("\n대기중인 주문 검색");
 
         try {
             return userRepository.findOrders();
@@ -66,14 +67,32 @@ public class RiderService implements DeliveryService {
         int count = orders.size();
         if(count > 0) {
             System.out.printf("\n========== 검색 결과 %d개 ==========\n", count);
+            List<Integer> ordersNums = new ArrayList<>();
+
             for(Order order: orders) {
                 System.out.println(order);
+                ordersNums.add(order.getOrderNum());
             }
 
-            System.out.println("담당할 order_num을 입력해 주세요");
-            int getdelivery_no = inputInteger(">>> ");
-            getOrderDelivery(getdelivery_no);
+            System.out.println("\n배달을 하시겠습니까?");
+            String ans = inputString(">>> ");
+            if(ans.equals("네") || ans.equals("yes")){
 
+                System.out.println("\n담당할 주문 번호를 입력해 주세요.");
+
+                int getdelivery_no = inputInteger(">>> ");
+
+                if(ordersNums.contains(getdelivery_no)){
+
+                    getOrderDelivery(getdelivery_no);
+
+                }else {
+                    System.out.println("\n존재하는 주문 번호를 입력해 주세요.");
+                }
+
+            } else if (ans.equals("아니오") || ans.equals("no")) {
+                System.out.println("라이더 관리 시스템 화면으로 돌아갑니다.");
+            } else System.out.println("올바르지 않은 답변입니다.");
 
         } else {
             System.out.println("\n## 대기 중인 주문이 없습니다.");
@@ -82,13 +101,13 @@ public class RiderService implements DeliveryService {
     }
 
     private void getOrderDelivery(int getdeliveryNo) {
-        String sql = "UPDATE order_info SET ride_yn = 'Y' WHERE order_num = ?";
+        String sql = "UPDATE order_info SET ride_yn = '~' WHERE order_num = ?";
         try (Connection conn = DBConnectionManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, getdeliveryNo);
             pstmt.executeUpdate();
-            System.out.printf("%d 번 주문을 배달하였습니다.", getdeliveryNo);
+            System.out.printf("%d 번 주문을 배달하였습니다.\n", getdeliveryNo);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,7 +144,7 @@ public class RiderService implements DeliveryService {
         }
 
         try {
-            return userRepository.findUsers(condition, keyword);
+            return userRepository.findRiderUsers(condition, keyword);
         } catch (Exception e) {
             System.out.println("검색 중 오류가 발생했습니다: " + e.getMessage());
             return List.of(); // 빈 리스트 반환 또는 예외 처리

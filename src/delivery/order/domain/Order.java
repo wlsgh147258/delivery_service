@@ -45,9 +45,9 @@ public class Order {
     public String toString() {
         return
                 "## 주문 번호: " + orderNum +
-                        ", 사용자 번호: " + //userNum +
-                        ", 식당 번호: " + // retaurantNum +
-                        ", 메뉴 번호: " + // menuNum +
+                        ", 사용자 번호: " + userNum +
+                        ", 식당 번호: " + restaurantNum +
+                        ", 메뉴 번호: " + menuNum +
                         ", 라이더 가능여부: " + rideYN +
                         ", 금액: " + paymentInfo + "원"
                 ;
