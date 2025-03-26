@@ -78,8 +78,6 @@ public class RiderService implements DeliveryService {
             System.out.println("\n## 완료 체크할 주문이 없습니다.");
         }
 
-
-
     }
 
 
