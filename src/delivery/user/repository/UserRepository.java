@@ -53,7 +53,7 @@ public class UserRepository {
         if (condition == 1) { // 회원 번호
             sql += " WHERE user_num = ? AND active ='Y' ";
         } else if (condition == 2) { // 이름
-            sql += " WHERE user_name = ? AND active ='Y' ";
+            sql += " WHERE user_name LIKE ? AND active ='Y' ";
         } else if (condition == 3) { // 아이디
             sql += " WHERE user_id = ? AND active ='Y' ";
         }
@@ -64,12 +64,13 @@ public class UserRepository {
             if (condition == 1) { // 회원 번호
                 pstmt.setInt(1, Integer.parseInt(keyword));
             } else if (condition == 2) { // 이름
-                pstmt.setString(1, keyword);
+                pstmt.setString(1, "%" + keyword + "%");
             } else if (condition == 3) { // 아이디
                 pstmt.setString(1, keyword);
             }
+            ResultSet rs = pstmt.executeQuery();
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+
                 while (rs.next()) {
                     foundUsers.add(new User(
                             rs.getInt("user_num"),
@@ -83,7 +84,7 @@ public class UserRepository {
                             rs.getString("active")
                     ));
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
