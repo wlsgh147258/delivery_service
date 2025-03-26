@@ -81,7 +81,7 @@ public class OrderService implements DeliveryService {
                     System.out.println("\n## 전체 정보를 검색합니다.");
                     break;
                 case 5:
-                    break;
+                    return;
                 default:
                     System.out.println("\n### 해당 메뉴가 존재하지 않습니다. 전체 정보로 검색합니다.");
             }

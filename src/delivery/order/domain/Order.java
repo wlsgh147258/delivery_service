@@ -11,14 +11,14 @@ public class Order {
     private String paymentInfo;
     private int menuPrice;
 
-    public Order(int orderNum, int userNum, int restaurantNum, int menuNum, String rideYN, String cookYN, String paymentInfo) {
+    public Order(int orderNum, int userNum, int restaurantNum, int menuNum, String rideYN, String paymentInfo, String cookYN) {
         this.orderNum = orderNum;
         this.userNum = userNum;
         this.restaurantNum = restaurantNum;
         this.menuNum = menuNum;
         this.cookYN = cookYN;
-        this.rideYN = rideYN;
         this.paymentInfo = paymentInfo;
+        this.rideYN = rideYN;
     }
 
     public int getMenuPrice() {

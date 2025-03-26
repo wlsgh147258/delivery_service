@@ -312,8 +312,9 @@ public class RestaurantsService implements DeliveryService {
 
     public List<Order> findOrders(int userNum) {
         List<Order> foundOrders = new ArrayList<>();
-        String sql = "SELECT o.* FROM order_info o JOIN restaurants r ON o.restaurant_num = r.restaurant_num " +
-                "JOIN users_info u ON u.user_num = r.user_num WHERE o.cook_yn = 'N' AND u.user_num = ?";
+        String sql = "SELECT o.*, m.price FROM order_info o JOIN restaurants r ON o.restaurant_num = r.restaurant_num " +
+                "JOIN users_info u ON u.user_num = r.user_num JOIN menu_info m ON o.menu_num = m.menu_num " +
+                "WHERE o.cook_yn = 'N' AND u.user_num = ?";
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
@@ -329,8 +330,10 @@ public class RestaurantsService implements DeliveryService {
                             rs.getInt("menu_num"),
                             rs.getString("ride_yn"),
                             rs.getString("payment_info"),
-                            rs.getString("cook_yn"));
-//                    order.setMenuPrice(rs.getInt("price"));
+                            rs.getString("cook_yn")
+                    );
+
+                    order.setMenuPrice(rs.getInt("price"));
                     foundOrders.add(order);
                 }
             }
