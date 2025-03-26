@@ -210,7 +210,7 @@ public class MenuService {
             switch (updateSelection) {
                 case 1:
                     column = "menu_name";
-                    System.out.printf("기존 메뉴 이름: %s >> 새로운 메뉴 이름: ", menu.getMenu_num());
+                    System.out.printf("기존 메뉴 이름: %s >> 새로운 메뉴 이름: ", menu.getMenu_name());
                     newValue = inputString(" ");
                     break;
                 case 2:

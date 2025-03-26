@@ -51,7 +51,7 @@ public class AppController {
                     return;
             }
         } else if (userType == 3) {
-            System.out.println("[1. 식당 서비스 |2. 식당 리뷰 확인 | 2. 프로그램 종료]");
+            System.out.println("[1. 식당 서비스 |2. 식당 리뷰 확인 | 3. 프로그램 종료]");
             selectNumber = inputInteger(">>> ");
             switch (selectNumber) {
                 case 1:
