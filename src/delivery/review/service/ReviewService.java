@@ -89,7 +89,7 @@ public class ReviewService implements DeliveryService {
         for (Review review : reviews) {
             System.out.println(review);
         }
-        if (reviews.size() > 0) {
+        if (!reviews.isEmpty()) {
             System.out.println("삭제할 리뷰의 번호를 입력하세요.");
             int delReviewNum = inputInteger(">>> ");
             if (reviews.stream().anyMatch(review -> review.getReviewNum() == delReviewNum)) {
