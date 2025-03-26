@@ -7,14 +7,16 @@ public class Order {
     private int restaurantNum; // 아직 restaurant class 존재 x
     private int menuNum;
     private String rideYN;
+    private String cookYN;
     private String paymentInfo;
     private int menuPrice;
 
-    public Order(int orderNum, int userNum, int restaurantNum, int menuNum, String rideYN, String paymentInfo) {
+    public Order(int orderNum, int userNum, int restaurantNum, int menuNum, String rideYN, String cookYN, String paymentInfo) {
         this.orderNum = orderNum;
         this.userNum = userNum;
         this.restaurantNum = restaurantNum;
         this.menuNum = menuNum;
+        this.cookYN = cookYN;
         this.rideYN = rideYN;
         this.paymentInfo = paymentInfo;
     }
@@ -32,6 +34,26 @@ public class Order {
     public void setOrderNum(int orderNum) {this.orderNum = orderNum;}
 
     public String getRideYN() {return rideYN;}
+
+    public void setUserNum(int userNum) {
+        this.userNum = userNum;
+    }
+
+    public void setRestaurantNum(int restaurantNum) {
+        this.restaurantNum = restaurantNum;
+    }
+
+    public void setMenuNum(int menuNum) {
+        this.menuNum = menuNum;
+    }
+
+    public String getCookYN() {
+        return cookYN;
+    }
+
+    public void setCookYN(String cookYN) {
+        this.cookYN = cookYN;
+    }
 
     public int getUserNum() {
         return userNum;
@@ -57,6 +79,7 @@ public class Order {
                         ", 사용자 번호: " + userNum +
                         ", 식당 번호: " + restaurantNum +
                         ", 메뉴 번호: " + menuNum +
+                        ", 조리 완료여부: " + cookYN +
                         ", 라이더 배치여부: " + rideYN +
                         ", 금액: " + menuPrice + "원"
                 ;

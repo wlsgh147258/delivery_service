@@ -53,6 +53,7 @@ public class OrderRepository {
                         rs.getInt("restaurant_num"),
                         rs.getInt("menu_num"),
                         rs.getString("ride_yn"),
+                        rs.getString("cook_yn"),
                         rs.getString("payment_info")
                 );
 

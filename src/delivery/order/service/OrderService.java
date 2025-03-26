@@ -60,7 +60,7 @@ public class OrderService implements DeliveryService {
     private void processOrderMenu() { // 오더 메뉴
         while (true) {
             System.out.println("\n============================ 음식 주문 시스템을 실행합니다. ============================");
-            System.out.println("[ 1. 이름검색 | 2. 가격검색 | 3. 카테고리검색 | 4. 전체검색 ]");
+            System.out.println("[ 1. 이름검색 | 2. 가격검색 | 3. 카테고리검색 | 4. 전체검색 | 5. 이전으로 돌아가기]");
             int selection1 = inputInteger(">>> ");
             Condition condition = Condition.ALL;
 
@@ -79,6 +79,8 @@ public class OrderService implements DeliveryService {
                     break;
                 case 4:
                     System.out.println("\n## 전체 정보를 검색합니다.");
+                    break;
+                case 5:
                     break;
                 default:
                     System.out.println("\n### 해당 메뉴가 존재하지 않습니다. 전체 정보로 검색합니다.");
