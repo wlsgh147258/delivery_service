@@ -94,6 +94,8 @@ Java 개발:
 <img width="1136" alt="image" src="https://github.com/user-attachments/assets/b28884bb-31f5-4907-9f8b-1490b506e5f0" />
 
  
+# ERD
+![delivery-ERD (1)](https://github.com/user-attachments/assets/36246c16-97e3-4b61-84f6-bfc2fec52cce)
 
 ### 트러블 슈팅
 - 프로그램의 order 로직에 오류가 있어 예상과 다른 결과를 출력하거나 오류를 발생시켰습니다. 그래서 디버깅 도구를 사용하여 코드의 실행 과정을 추적하고, 오류가 발생하는 지점을 찾아 수정했습니다. 또한, 테스트 케이스를 추가하여 각 기능이 올바르게 작동하는지 확인했습니다.
@@ -119,14 +121,6 @@ Java 개발:
 ![{5797BE62-F7E0-4371-A92F-0A88F5C35DB3}](https://github.com/user-attachments/assets/4cedb317-60f8-402d-ab1b-c14863b751e0)
 
 ![{718E90E6-0576-44E7-A120-049B5AFD5EEA}](https://github.com/user-attachments/assets/607e41a4-d2a5-47cd-846c-c17e54532136)
-
-
-
-# ERD
-![delivery-ERD (1)](https://github.com/user-attachments/assets/36246c16-97e3-4b61-84f6-bfc2fec52cce)
-
-
-
 
 
 # 화면 명세서와 스토리 보드
