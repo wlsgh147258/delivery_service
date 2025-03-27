@@ -199,10 +199,8 @@ Java 개발:
     * 사용자 등록, 수정, 삭제
     * 로그인, 로그아웃
 * **구성 요소:**
-    * `UserController.java`: 사용자 계정 관련 API 제공
     * `UserService.java`: 사용자 계정 관련 비즈니스 로직 처리
     * `UserRepository.java`: 사용자 데이터 접근
-    * `AuthService.java`: 인증 및 권한 관리
 
 #### 1.2. 식당 서비스 (Restaurant Service)
 
@@ -212,10 +210,8 @@ Java 개발:
     * 메뉴 등록, 수정, 삭제
     * 식당 검색, 메뉴 검색
 * **구성 요소:**
-    * `RestaurantController.java`: 식당 관련 API 제공
     * `RestaurantService.java`: 식당 관련 비즈니스 로직 처리
     * `RestaurantRepository.java`: 식당 데이터 접근
-    * `MenuController.java`: 메뉴 관련 API 제공
     * `MenuService.java`: 메뉴 관련 비즈니스 로직 처리
     * `MenuRepository.java`: 메뉴 데이터 접근
 
@@ -227,7 +223,6 @@ Java 개발:
     * 결제 처리
     * 주문 상태 관리
 * **구성 요소:**
-    * `OrderController.java`: 주문 관련 API 제공
     * `OrderService.java`: 주문 관련 비즈니스 로직 처리
     * `OrderRepository.java`: 주문 데이터 접근
     * `PaymentService.java`: 결제 처리
@@ -238,9 +233,7 @@ Java 개발:
 * **책임:**
     * 배달원 등록, 관리
     * 배달 상태 관리
-    * 배달원 위치 추적
 * **구성 요소:**
-    * `DeliveryController.java`: 배달 관련 API 제공
     * `DeliveryService.java`: 배달 관련 비즈니스 로직 처리
     * `DeliveryRepository.java`: 배달 데이터 접근
 
@@ -252,24 +245,10 @@ Java 개발:
     * 리뷰 조회
     * 리뷰 평점 관리
 * **구성 요소:**
-    * `ReviewController.java`: 리뷰 관련 API 제공
     * `ReviewService.java`: 리뷰 관련 비즈니스 로직 처리
     * `ReviewRepository.java`: 리뷰 데이터 접근
 
-#### 1.6. 사용자 인터페이스 서비스 (UI Service)
-
-* **역할:** 사용자와의 모든 상호작용 담당
-* **책임:**
-    * 메뉴 표시 및 네비게이션
-    * 사용자 입력 수집 및 검증
-    * 결과 출력 및 포맷팅
-* **구성 요소:**
-    * `MenuView.java`: 메뉴 표시 및 선택 처리
-    * `InputView.java`: 사용자 입력 처리
-    * `OutputView.java`: 결과 출력 처리
-
-
-### 데이터 액세스 서비스 (DAO Service)
+### 데이터 액세스 서비스 (DAO Service) // 고쳐야함
 
 - 역할: 데이터베이스와의 모든 상호작용 담당
 - 책임:
