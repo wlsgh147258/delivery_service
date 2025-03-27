@@ -220,7 +220,7 @@ public class UserService implements DeliveryService {
                     newValue = inputString(" ");
                     break;
                 case 4:
-                    column = "user_address";
+                    column = "address";
                     System.out.printf("회원의 기존 주소: %s >> 새로운 주소: ", Main.user.getAddress());
                     newValue = inputString(" ");
                     break;
