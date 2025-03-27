@@ -51,13 +51,13 @@ public class AppUi {
         System.out.println("### 3. 신규 식당 추가");
         System.out.println("### 4. 식당 정보 검색");
         System.out.println("### 5. 식당 정보 수정/삭제");
-        System.out.println("### 6. 이전 화면으로 돌아가기");
+        System.out.println("### 6. 첫 화면으로 가기");
         System.out.println();
     }
 
     public static void restaurantUpdateScreen() {
         System.out.println("\n========= 식당 정보 수정 시스템 =========");
-        System.out.println("### 1. 식당 메뉴 관리");
+        System.out.println("### 1. 메뉴 관리");
         System.out.println("### 2. 식당명 수정");
         System.out.println("### 3. 식당 카테고리 수정");
         System.out.println("### 4. 식당 영업 시간 수정");
@@ -133,14 +133,14 @@ public class AppUi {
         System.out.println("### 1. 주문 하기");
         System.out.println("### 2. 주문 취소");
         System.out.println("### 3. 주문 내역 확인하기");
-        System.out.println("### 4. 이전 화면으로 돌아가기");
+        System.out.println("### 4. 첫 화면으로 가기");
     }
     public static void MenuManagementScreen(){
         System.out.println("\n========= 식당 메뉴 관리 시스템 =========");
         System.out.println("### 1. 메뉴 추가");
         System.out.println("### 2. 메뉴 정보 검색");
         System.out.println("### 3. 메뉴 정보 수정/삭제");
-        System.out.println("### 4. 첫 화면으로 가기");
+        System.out.println("### 4. 이전 화면으로 돌아가기");
         System.out.println();
     }
 

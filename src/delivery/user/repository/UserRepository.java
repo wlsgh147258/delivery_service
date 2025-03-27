@@ -72,19 +72,19 @@ public class UserRepository {
             ResultSet rs = pstmt.executeQuery();
 
 
-                while (rs.next()) {
-                    foundUsers.add(new User(
-                            rs.getInt("user_num"),
-                            rs.getString("user_name"),
-                            rs.getString("user_id"),
-                            rs.getString("user_password"),
-                            rs.getString("address"),
-                            rs.getString("phone_number"),
-                            rs.getString("user_type"),
-                            Grade.valueOf(rs.getString("user_grade")),
-                            rs.getString("active")
-                    ));
-                }
+            while (rs.next()) {
+                foundUsers.add(new User(
+                        rs.getInt("user_num"),
+                        rs.getString("user_name"),
+                        rs.getString("user_id"),
+                        rs.getString("user_password"),
+                        rs.getString("address"),
+                        rs.getString("phone_number"),
+                        rs.getString("user_type"),
+                        Grade.valueOf(rs.getString("user_grade")),
+                        rs.getString("active")
+                ));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,7 +140,8 @@ public class UserRepository {
 
     public List<Order> findOrdersComplete() {
         List<Order> foundOrders = new ArrayList<>();
-        String sql = "SELECT * FROM order_info WHERE ride_yn = '~' AND rider_num = ? ";
+        String sql = "SELECT o.*, m.price FROM order_info o JOIN menu_info m ON o.menu_num = m.menu_num " +
+                "WHERE ride_yn = '~' AND rider_num = ? ";
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
@@ -149,7 +150,7 @@ public class UserRepository {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    foundOrders.add(new Order(
+                    Order order = new Order(
                             rs.getInt("order_num"),
                             rs.getInt("user_num"),
                             rs.getInt("restaurant_num"),
@@ -157,7 +158,9 @@ public class UserRepository {
                             rs.getString("ride_yn"),
                             rs.getString("payment_info"),
                             rs.getString("cook_yn")
-                    ));
+                    );
+                    order.setMenuPrice(rs.getInt("price"));
+                    foundOrders.add(order);
                 }
             }
         } catch (SQLException e) {

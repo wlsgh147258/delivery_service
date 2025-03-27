@@ -263,14 +263,14 @@ public class RestaurantsService implements DeliveryService {
             int ans = inputInteger(">>> ");
 
             if (ans == 1) {
-                System.out.println("\n담당할 주문 번호를 입력해 주세요.");
+                System.out.println("\n담당할 주문 코드를 입력해 주세요.");
                 int getOrderNum = inputInteger(">>> ");
 
                 if (ordersNums.contains(getOrderNum)) {
                     getOrderCook(getOrderNum);
 
                 } else {
-                    System.out.println("\n존재하는 주문 번호를 입력해 주세요.");
+                    System.out.println("\n존재하는 주문 코드를 입력해 주세요.");
                 }
 
             } else if (ans == 2) {
@@ -314,7 +314,8 @@ public class RestaurantsService implements DeliveryService {
         List<Order> foundOrders = new ArrayList<>();
         String sql = "SELECT o.*, m.price FROM order_info o JOIN restaurants r ON o.restaurant_num = r.restaurant_num " +
                 "JOIN users_info u ON u.user_num = r.user_num JOIN menu_info m ON o.menu_num = m.menu_num " +
-                "WHERE o.cook_yn = 'N' AND u.user_num = ?";
+                "WHERE o.cook_yn = 'N' AND u.user_num = ? " +
+                "ORDER BY r.restaurant_num";
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
@@ -352,7 +353,6 @@ public class RestaurantsService implements DeliveryService {
     }
 
     //조리 완료
-    //식당이
     private void completeCook(int userNum) {
         List<Order> orders = findCompleteOrder();
 
@@ -393,7 +393,7 @@ public class RestaurantsService implements DeliveryService {
     }
 
 
-    //조리 완료한 주문 리스트 출력
+    //조리중인 주문 리스트 출력
      private List<Order> findCompleteOrder() {
         System.out.println("\n조리중인 주문 검색");
 

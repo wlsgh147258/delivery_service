@@ -71,7 +71,7 @@ public class MenuService {
             List<Menu> menus = searchMenuDataOwner(restaurant);
             int count = menus.size();
             if (count > 0) {
-                System.out.printf("\n========================== [ %s ] 메뉴 검색 결과(총 %d건) ========================\n", restaurant.getStore_name(), restaurant.getStore_num());
+                System.out.printf("\n========================== [ %s ] 메뉴 검색 결과(총 %d건) ========================\n", restaurant.getStore_name(), count);
                 for (Menu menu : menus) {
                     System.out.println(menu);
                 }
@@ -173,7 +173,7 @@ public class MenuService {
                     System.out.println(menu);
                     menuNums.add(menu.getMenu_num());
                 }
-                System.out.println("\n### 수정할 메뉴의 번호를 입력하세요.");
+                System.out.println("\n### 수정할 메뉴의 코드를 입력하세요.");
                 int updateMenuNum = inputInteger(">>> ");
 
                 if (menuNums.contains(updateMenuNum)) {
@@ -199,13 +199,13 @@ public class MenuService {
                                 menuRepository.deleteMenu(updateMenuNum);
                                 for (Menu menu : menus) {
                                     if (menu.getMenu_num() == updateMenuNum) {
-                                        System.out.printf("\n### 메뉴번호: %d -> 메뉴 %s 의 정보를 정상 삭제하였습니다.\n"
+                                        System.out.printf("\n### 메뉴 코드: %d -> 메뉴 %s 의 정보를 정상 삭제하였습니다.\n"
                                                 , menu.getMenu_num(), menu.getMenu_name());
                                         break;
                                     }
                                 }
                             } else {
-                                System.out.println("\n### 검색된 메뉴 번호로만 삭제가 가능합니다.");
+                                System.out.println("\n### 검색된 메뉴 코드로만 삭제가 가능합니다.");
                             }
                             break;
                         default:

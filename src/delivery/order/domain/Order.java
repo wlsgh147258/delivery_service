@@ -75,10 +75,10 @@ public class Order {
     @Override
     public String toString() {
         return
-                "## 주문 번호: " + orderNum +
+                "## 주문 코드: " + orderNum +
                         ", 사용자 번호: " + userNum +
-                        ", 식당 번호: " + restaurantNum +
-                        ", 메뉴 번호: " + menuNum +
+                        ", 식당 코드: " + restaurantNum +
+                        ", 메뉴 코드: " + menuNum +
                         ", 라이더 배치여부: " + rideYN +
                         ", 결제수단: " + paymentInfo +
                         ", 금액: " + menuPrice + "원" +

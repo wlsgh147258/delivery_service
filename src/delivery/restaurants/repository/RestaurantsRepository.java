@@ -158,8 +158,10 @@ public class RestaurantsRepository {
     //조리중인 주문 db에서 조회
     public List<Order> findOrdersComplete() {
         List<Order> foundOrders = new ArrayList<>();
-        String sql = "SELECT o.* FROM order_info o JOIN restaurants r ON o.restaurant_num = r.restaurant_num " +
-                "JOIN users_info u ON u.user_num = r.user_num WHERE o.cook_yn = '~' AND u.user_num = ?";;
+        String sql = "SELECT o.*, m.price FROM order_info o JOIN restaurants r ON o.restaurant_num = r.restaurant_num " +
+                "JOIN users_info u ON u.user_num = r.user_num JOIN menu_info m ON o.menu_num = m.menu_num " +
+                "WHERE o.cook_yn = '~' AND u.user_num = ?";
+        ;
         PreparedStatement pstmt = null;
 
         try (Connection conn = DBConnectionManager.getConnection()) {
@@ -168,7 +170,7 @@ public class RestaurantsRepository {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    foundOrders.add(new Order(
+                    Order order = new Order(
                             rs.getInt("order_num"),
                             rs.getInt("user_num"),
                             rs.getInt("restaurant_num"),
@@ -176,7 +178,9 @@ public class RestaurantsRepository {
                             rs.getString("ride_yn"),
                             rs.getString("payment_info"),
                             rs.getString("cook_yn")
-                    ));
+                    );
+                    order.setMenuPrice(rs.getInt("price"));
+                    foundOrders.add(order);
                 }
             }
         } catch (SQLException e) {

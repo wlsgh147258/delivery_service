@@ -228,6 +228,7 @@ public class OrderService implements DeliveryService {
 
     private void processReturnMenu() {
         System.out.println("\n============================ 주문 취소 시스템을 실행합니다. ============================");
+        findOrderMenu(Main.user.getUserNum());
         System.out.println("### 취소할 주문 번호를 입력해주세요.");
         int orderNumber = inputInteger(">>> ");
 
@@ -272,7 +273,7 @@ public class OrderService implements DeliveryService {
         } else {
             System.out.println("\n============================ 주문 내역 ============================");
             for (Order order : orderList) {
-                System.out.println("주문 번호: " + order.getOrderNum() +
+                System.out.println("주문 코드: " + order.getOrderNum() +
                         ", 메뉴 번호: " + order.getMenuNum() +
                         ", 고객 번호: " + order.getUserNum() +
                         ", 가게 번호: " + order.getRestaurantNum() +

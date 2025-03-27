@@ -60,7 +60,7 @@ public class RiderService implements DeliveryService {
 
         int count = orders.size();
         if (count > 0) {
-            System.out.printf("\n========== %s님이 완료한 배달 %d개 ==========\n",Main.user.getUserName(), count);
+            System.out.printf("\n========== %s님이 배달중인 주문 %d개 ==========\n",Main.user.getUserName(), count);
             List<Integer> deliveryNums = new ArrayList<>();
             for (Order order : orders) {
                 System.out.println(order);
@@ -97,7 +97,7 @@ public class RiderService implements DeliveryService {
     }
 
     private List<Order> findCompleteData() {
-        System.out.println("\n배달 완료한 주문 검색");
+        System.out.println("\n배달중인 주문 검색");
 
         try {
             return userRepository.findOrdersComplete();
