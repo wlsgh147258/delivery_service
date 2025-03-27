@@ -1,4 +1,4 @@
-![{D9D8F07C-6E5E-44C4-BEBE-CFAF32ED6C1F}](https://github.com/user-attachments/assets/f766f9c7-cb7e-4ad1-a8e3-caaf4905b010)# 프로젝트 기획서
+# 프로젝트 기획서
 
 
 ## 1. 개요
@@ -99,11 +99,16 @@ Java 개발:
 기획서는 대부분의 학생들이 Markdown 문법을 활용하여 Github Repository에 README.md 형태로 작성하는 경우가 대부분 입니다. 마지막 발표 전에 README 파일을 수정해서 기획서 형태로 만들어 보세요. 제가 언급한 내용 이외에 추가적인 내용이 더 들어가도 좋습니다!
 
 # 요구사항 명세서
+![{D9D8F07C-6E5E-44C4-BEBE-CFAF32ED6C1F}](https://github.com/user-attachments/assets/f766f9c7-cb7e-4ad1-a8e3-caaf4905b010)
 
 ![{7AA65041-F82B-46C4-A6F4-8E52841406E5}](https://github.com/user-attachments/assets/d598ea8b-d551-4361-b1d3-1964f7b3a1a4)
+
 ![{50909D91-414C-44AE-8F10-9CB64A3910FF}](https://github.com/user-attachments/assets/d77d7301-4803-45ce-940d-21a4443e4ff8)
+
 ![{D9D8F07C-6E5E-44C4-BEBE-CFAF32ED6C1F}](https://github.com/user-attachments/assets/60c9076f-9ac4-4939-bb45-4fbaf07ceb38)
+
 ![{DAECF116-31CA-45FA-9B5A-7140A892F906}](https://github.com/user-attachments/assets/d94c3648-1dd3-4b14-96de-ace0bf24a346)
+
 ![{22944ADA-84A6-4627-8646-665E51C9FF70}](https://github.com/user-attachments/assets/4c281ba9-2c4e-49d3-a274-d175ef77f095)
 
 
