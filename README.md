@@ -166,7 +166,7 @@ Java 개발:
 ### 3. 출력 형식
 
 #### 3.1. 사용자 관리 시스템 출력
-![{1F42518B-9624-4E97-94DE-59AA5E31387E}](https://github.com/user-attachments/assets/4ac96c1c-64a1-45c7-a641-90e95ae11de3)
+![첫 사용자 로그인](https://github.com/user-attachments/assets/5ca1e874-aa3e-42b0-b4e3-c024578b0c15)
 
 #### 3.2. 주문 관리 시스템 출력
 ![{D5F53A0A-DA62-4689-9A5C-314F8CFE7FFD}](https://github.com/user-attachments/assets/8aa2d227-6e28-41b4-bed4-59a0bab16a00)
