@@ -93,21 +93,24 @@ Java 개발:
 
 ### 회고
 
-각 팀원들의 이번 프로젝트를 진행하면서 느낀 점 및 개인적인 성과 등을 회고하는 파트입니다. 
+- 도진호
+    - 이번 프로젝트를 하게 되면서 아직 많이 부족하다는 것을 알게 되었다. 첫 번째로 github 사용법을 다시 공부를 해야겠고, 두 번째로 요구사항에 부합하는 로직을 짜기 위해 알고리즘 공부도 꾸준히 해야겠다고 생각이 들었다. 그래도 팀원 모두가 열심히 해 준 덕분에 프로젝트가 성공적으로 마쳤다고 생각한다. 처음엔 소통도 잘 안되었지만, 하루에 두 번씩 정기적인 회의를 거치면서 다듬어졌다고 생각한다. 우리 프로젝트에 좋았던 점은 고객이든 라이더든 점주든 사용할 수 있다는 점이었다. 그 사용자의 정보에 따라 다른 인터페이스와 기능을 사용한다는 것이 좋은 점이라고 생각한다. 이제 조금 아쉬웠던 점은 라이더의 배달 시간을 넣고, 라이더를 자동으로 배달할 수 있게 하는 시스템을 
+시도해보는 것도 좋을 거 같다. 
 
 
 기획서는 대부분의 학생들이 Markdown 문법을 활용하여 Github Repository에 README.md 형태로 작성하는 경우가 대부분 입니다. 마지막 발표 전에 README 파일을 수정해서 기획서 형태로 만들어 보세요. 제가 언급한 내용 이외에 추가적인 내용이 더 들어가도 좋습니다!
 
 # 요구사항 명세서
-![{7AA65041-F82B-46C4-A6F4-8E52841406E5}](https://github.com/user-attachments/assets/d598ea8b-d551-4361-b1d3-1964f7b3a1a4)
+![{44AD827E-B619-4045-95D8-871E5B90148C}](https://github.com/user-attachments/assets/92e50625-58ba-4bd7-9986-c9e4493f3518)
 
-![{50909D91-414C-44AE-8F10-9CB64A3910FF}](https://github.com/user-attachments/assets/d77d7301-4803-45ce-940d-21a4443e4ff8)
+![{72C242BB-ECCE-4E81-91E3-55CD33A0C97C}](https://github.com/user-attachments/assets/ccd392f5-7132-49cf-838b-0195c2be33eb)
 
-![{D9D8F07C-6E5E-44C4-BEBE-CFAF32ED6C1F}](https://github.com/user-attachments/assets/60c9076f-9ac4-4939-bb45-4fbaf07ceb38)
+![{5F8829E5-269B-466D-B166-70B6659B12E3}](https://github.com/user-attachments/assets/23a3587f-2bb1-44c5-975f-75bc7d05cd89)
 
-![{DAECF116-31CA-45FA-9B5A-7140A892F906}](https://github.com/user-attachments/assets/d94c3648-1dd3-4b14-96de-ace0bf24a346)
+![{5797BE62-F7E0-4371-A92F-0A88F5C35DB3}](https://github.com/user-attachments/assets/4cedb317-60f8-402d-ab1b-c14863b751e0)
 
-![{22944ADA-84A6-4627-8646-665E51C9FF70}](https://github.com/user-attachments/assets/4c281ba9-2c4e-49d3-a274-d175ef77f095)
+![{718E90E6-0576-44E7-A120-049B5AFD5EEA}](https://github.com/user-attachments/assets/607e41a4-d2a5-47cd-846c-c17e54532136)
+
 
 
 # ERD
