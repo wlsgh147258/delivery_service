@@ -75,6 +75,7 @@ public class UserService implements DeliveryService {
 
         String userName = inputString("회원 이름: ");
         String userId = inputString("회원 아이디: ");
+        if(userRepository.findUserById(userId) == null) {
         String userPassword = inputString("회원 비밀번호: ");
         String userAddress = inputString("주소: ");
         String phoneNumber = inputString("전화번호: ");
@@ -82,20 +83,24 @@ public class UserService implements DeliveryService {
         Grade userGrade = Grade.BRONZE;
         String active = "Y";
 
-        userRepository.addUser(
-                new User(
-                        -1,
-                        userName,
-                        userId,
-                        userPassword,
-                        userAddress,
-                        phoneNumber,
-                        userType,
-                        userGrade,
-                        active
-                )
-        );
-        System.out.printf("## [%s] 님의 [%s] 계정이 정상적으로 생성되었습니다.\n", userName, userId);
+            userRepository.addUser(
+                    new User(
+                            -1,
+                            userName,
+                            userId,
+                            userPassword,
+                            userAddress,
+                            phoneNumber,
+                            userType,
+                            userGrade,
+                            active
+                    )
+            );
+            System.out.printf("## [%s] 님의 [%s] 계정이 정상적으로 생성되었습니다.\n", userName, userId);
+        }
+        else {
+            System.out.println("이미 있는 아이디 입니다.");
+        }
     }
 
     private List<User> findUserData() {

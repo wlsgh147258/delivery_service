@@ -303,4 +303,44 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
+
+    public User findUserById(String userId){
+        User foundUser = null;
+
+        String sql = "SELECT * FROM users_info WHERE user_id = ?";
+
+        PreparedStatement pstmt = null;
+
+        try (Connection conn = DBConnectionManager.getConnection()) {
+            pstmt = conn.prepareStatement(sql); // try 블록 안에서 PreparedStatement 생성
+            pstmt.setString(1,userId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    foundUser = new User(
+                            rs.getInt("user_num"),
+                            rs.getString("user_name"),
+                            rs.getString("user_id"),
+                            rs.getString("user_password"),
+                            rs.getString("address"),
+                            rs.getString("phone_number"),
+                            rs.getString("user_type"),
+                            Grade.valueOf(rs.getString("user_grade")),
+                            rs.getString("active")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return foundUser;
+    }
 }
