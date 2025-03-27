@@ -101,14 +101,15 @@ Java 개발:
 # 요구사항 명세서
 
 ![{7AA65041-F82B-46C4-A6F4-8E52841406E5}](https://github.com/user-attachments/assets/d598ea8b-d551-4361-b1d3-1964f7b3a1a4)
-
-
-# ERD
-![delivery-ERD (1)](https://github.com/user-attachments/assets/36246c16-97e3-4b61-84f6-bfc2fec52cce)
 ![{50909D91-414C-44AE-8F10-9CB64A3910FF}](https://github.com/user-attachments/assets/d77d7301-4803-45ce-940d-21a4443e4ff8)
 ![{D9D8F07C-6E5E-44C4-BEBE-CFAF32ED6C1F}](https://github.com/user-attachments/assets/60c9076f-9ac4-4939-bb45-4fbaf07ceb38)
 ![{DAECF116-31CA-45FA-9B5A-7140A892F906}](https://github.com/user-attachments/assets/d94c3648-1dd3-4b14-96de-ace0bf24a346)
 ![{22944ADA-84A6-4627-8646-665E51C9FF70}](https://github.com/user-attachments/assets/4c281ba9-2c4e-49d3-a274-d175ef77f095)
+
+
+# ERD
+![delivery-ERD (1)](https://github.com/user-attachments/assets/36246c16-97e3-4b61-84f6-bfc2fec52cce)
+
 
 
 
