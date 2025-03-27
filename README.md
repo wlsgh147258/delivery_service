@@ -11,7 +11,7 @@
 | 김지원 | 김현지 | 도진호 | 이도현 |
 |---|---|---|---|
 | <img src="https://github.com/user-attachments/assets/7fe9ff91-7225-48d3-acc6-d6056b54f1ba" width="150"> | <img src="https://github.com/user-attachments/assets/60190558-2e0a-41fe-844a-698dc2c60ba0" width="150"> | <img src="https://github.com/user-attachments/assets/900f816a-865a-42ac-a3da-b14cca4108d4" width="150"> | <img src="https://github.com/user-attachments/assets/76c1081a-a151-429c-b59d-bc56b4745a89" width="150"> |
-| [GitHub](https://github.com/vbnmopas) | [GitHub](https://github.com/kimjiwon0450) | [GitHub](https://github.com/wlsgh147258) | [GitHub](https://github.com/ehgus8) |
+| [GitHub](https://github.com/kimjiwon0450) | [GitHub](https://github.com/vbnmopas) | [GitHub](https://github.com/wlsgh147258) | [GitHub](https://github.com/ehgus8) |
 
 ### 1.1 목적 및 배경
 
