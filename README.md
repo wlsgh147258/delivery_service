@@ -1,4 +1,4 @@
-# 프로젝트 기획서
+![{D9D8F07C-6E5E-44C4-BEBE-CFAF32ED6C1F}](https://github.com/user-attachments/assets/f766f9c7-cb7e-4ad1-a8e3-caaf4905b010)# 프로젝트 기획서
 
 
 ## 1. 개요
@@ -81,8 +81,8 @@ Java 개발:
      
 ### WBS (Work Breakdown Structure)
 
-업무를 효율적으로 진행하기 위해 업무 일정을 계획하고 관리하는 문서 입니다. 
-여러 협업 툴을 이용해도 좋고, 구글 스프레드 시트에 막대 그래프 형태로 작성해도 좋습니다. 
+![{F148676A-2800-4B38-A341-A7B7A8698C5D}](https://github.com/user-attachments/assets/f59a66dd-46d1-4384-bc26-2b826d803887)
+ 
 
 ### 트러블 슈팅 및 한계점
 - 프로그램의 order 로직에 오류가 있어 예상과 다른 결과를 출력하거나 오류를 발생시켰습니다. 그래서 디버깅 도구를 사용하여 코드의 실행 과정을 추적하고, 오류가 발생하는 지점을 찾아 수정했습니다. 또한, 테스트 케이스를 추가하여 각 기능이 올바르게 작동하는지 확인했습니다.
@@ -100,16 +100,16 @@ Java 개발:
 
 # 요구사항 명세서
 
-주제가 선정되었다면, 여러 가지 서비스가 나누어 질 것이고, 그 서비스에서 발생하는 요구사항 등을 파악합니다. 
-
-팀원들이 함께 공유할 수 있는 Google Spread Sheet나 Notion, 또는 Jira 같은 협업 툴을 활용해서 작성할 수 있습니다. 
-내용이 많을 수 있으니, README.md 파일에는 링크나 스크린 샷 형태로 붙여 넣으시면 되겠습니다.
-각 서비스 별로 구분할 수 있는 식별자 (요구사항 id)를 작성하고, 그에 맞는 내용을 작성하면 되겠습니다.
-또한 데이터베이스 모델링을 통해 도출된 ERD도 함께 기획서에 넣으시면 더 좋을 것 같아요.
+![{7AA65041-F82B-46C4-A6F4-8E52841406E5}](https://github.com/user-attachments/assets/d598ea8b-d551-4361-b1d3-1964f7b3a1a4)
 
 
 # ERD
 ![delivery-ERD (1)](https://github.com/user-attachments/assets/36246c16-97e3-4b61-84f6-bfc2fec52cce)
+![{50909D91-414C-44AE-8F10-9CB64A3910FF}](https://github.com/user-attachments/assets/d77d7301-4803-45ce-940d-21a4443e4ff8)
+![{D9D8F07C-6E5E-44C4-BEBE-CFAF32ED6C1F}](https://github.com/user-attachments/assets/60c9076f-9ac4-4939-bb45-4fbaf07ceb38)
+![{DAECF116-31CA-45FA-9B5A-7140A892F906}](https://github.com/user-attachments/assets/d94c3648-1dd3-4b14-96de-ace0bf24a346)
+![{22944ADA-84A6-4627-8646-665E51C9FF70}](https://github.com/user-attachments/assets/4c281ba9-2c4e-49d3-a274-d175ef77f095)
+
 
 
 
