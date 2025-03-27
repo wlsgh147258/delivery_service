@@ -90,7 +90,8 @@ Java 개발:
      
 ### WBS (Work Breakdown Structure)
 
-![{F148676A-2800-4B38-A341-A7B7A8698C5D}](https://github.com/user-attachments/assets/f59a66dd-46d1-4384-bc26-2b826d803887)
+<img width="1136" alt="image" src="https://github.com/user-attachments/assets/b28884bb-31f5-4907-9f8b-1490b506e5f0" />
+
  
 
 ### 트러블 슈팅 및 한계점
